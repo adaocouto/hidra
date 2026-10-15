@@ -1,4 +1,6 @@
 <!-- NomeDoApp = "Hidratação Neonatal" -->
+<!-- VersionName = "1.11.10.11" -->
+<!-- VersionCode = "262840821" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -411,8 +413,52 @@
     .spacer-3lines {
       height: 4.2em;
     }
+
+    #secaoPrescricao, #secaoMistura {
+      background: linear-gradient(180deg, #fffdfa 0%, #fff8dd 100%);
+    }
+    .campo input, .campo select, .btn, .secao-header {
+      min-height: 44px;
+    }
+    .campo input, .campo select {
+      font-size: 1rem;
+      min-width: 0;
+    }
+    .prescricao-resultados-compactos .campo input {
+      font-size: 1rem;
+      padding: 8px 9px;
+    }
+    .prescricao-resultados-compactos .campo label {
+      font-size: 0.75rem;
+      line-height: 1.2;
+    }
+    .prescricao-resultados-compactos .campo .unidade {
+      font-size: 0.7rem;
+      line-height: 1.2;
+    }
+    .campo-inline {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      column-gap: 6px;
+      row-gap: 2px;
+    }
+    .campo-inline .unidade {
+      grid-column: 2;
+    }
+    .campo input.is-recalculated, .campo select.is-recalculated {
+      background: #bfdbfe !important;
+    }
+    .campo input[aria-invalid="true"], .campo select[aria-invalid="true"] {
+      border-color: #dc2626;
+    }
+    .field-error {
+      color: #991b1b;
+      font-size: 0.78rem;
+      line-height: 1.3;
+      margin-top: 3px;
+    }
   </style>
-  <!-- AndroidVersionName="1.10.09.13" AndroidVersionCode="262561638" BuildTimestamp="2026-09-13T16:38:00-03:00" -->
+  <!-- AndroidVersionName="1.11.10.11" AndroidVersionCode="262840821" BuildTimestamp="2026-09-13T16:38:00-03:00" -->
 </head>
 <body>
 
@@ -439,27 +485,27 @@
     <div class="secao-body">
       <div class="grid-2">
         <div class="campo">
-          <label>Peso de Cálculo</label>
-          <input type="text" inputmode="numeric" pattern="[0-9,]*" maxlength="6" name="peso" value="">
+          <label>Peso de cálculo</label>
+          <input type="text" inputmode="numeric" pattern="[0-9,]*" maxlength="6" name="peso" value="3,000">
           <span class="unidade">kg</span>
         </div>
         <div class="campo">
-          <label>Número de Etapas</label>
+          <label>Número de etapas/Intervalo em horas</label>
           <select name="etapas">
-            <option value="1" selected>1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
+            <option value="1" selected>1 (24/24 horas)</option>
+            <option value="2">2 (12/12 horas)</option>
+            <option value="3">3 (08/08 horas)</option>
+            <option value="4">4 (06/06 horas)</option>
+            <option value="6">6 (04/04 horas)</option>
+            <option value="8">8 (03/03 horas)</option>
+            <option value="12">12 (02/02 horas)</option>
           </select>
           <span class="unidade">etapas/dia</span>
         </div>
         <div class="campo">
-          <label>Volume</label>
-          <input type="text" inputmode="decimal" name="volume" value="">
-          <span class="unidade">ml/kg/dia</span>
+          <label>Taxa hídrica total</label>
+          <input type="text" inputmode="decimal" name="volume" value="70">
+          <span class="unidade">mL/kg/dia</span>
         </div>
         <div class="campo">
           <label>Sódio (NaCl)</label>
@@ -468,18 +514,18 @@
               <option value="1">10%</option>
               <option value="2" selected>20%</option>
             </select>
-            <input type="text" inputmode="decimal" name="sodio" value="">
+            <input type="text" inputmode="decimal" name="sodio" value="3.4">
           </div>
           <span class="unidade">mEq/kg/dia</span>
         </div>
         <div class="campo">
           <label>Potássio (KCl 10%)</label>
-          <input type="text" inputmode="decimal" name="potassio" value="">
+          <input type="text" inputmode="decimal" name="potassio" value="1.3">
           <span class="unidade">mEq/kg/dia</span>
         </div>
         <div class="campo">
-          <label>Cálcio (Gluconato de Cálcio 10%)</label>
-          <input type="text" inputmode="numeric" name="calcio" value="">
+          <label>Cálcio (gluconato de cálcio 10%)</label>
+          <input type="text" inputmode="numeric" name="calcio" value="150">
           <span class="unidade">mg/kg/dia de gluconato de cálcio 10%</span>
         </div>
       </div>
@@ -500,12 +546,12 @@
     <div class="secao-body">
       <div class="grid-2">
         <div class="campo">
-          <label>Volume base glicosado por Etapa</label>
+          <label>Volume base glicosado por etapa</label>
           <input type="text" name="volumetotal" value="0" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>NaCl por Etapa</label>
+          <label>NaCl por etapa</label>
           <div class="campo-inline">
             <select name="concsodio">
               <option value="1">10%</option>
@@ -513,17 +559,17 @@
             </select>
             <input type="text" name="sodiototal" value="0" inputmode="decimal">
           </div>
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>KCl 10% por Etapa</label>
+          <label>KCl 10% por etapa</label>
           <input type="text" name="potassiototal" value="0" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>Gluconato de Cálcio 10% por Etapa</label>
+          <label>Gluconato de cálcio 10% por etapa</label>
           <input type="text" name="calciototal" value="0" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
       </div>
 
@@ -531,38 +577,38 @@
 
       <div class="prescricao-resultados-compactos">
         <div class="campo">
-          <label>Volume Total da Etapa</label>
+          <label>Volume total da etapa</label>
           <input type="text" name="volt" value="0" class="resultado-verde" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>Infundir em</label>
+          <label>Velocidade de infusão</label>
           <input type="text" name="mlhora" value="0" class="resultado-verde" inputmode="decimal">
-          <span class="unidade">ml/hora</span>
+          <span class="unidade">mL/h</span>
         </div>
       </div>
 
       <div class="prescricao-resultados-compactos">
         <div class="campo">
-          <label>Tempo por Etapa</label>
+          <label>Tempo por etapa</label>
           <input type="text" name="tempohoras" value="0" class="resultado-verde" readonly>
           <span class="unidade">horas</span>
         </div>
         <div class="campo">
           <label>Volume nas 24h</label>
           <input type="text" name="volume1" value="0" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
       </div>
 
       <div class="prescricao-resultados-compactos">
         <div class="campo">
-          <label>Taxa Hídrica Total</label>
+          <label>Taxa hídrica total</label>
           <input type="text" name="volume2" value="0" inputmode="decimal">
-          <span class="unidade">ml/kg/dia</span>
+          <span class="unidade">mL/kg/dia</span>
         </div>
         <div class="campo">
-          <label>Peso de Cálculo</label>
+          <label>Peso de cálculo</label>
           <input type="text" inputmode="numeric" pattern="[0-9,]*" maxlength="6" name="peso1" value="0">
           <span class="unidade">kg</span>
         </div>
@@ -570,15 +616,15 @@
 
       <div class="prescricao-resultados-compactos">
         <div class="campo">
-          <label>Número de Etapas</label>
+          <label>Número de etapas/Intervalo em horas</label>
           <select name="etapas2">
-            <option value="1" selected>1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="6">6</option>
-            <option value="8">8</option>
-            <option value="12">12</option>
+            <option value="1" selected>1 (24/24 horas)</option>
+            <option value="2">2 (12/12 horas)</option>
+            <option value="3">3 (08/08 horas)</option>
+            <option value="4">4 (06/06 horas)</option>
+            <option value="6">6 (04/04 horas)</option>
+            <option value="8">8 (03/03 horas)</option>
+            <option value="12">12 (02/02 horas)</option>
           </select>
           <span class="unidade">etapas/dia</span>
         </div>
@@ -599,17 +645,17 @@
     <div class="secao-body">
       <div class="grid-2">
         <div class="campo">
-          <label>Volume base glicosado por Etapa</label>
+          <label>Volume base glicosado por etapa</label>
           <input type="text" name="volume3" value="0" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>Concentração Desejada</label>
+          <label>Concentração desejada</label>
           <input type="text" inputmode="decimal" name="cd" value="10">
           <span class="unidade">% glicose</span>
         </div>
         <div class="campo">
-          <label>Concentração do 1º Soro (menor)</label>
+          <label>Concentração do 1º soro (menor)</label>
           <select name="cs1">
             <option value="0">0% (Água destilada)</option>
             <option value="5" selected>5%</option>
@@ -620,12 +666,12 @@
           <span class="unidade">% glicose</span>
         </div>
         <div class="campo">
-          <label>Volume do 1º Soro</label>
+          <label>Volume do 1º soro</label>
           <input type="text" name="vs1" value="0" class="resultado-amarelo" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>Concentração do 2º Soro (maior)</label>
+          <label>Concentração do 2º soro (maior)</label>
           <select name="cs2">
             <option value="0">0% (Água destilada)</option>
             <option value="5">5%</option>
@@ -636,9 +682,9 @@
           <span class="unidade">% glicose</span>
         </div>
         <div class="campo">
-          <label>Volume do 2º Soro</label>
+          <label>Volume do 2º soro</label>
           <input type="text" name="vs2" value="0" class="resultado-amarelo" inputmode="decimal">
-          <span class="unidade">ml</span>
+          <span class="unidade">mL</span>
         </div>
         <div class="campo">
           <label>T.I.G.</label>
@@ -2074,15 +2120,23 @@
       "ALERTAS CLÍNICOS"
     );
 
+    revealNewAlerts();
     updating = false;
   }
 
   function commit(candidate, renderOptions) {
     validateInvariants(candidate);
+    var previous = state;
+    var hadCalculation = confirmedCalculation;
     var weightAutoAdjustment = candidate._meta && candidate._meta.weightAutoAdjustment;
     var stageAutoAdjustment = candidate._meta && candidate._meta.stageAutoAdjustment;
+    restorePendingControls();
     state = candidate;
     render(state, renderOptions);
+    clearFieldErrors();
+    highlightAutomaticChanges(previous, candidate, renderOptions, hadCalculation);
+    confirmedCalculation = true;
+    Object.keys(fieldEdits).forEach(function (name) { fieldEdits[name].dirty = false; });
     showWeightAutoAdjustmentToast(weightAutoAdjustment);
     showStageAutoAdjustmentToast(stageAutoAdjustment);
     if (state && state._meta) {
@@ -2226,7 +2280,7 @@
     if (form.concsodio) form.concsodio.value = "2";
     if (form.etapas) form.etapas.value = "1";
     if (form.etapas2) form.etapas2.value = "1";
-    if (form.cd) form.cd.value = "10";
+    if (form.cd) form.cd.value = "";
     if (form.cs1) form.cs1.value = "5";
     if (form.cs2) form.cs2.value = "10";
 
@@ -2249,14 +2303,22 @@
   }
 
   function resetToEmptyInitialState() {
+    restorePendingControls();
+    clearFieldHighlights();
+    clearFieldErrors();
+    clearTimeout(errorToastHideTimer);
+    fieldEdits = {};
+    lastAlertContents = {};
+    confirmedCalculation = false;
     applyEmptyInitialDisplay();
     initialRawState = createStateFromForm();
     state = deepClone(initialRawState);
   }
 
-  function fail(error, preserveForm) {
+  function fail(error, preserveForm, originName) {
     if (!preserveForm) render(state);
     showErrorToast(error && error.message ? error.message : String(error));
+    showFieldError(error, originName);
   }
 
   var INTENT = {
@@ -2443,139 +2505,337 @@
   }
 
   function handleCalculateButtonClick(targetSectionId) {
-    if (updating) return;
+    confirmFieldEdit(null, true, targetSectionId);
+  }
 
+  var DIRECT_FIELD_NAMES = ["peso", "etapas", "volume", "sodio", "potassio", "calcio", "concso"];
+  var confirmedCalculation = false;
+  var fieldEdits = {};
+  var pendingDisabledFields = {};
+  var highlightTimers = {};
+  var lastAlertContents = {};
+  var focusingError = false;
+
+  function isDirectField(name) {
+    return DIRECT_FIELD_NAMES.indexOf(name) >= 0;
+  }
+
+  function getFieldEdit(name) {
+    if (!fieldEdits[name]) {
+      fieldEdits[name] = { dirty: false, replaceOnInput: false, literalWeight: false, lastValidWeight: form[name].value };
+    }
+    return fieldEdits[name];
+  }
+
+  function clearFieldHighlights() {
+    Object.keys(highlightTimers).forEach(function (name) { clearTimeout(highlightTimers[name]); });
+    highlightTimers = {};
+    Object.keys(FIELD_META).forEach(function (name) { if (form[name]) form[name].classList.remove("is-recalculated"); });
+  }
+
+  function highlightField(name) {
+    if (!form[name]) return;
+    clearTimeout(highlightTimers[name]);
+    form[name].classList.add("is-recalculated");
+    highlightTimers[name] = setTimeout(function () {
+      form[name].classList.remove("is-recalculated");
+      delete highlightTimers[name];
+    }, 1000);
+  }
+
+  function restorePendingControls() {
+    Object.keys(pendingDisabledFields).forEach(function (name) {
+      form[name].disabled = pendingDisabledFields[name];
+    });
+    pendingDisabledFields = {};
+    ["secaoPrescricao", "secaoMistura"].forEach(function (id) {
+      document.getElementById(id).removeAttribute("aria-busy");
+    });
+  }
+
+  function markResultsPending(sourceName) {
+    clearFieldHighlights();
+    Object.keys(FIELD_META).forEach(function (name) {
+      var el = form[name];
+      if (!el || isDirectField(name)) return;
+      if (name === sourceName || (fieldEdits[name] && fieldEdits[name].dirty)) {
+        if (Object.prototype.hasOwnProperty.call(pendingDisabledFields, name)) el.disabled = pendingDisabledFields[name];
+        return;
+      }
+      if (!Object.prototype.hasOwnProperty.call(pendingDisabledFields, name)) pendingDisabledFields[name] = el.disabled;
+      el.disabled = true;
+      if (el.tagName !== "SELECT") el.value = "";
+    });
+    ["secaoPrescricao", "secaoMistura"].forEach(function (id) {
+      document.getElementById(id).setAttribute("aria-busy", "true");
+    });
+    ["alertaSolucao", "alertaAjusteAutomaticoMistura", "alertaMistura"].forEach(hideAlertElement);
+  }
+
+  function openFieldSection(el) {
+    var section = el && el.closest(".secao");
+    if (!section) return;
+    if (section.id === "secaoMistura") section.open = true;
+    else setSectionOpen(section.id, true);
+  }
+
+  function clearFieldErrors() {
+    Object.keys(FIELD_META).forEach(function (name) {
+      if (!form[name]) return;
+      form[name].removeAttribute("aria-invalid");
+      var message = document.getElementById("hidra-" + name + "-error");
+      if (message) { message.textContent = ""; message.classList.add("is-hidden"); }
+    });
+    hideErrorToast();
+  }
+
+  function findErrorField(error, originName) {
+    var message = String(error && error.message ? error.message : error);
+    if (/Peso|peso/.test(message)) return originName === "peso1" ? "peso1" : "peso";
+    if (/Etapas|Horas por etapa/.test(message)) return originName === "etapas2" ? "etapas2" : "etapas";
+    if (/1º soro deve/.test(message)) return "cs2";
+    if (/Concentração desejada|concentração fora da faixa/.test(message)) return "cd";
+    return originName || "peso";
+  }
+
+  function showFieldError(error, originName) {
+    var name = findErrorField(error, originName);
+    var el = form[name];
+    if (!el) return;
+    if (Object.prototype.hasOwnProperty.call(pendingDisabledFields, name)) {
+      el.disabled = pendingDisabledFields[name];
+      if (el.tagName !== "SELECT" && el.value === "" && !getFieldEdit(name).dirty && state) {
+        el.value = formatField(name, getByPath(state, FIELD_META[name].path), state);
+      }
+    }
+    var message = document.getElementById("hidra-" + name + "-error");
+    el.setAttribute("aria-invalid", "true");
+    if (message) {
+      message.textContent = error && error.message ? error.message : String(error);
+      message.classList.remove("is-hidden");
+    }
+    openFieldSection(el);
+    focusingError = true;
+    try { el.focus(); } finally { focusingError = false; }
+  }
+
+  function initializeFieldAccessibility() {
+    Object.keys(FIELD_META).forEach(function (name) {
+      var el = form[name];
+      if (!el) return;
+      el.id = "hidra-" + name;
+      var container = el.closest(".campo");
+      if (!container) return;
+      var label = container.querySelector("label");
+      var mainControl = container.querySelector("input") || container.querySelector("select");
+      if (label && mainControl === el) label.setAttribute("for", el.id);
+      else el.setAttribute("aria-label", name === "concso" ? "Concentração de NaCl" : "Concentração de NaCl por etapa");
+      var descriptions = [];
+      var unit = container.querySelector(".unidade");
+      if (unit && mainControl === el) {
+        unit.id = el.id + "-unit";
+        descriptions.push(unit.id);
+        var inline = container.querySelector(".campo-inline");
+        if (inline && unit.parentElement !== inline) inline.appendChild(unit);
+      }
+      if (!el.readOnly) {
+        var error = document.createElement("div");
+        error.id = el.id + "-error";
+        error.className = "field-error is-hidden";
+        container.appendChild(error);
+        descriptions.push(error.id);
+      }
+      if (descriptions.length) el.setAttribute("aria-describedby", descriptions.join(" "));
+    });
+  }
+
+  function revealNewAlerts() {
+    ["alertaSolucao", "alertaAjusteAutomaticoMistura", "alertaMistura"].forEach(function (id) {
+      var el = document.getElementById(id);
+      var content = el.innerHTML;
+      if (content && content !== lastAlertContents[id]) openFieldSection(el);
+      lastAlertContents[id] = content;
+    });
+  }
+
+  function highlightAutomaticChanges(previous, snapshot, options, hadCalculation) {
+    var entered = options && options.enteredValues ? options.enteredValues : {};
+    var requested = options && options.requestedValues ? options.requestedValues : {};
+    Object.keys(FIELD_META).forEach(function (name) {
+      var current = getByPath(snapshot, FIELD_META[name].path);
+      var changed = hadCalculation && previous && !Object.prototype.hasOwnProperty.call(entered, name) &&
+        Math.abs(current - getByPath(previous, FIELD_META[name].path)) > EPS &&
+        formatField(name, current, snapshot) !== formatField(name, getByPath(previous, FIELD_META[name].path), previous);
+      var requestedValue = Object.prototype.hasOwnProperty.call(entered, name) ? entered[name] : requested[name];
+      if (Number.isFinite(requestedValue) && Math.abs(requestedValue - current) > EPS) changed = true;
+      if (changed) highlightField(name);
+    });
+  }
+
+  function literalWeightInput(rawValue) {
+    var value = String(rawValue).replace(/[^0-9,.]/g, "");
+    var separator = value.search(/[,.]/);
+    if (separator < 0) return value;
+    var integer = value.slice(0, separator).replace(/\D/g, "") || "0";
+    return integer + "," + value.slice(separator + 1).replace(/\D/g, "").slice(0, 3);
+  }
+
+  function handleNumericInput(name, el, event) {
+    if (updating) return;
+    var edit = getFieldEdit(name);
+    var raw = el.value;
+    if (edit.replaceOnInput && event && event.data && event.inputType === "insertText") raw = event.data;
+    edit.replaceOnInput = false;
+    if (name === "peso" || name === "peso1") {
+      if (event && /insertFromPaste|insertReplacementText|insertFromDrop/.test(event.inputType || "")) edit.literalWeight = true;
+      var masked = edit.literalWeight ? literalWeightInput(raw) : maskWeightInputValue(raw);
+      var aboveMax = edit.literalWeight ? parseDecimal(masked) > MAX_WEIGHT_KG + EPS : isWeightInputAboveMax(raw);
+      if (aboveMax) {
+        el.value = edit.lastValidWeight;
+        try { el.setSelectionRange(el.value.length, el.value.length); } catch (ignore) {}
+        return;
+      }
+      el.value = masked;
+      edit.lastValidWeight = masked;
+    } else if (DECIMAL_MASK_FIELDS[name]) {
+      var spec = DECIMAL_MASK_FIELDS[name];
+      var decimalMasked = maskDecimalInputValue(raw, spec.intDigits, spec.decDigits);
+      if (el.value !== decimalMasked) {
+        el.value = decimalMasked;
+        try { el.setSelectionRange(el.value.length, el.value.length); } catch (ignore) {}
+      }
+    }
+    edit.dirty = true;
+    markResultsPending(name);
+  }
+
+  function readConfirmedDirectCandidate(context) {
+    var candidate = deepClone(state);
+    DIRECT_FIELD_NAMES.forEach(function (name) {
+      var edit = getFieldEdit(name);
+      var current = getByPath(candidate, FIELD_META[name].path);
+      if (!confirmedCalculation || edit.dirty) {
+        var text = String(form[name].value || "").trim();
+        current = text === "" && name !== "peso" ? 0 : parseDecimal(text);
+        if (!Number.isFinite(current)) throw new Error("Valor numérico inválido.");
+        if (edit.dirty) context.enteredValues[name] = current;
+        setByPath(candidate, FIELD_META[name].path, current);
+      }
+      context.requestedValues[name] = current;
+      if (name === "peso") context.requestedValues.peso1 = current;
+      if (name === "etapas") context.requestedValues.etapas2 = current;
+      sanitizeFieldInState(name, candidate);
+    });
+    return candidate;
+  }
+
+  function confirmFieldEdit(name, forceDirect, targetSectionId) {
+    if (updating || focusingError) return false;
+    if (!forceDirect && !getFieldEdit(name).dirty) return true;
+    if (isWeightRequiredFieldEmpty() && !forceDirect && name !== "peso") return false;
+    var context = { enteredValues: {}, requestedValues: {}, preserveEmptyInputFields: {} };
     try {
       assertWeightBeforeCalculate();
-      var preserveEmptyInputFields = getEmptyFieldMap(EMPTY_AS_ZERO_ON_CALCULATE_FIELDS);
-      var rawPeso = parseFieldValueForCalculation("peso", form.peso && form.peso.value, 0);
-      var candidate = createStateFromForm();
-      if (Number.isFinite(rawPeso) && rawPeso > MAX_WEIGHT_KG && candidate && candidate.clinical && Math.abs(candidate.clinical.peso - rawPeso) > EPS) {
-        if (!candidate._meta) candidate._meta = {};
-        candidate._meta.weightAutoAdjustment = {
-          from: rawPeso,
-          to: candidate.clinical.peso
-        };
+      var directPending = DIRECT_FIELD_NAMES.some(function (field) { return getFieldEdit(field).dirty; });
+      var direct = forceDirect || isDirectField(name);
+      var candidate = direct || directPending ? readConfirmedDirectCandidate(context) : deepClone(state);
+      if (!direct) {
+        if (directPending) computeDirect(candidate);
+        Object.keys(FIELD_META).forEach(function (field) {
+          if (field === name || isDirectField(field) || !getFieldEdit(field).dirty) return;
+          var pendingValue = parseFieldValueForCalculation(field, form[field].value, 0);
+          if (!Number.isFinite(pendingValue)) throw new Error("Valor numérico inválido.");
+          context.enteredValues[field] = pendingValue;
+          setByPath(candidate, FIELD_META[field].path, pendingValue);
+          sanitizeFieldInState(field, candidate);
+        });
+        var parsed = parseFieldValueForCalculation(name, form[name].value, 0);
+        if (!Number.isFinite(parsed)) throw new Error("Valor numérico inválido.");
+        context.enteredValues[name] = parsed;
+        setByPath(candidate, FIELD_META[name].path, parsed);
+        sanitizeFieldInState(name, candidate);
+        computeByIntent(candidate, getIntentForField(name));
+      } else {
+        ["cd", "cs1", "cs2"].forEach(function (field) {
+          if (!getFieldEdit(field).dirty) return;
+          var parsed = parseFieldValueForCalculation(field, form[field].value, 0);
+          if (!Number.isFinite(parsed)) throw new Error("Valor numérico inválido.");
+          context.enteredValues[field] = parsed;
+          setByPath(candidate, FIELD_META[field].path, parsed);
+          sanitizeFieldInState(field, candidate);
+        });
+        computeDirect(candidate);
       }
-      computeDirect(candidate);
-      commit(candidate, { preserveEmptyInputFields: preserveEmptyInputFields });
-      if (targetSectionId) {
-        scrollSectionToTop(targetSectionId);
-      }
+      EMPTY_AS_ZERO_ON_CALCULATE_FIELDS.forEach(function (field) {
+        context.preserveEmptyInputFields[field] = form[field].value === "" && Math.abs(getByPath(candidate, FIELD_META[field].path)) <= EPS;
+      });
+      commit(candidate, context);
+      if (targetSectionId) scrollSectionToTop(targetSectionId);
+      return true;
     } catch (error) {
-      fail(error, true);
+      markResultsPending(name);
+      fail(error, true, name);
+      return false;
     }
+  }
+
+  function focusNextNumericField(name) {
+    var inputs = Array.prototype.slice.call(form.querySelectorAll("input[name]"))
+      .filter(function (el) { return !el.readOnly && FIELD_META[el.name]; });
+    var index = inputs.indexOf(form[name]);
+    var next = inputs[index + 1];
+    if (next) { openFieldSection(next); next.focus(); }
+    else form[name].blur();
   }
 
   function bindFieldEvents() {
     Object.keys(FIELD_META).forEach(function (name) {
       var el = form[name];
-      if (!el || name === "tempohoras" || name === "osmolaridade") return;
-
-      var triggerFieldUpdate = function (options) {
-        if (updating) return;
-        var soft = !!(options && options.soft);
-        var intent = getIntentForField(name);
-
-        // Campos diretos de entrada clínica não recalculam no blur/change.
-        // A regra de campo vazio = 0 vale apenas quando o usuário clica em Calcular.
-        // Fora disso, a tela preserva campo vazio como vazio e campo preenchido como está.
-        if (intent === INTENT.DIRECT) {
-          return;
-        }
-
-        var parsed = parseFieldValueForCalculation(name, el.value, 0);
-
-        if (!Number.isFinite(parsed)) {
-          if (!soft) render(state);
-          return;
-        }
-
-        try {
-          updateFromUserField(name, el.value, soft ? { skipName: name } : null);
-        } catch (error) {
-          fail(error, true);
-        }
-      };
-
+      if (!el || el.readOnly) return;
       if (el.tagName === "SELECT") {
-        // Selects confirmam a intenção no próprio change.
-        el.addEventListener("change", function () { triggerFieldUpdate({ soft: false }); });
-      } else {
-        // Máscara ativa para Peso de Cálculo.
-        // O cálculo continua sendo confirmado apenas ao sair do campo.
-        if (name === "peso" || name === "peso1") {
-          el.dataset.weightLastValid = el.value;
-          el.addEventListener("focus", function () {
-            el.dataset.weightLastValid = el.value;
-          });
-          el.addEventListener("input", function () {
-            var rawValue = el.value;
-            // Acima de 20 kg: interrompe a digitação (reverte ao último valor
-            // válido) em vez de saltar automaticamente para 20,000.
-            if (isWeightInputAboveMax(rawValue)) {
-              el.value = el.dataset.weightLastValid != null ? el.dataset.weightLastValid : "";
-              try {
-                el.setSelectionRange(el.value.length, el.value.length);
-              } catch (ignore) {}
-              return;
-            }
-            var masked = maskWeightInputValue(rawValue);
-            if (el.value !== masked) {
-              el.value = masked;
-              try {
-                el.setSelectionRange(el.value.length, el.value.length);
-              } catch (ignore) {}
-            }
-            el.dataset.weightLastValid = masked;
-          });
-        } else if (DECIMAL_MASK_FIELDS[name]) {
-          // Máscaras decimais configuradas em DECIMAL_MASK_FIELDS.
-          // A digitação aceita números e separador decimal inicial/opcional (. ou ,).
-          var maskSpec = DECIMAL_MASK_FIELDS[name];
-          el.addEventListener("input", (function (spec) {
-            return function () {
-              var masked = maskDecimalInputValue(el.value, spec.intDigits, spec.decDigits);
-              if (el.value !== masked) {
-                el.value = masked;
-                try {
-                  el.setSelectionRange(el.value.length, el.value.length);
-                } catch (ignore) {}
-              }
-            };
-          })(maskSpec));
-        }
-
-        // Campos digitáveis não recalculam durante a digitação.
-        // Campos diretos são recalculados apenas pelo botão Calcular; campos inversos/reversos
-        // continuam sendo confirmados ao sair do campo.
-        el.addEventListener("blur", function () { triggerFieldUpdate({ soft: false }); });
+        el.tabIndex = -1;
+        el.addEventListener("change", function () {
+          getFieldEdit(name).dirty = true;
+          markResultsPending(name);
+          confirmFieldEdit(name, false);
+        });
+        return;
       }
+      el.setAttribute("enterkeyhint", name === "tig" ? "done" : "next");
+      el.addEventListener("focus", function () {
+        var edit = getFieldEdit(name);
+        edit.replaceOnInput = true;
+        edit.literalWeight = false;
+        edit.lastValidWeight = el.value;
+        if (el.value !== "") el.select();
+      });
+      el.addEventListener("beforeinput", function (event) {
+        var edit = getFieldEdit(name);
+        if (edit.replaceOnInput && /^insert/.test(event.inputType || "") && !event.isComposing) {
+          el.value = "";
+          edit.replaceOnInput = false;
+          edit.literalWeight = false;
+        }
+      });
+      el.addEventListener("input", function (event) { handleNumericInput(name, el, event); });
+      el.addEventListener("blur", function () { if (!focusingError) confirmFieldEdit(name, false); });
+      el.addEventListener("keydown", function (event) {
+        if (event.key !== "Enter" || event.isComposing) return;
+        event.preventDefault();
+        if (confirmFieldEdit(name, false)) focusNextNumericField(name);
+      });
     });
-
-    var topCalculateButton = document.getElementById("btnCalcular");
-    if (topCalculateButton) {
-      topCalculateButton.addEventListener("click", function () {
-        handleCalculateButtonClick("secaoPrescricao");
-      });
-    }
-
-    var footerCalculateButton = document.getElementById("btnCalcularRodape");
-    if (footerCalculateButton) {
-      footerCalculateButton.addEventListener("click", function () {
-        handleCalculateButtonClick("secaoMistura");
-      });
-    }
-
+    document.getElementById("btnCalcular").addEventListener("click", function () {
+      handleCalculateButtonClick("secaoPrescricao");
+    });
+    document.getElementById("btnCalcularRodape").addEventListener("click", function () {
+      handleCalculateButtonClick("secaoMistura");
+    });
     form.addEventListener("reset", function (event) {
       event.preventDefault();
       resetToEmptyInitialState();
-      window.requestAnimationFrame(function () {
-        window.scrollTo({
-          top: 0,
-          behavior: "smooth"
-        });
-      });
+      form.peso.focus();
+      window.requestAnimationFrame(function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
     });
   }
 
@@ -3032,9 +3292,12 @@
   }
 
   function bootstrap() {
+    initializeFieldAccessibility();
     initializeCollapsibleSections();
 
-    resetToEmptyInitialState();
+    initialRawState = createStateFromForm();
+    state = deepClone(initialRawState);
+    confirmFieldEdit(null, true);
 
     try {
       window.HidraCalculator.selfTest = runSelfTests();
@@ -3050,6 +3313,7 @@
     }
 
     bindFieldEvents();
+    form.peso.focus();
   }
 
   window.HidraCalculator = {
