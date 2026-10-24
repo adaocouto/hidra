@@ -1,11 +1,11 @@
 <!-- NomeDoApp = "Hidratação Neonatal" -->
-<!-- VersionName = "1.012.10.16" -->
-<!-- VersionCode = "262891830" -->
+<!-- VersionName = "1.012.10.22" -->
+<!-- VersionCode = "262950945" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- AndroidVersionName = "1.012.10.16" -->
-  <!-- AndroidVersionCode = "262891830" -->
+  <!-- AndroidVersionName = "1.012.10.22" -->
+  <!-- AndroidVersionCode = "262950945" -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cálculo de Hidratação Venosa</title>
@@ -460,7 +460,7 @@
       margin-top: 3px;
     }
   </style>
-  <!-- AndroidVersionName="1.012.10.16" AndroidVersionCode="262891830" BuildTimestamp="2026-10-16T18:30:49-03:00" -->
+  <!-- AndroidVersionName="1.012.10.22" AndroidVersionCode="262950945" BuildTimestamp="2026-10-22T09:45:17-03:00" -->
 </head>
 <body>
 
@@ -717,7 +717,7 @@
     Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.
   </div>
 </details>
-<div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.012.10.16</span></div>
+<div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.012.10.22</span></div>
 
 <div class="spacer-3lines" aria-hidden="true"></div>
 
@@ -2836,6 +2836,8 @@
     form.addEventListener("reset", function (event) {
       event.preventDefault();
       resetToEmptyInitialState();
+      clearTimeout(stateSaveTimer);
+      try { window.localStorage.removeItem(APP_STATE_KEY); } catch (_) {}
       form.peso.focus();
       window.requestAnimationFrame(function () { window.scrollTo({ top: 0, behavior: "smooth" }); });
     });
@@ -3293,6 +3295,103 @@
     return { passed: passed, total: tests.length };
   }
 
+
+  // Persist only the active app's non-sensitive form values and validated model.
+  // Added for WebView Activity/renderer recreation; no clinical formula is changed.
+  var APP_STATE_SCHEMA_VERSION = 1;
+  var APP_STATE_KEY = 'hidra.active_state.v1';
+  var restoringAppState = false;
+  var stateSaveTimer = null;
+  function persistCurrentAppState() {
+    if (restoringAppState || !state) return;
+    try {
+      var fields = {};
+      Array.prototype.forEach.call(form.querySelectorAll('input[name],select[name],textarea[name]'), function(el) {
+        if (el.disabled || el.readOnly || /^(?:password|file)$/i.test(el.type || '')) return;
+        fields[el.name] = String(el.value).slice(0, 80);
+      });
+      var open = {};
+      ['secaoParametros', 'secaoPrescricao'].forEach(function(id) {
+        var sec = document.getElementById(id);
+        if (sec) open[id] = !sec.classList.contains('is-collapsed');
+      });
+      var mixture = document.getElementById('secaoMistura');
+      if (mixture) open.secaoMistura = mixture.open;
+      var snapshot = {
+        schemaVersion: APP_STATE_SCHEMA_VERSION,
+        model: deepClone(state), fields: fields,
+        confirmedCalculation: !!confirmedCalculation,
+        openSections: open, scrollY: Math.max(0, Math.floor(window.scrollY || 0))
+      };
+      window.localStorage.setItem(APP_STATE_KEY, JSON.stringify(snapshot));
+    } catch (error) {
+      // Storage may be disabled/full; never interrupt clinical calculation.
+      if (window.console && window.console.warn) window.console.warn('Hidra: armazenamento indisponível', error);
+    }
+  }
+  function scheduleAppStateSave() {
+    clearTimeout(stateSaveTimer);
+    stateSaveTimer = setTimeout(persistCurrentAppState, 120);
+  }
+  function restorePersistedAppState() {
+    var raw;
+    try { raw = window.localStorage.getItem(APP_STATE_KEY); } catch (_) { return; }
+    if (!raw) return;
+    var snapshot;
+    try { snapshot = JSON.parse(raw); } catch (_) { return; }
+    if (!snapshot || snapshot.schemaVersion !== APP_STATE_SCHEMA_VERSION ||
+        !snapshot.model || !snapshot.fields || typeof snapshot.fields !== 'object') return;
+    restoringAppState = true;
+    try {
+      // Validate the stored model with the original invariants before reuse.
+      var storedState = deepClone(snapshot.model);
+      validateInvariants(storedState);
+      state = storedState;
+      confirmedCalculation = !!snapshot.confirmedCalculation;
+      render(state);
+      Object.keys(snapshot.fields).forEach(function(name) {
+        var el = form.elements.namedItem(name);
+        if (!el || el.disabled || el.readOnly || el.type === 'file' || el.type === 'password') return;
+        var value = snapshot.fields[name];
+        if (typeof value !== 'string' || value.length > 80) return;
+        if (el.tagName === 'SELECT' && !Array.prototype.some.call(el.options, function(opt) { return opt.value === value; })) return;
+        el.value = value;
+        if (FIELD_META[name] && getFieldEdit(name)) {
+          // Uncommitted user edits remain visible and are resolved by the original handlers on confirmation.
+          getFieldEdit(name).dirty = el.value !== formatField(name, getByPath(state, FIELD_META[name].path), state);
+        }
+      });
+      if (snapshot.openSections && typeof snapshot.openSections === 'object') {
+        ['secaoParametros','secaoPrescricao'].forEach(function(id) {
+          if (typeof snapshot.openSections[id] === 'boolean') setSectionOpen(id, snapshot.openSections[id]);
+        });
+        var mixture = document.getElementById('secaoMistura');
+        if (mixture && typeof snapshot.openSections.secaoMistura === 'boolean') mixture.open = snapshot.openSections.secaoMistura;
+      }
+      if (typeof snapshot.scrollY === 'number' && Number.isFinite(snapshot.scrollY)) {
+        var y = Math.min(Math.max(snapshot.scrollY, 0), 1000000);
+        requestAnimationFrame(function() { requestAnimationFrame(function(){ window.scrollTo(0, y); }); });
+      }
+    } catch (error) {
+      if (window.console && window.console.warn) window.console.warn('Hidra: snapshot incompatível; preservado para investigação', error);
+      // Restore the known boot state rather than partially corrupted data.
+      state = deepClone(initialRawState);
+      confirmedCalculation = false;
+      render(state);
+    } finally { restoringAppState = false; }
+  }
+  function bindAppStatePersistence() {
+    form.addEventListener('input', persistCurrentAppState);
+    form.addEventListener('change', persistCurrentAppState);
+    form.addEventListener('focusout', scheduleAppStateSave);
+    document.addEventListener('click', persistCurrentAppState);
+    document.addEventListener('toggle', scheduleAppStateSave, true);
+    window.addEventListener('scroll', scheduleAppStateSave, {passive:true});
+    document.addEventListener('visibilitychange', function() { if (document.hidden) persistCurrentAppState(); });
+    window.addEventListener('pagehide', persistCurrentAppState);
+    window.addEventListener('hidra-native-save', persistCurrentAppState);
+  }
+
   function bootstrap() {
     initializeFieldAccessibility();
     initializeCollapsibleSections();
@@ -3315,7 +3414,9 @@
     }
 
     bindFieldEvents();
-    form.peso.focus();
+    restorePersistedAppState();
+    bindAppStatePersistence();
+    try { if (!window.localStorage.getItem(APP_STATE_KEY)) form.peso.focus(); } catch (_) { form.peso.focus(); }
   }
 
   window.HidraCalculator = {
