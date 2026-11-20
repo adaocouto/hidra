@@ -1,11 +1,12 @@
 <!-- NomeDoApp = "Hidratação Neonatal" -->
-<!-- VersionName = "1.014.11.01" -->
-<!-- VersionCode = "262950945" -->
+<!-- AndroidVersionName = "1.15.11.09"; AndroidVersionCode = "263112236" -->
+<!-- VersionName = "1.15.11.09" -->
+<!-- VersionCode = "263112236" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- AndroidVersionName = "1.014.11.01" -->
-  <!-- AndroidVersionCode = "262950945" -->
+  <!-- AndroidVersionName = "1.15.11.09" -->
+  <!-- AndroidVersionCode = "263112236" -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cálculo de Hidratação Venosa</title>
@@ -56,6 +57,13 @@
       display: flex;
       flex-direction: column;
       gap: 14px;
+    }
+
+    /* Impede seleção acidental de textos estáticos no Android WebView. */
+    body { -webkit-user-select: none; user-select: none; }
+    input, textarea, select, [contenteditable="true"] {
+      -webkit-user-select: text;
+      user-select: text;
     }
 
     /* -------- SEÇÃO -------- */
@@ -523,8 +531,199 @@ header p { margin:4px 0 0; color:#61778f; }
 /* Correção pontual: alinhar seletor de etapas e campo de osmolaridade. */
 #secaoPrescricao .prescricao-resultados-compactos:has(input[name="osmolaridade"]) { align-items:stretch; grid-template-rows:auto auto auto; }
 #secaoPrescricao .prescricao-resultados-compactos:has(input[name="osmolaridade"]) > .campo { display:grid; grid-row:span 3; grid-template-rows:subgrid; }
+
+
+/* Padronização restrita ao cabeçalho e às barras de informações legais. */
+.header-controls, .standard-top-actions.header-controls, .planoc-top-actions, .paraped-top-actions, .acoes-superior {
+  display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:10px;
+}
+.header-controls button, .standard-top-actions button, .planoc-top-actions button, .paraped-top-actions button, .acoes-superior button { min-height:44px; white-space:nowrap; }
+#btnSair { min-width:78px; }
+/* O controle de idioma permanece oculto para compatibilidade com scripts legados. */
+.language-group, .language-control, .hvneo-language-control {display:none!important;}
+.legal-disclaimer + .legal-disclaimer {margin-top:6px!important;}
+.legal-disclaimer.legal-policy-row {
+  box-sizing:border-box;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding:11px 13px; margin-top:6px!important;
+  margin-bottom:0!important;
+  border:1px solid #e2e8f0; border-radius:14px;
+  background:#f8fafc; box-shadow:none;
+  color:#5c6f87; font-size:.78rem; font-weight:700;
+  line-height:1.45; text-decoration:none;
+}
+.legal-disclaimer.legal-policy-row svg {
+  width:16px; height:16px; flex:0 0 16px;
+  fill:none; stroke:#7b8da0; stroke-width:2;
+  stroke-linecap:round; stroke-linejoin:round;
+}
+.legal-disclaimer.legal-policy-row:focus-visible {outline:3px solid #2563a8;outline-offset:2px;}
+body {padding-bottom:42px;}
+.spacer-3lines {height:0!important;display:none!important;}
+.footer-version-row, .versao-rodape, .planoc-footer-row, .paraped-footer-row, .hvneo-footer-row, .hidra-footer {margin-top:12px!important;margin-bottom:0!important;}
+.signature-block strong {font-size:clamp(12px,3.5vw,14px);}
+@media(min-width:345px){.signature-block strong{white-space:nowrap;}}
+
+header{margin-bottom:12px!important}.standard-top-actions.header-controls{margin-top:12px!important;margin-bottom:16px!important}
+
+/* Padrao Apgar: botoes do cabecalho em duas colunas iguais; barras legais compactas. */
+.standard-top-actions.header-controls {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  gap: 10px;
+  align-items: stretch;
+  justify-content: stretch;
+}
+.standard-top-actions.header-controls > button {
+  box-sizing: border-box;
+  flex: none;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0 !important;
+  min-height: 44px;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: .95rem;
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: 8px;
+  border: 1.5px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #64748b;
+}
+.standard-top-actions.header-controls > button:hover { background: #e2e8f0; }
+.standard-top-actions.header-controls > select[hidden], .standard-top-actions.header-controls > .language-control,
+.standard-top-actions.header-controls > .hvneo-language-control { display: none !important; }
+@media (max-width: 350px) {
+  .standard-top-actions.header-controls > button { font-size: .86rem; padding: 9px 6px; }
+}
+#referencesDetails { margin-top: 20px !important; }
+
+/* Auditoria Cores.md — somente P1–P10 autorizados. */
+body { font-family:Arial,Helvetica,sans-serif; }
+header { margin-bottom:14px !important; }
+header p { margin-top:12px; }
+.standard-top-actions.header-controls { margin-top:0 !important; margin-bottom:20px !important; }
+.hidra-footer { margin-top:20px !important; }
+#privacyPolicyLink, #termsPolicyLink { max-width:980px; margin-left:auto; margin-right:auto; }
+.campo input:not([readonly]):not([name="tig"]):not(.is-recalculated),
+.campo select:not([disabled]):not(.is-recalculated) { background:#F1F5F9; }
+.campo input:focus, .campo select:focus { border-color:#2563A8; box-shadow:0 0 0 2px #DBEAFE; }
+.campo input:focus-visible, .campo select:focus-visible { outline:3px solid #2563A8; outline-offset:2px; }
+.secao-body { padding:18px; }
+.secao-header { padding:12px 18px; }
+
+/* Campos pareados nas tres secoes, inclusive em telas estreitas. */
+#secaoParametros > .secao-body > .grid-2,
+#secaoPrescricao > .secao-body > .grid-2,
+#secaoMistura > .secao-body > .grid-2 {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+#secaoParametros .campo, #secaoPrescricao .campo, #secaoMistura .campo { min-width:0; }
+#secaoPrescricao .prescricao-etapas-linha { grid-template-columns:minmax(0,1fr); }
+/* Peso e Número de Etapas permanecem lado a lado também em telas estreitas. */
+/* Seletor de etapas: mesma fonte dos outros campos; abreviação 'h' evita cortes. */
+#secaoParametros select[name="etapas"],
+#secaoParametros select[name="etapas"] option { font-size:1rem; }
+@media (max-width:365px) {
+  #secaoParametros select[name="etapas"] { padding-left:4px; padding-right:0; }
+}
+/* Evita compressao ilegivel do seletor de concentracao e do valor de sodio. */
+@media(max-width:390px) {
+  #secaoParametros .campo-inline, #secaoPrescricao .campo-inline { grid-template-columns:minmax(0,1fr); }
+  #secaoParametros .campo-inline select, #secaoPrescricao .campo-inline select { width:100%; }
+  #secaoParametros .campo-inline .unidade, #secaoPrescricao .campo-inline .unidade { grid-column:1; }
+}
+
+/* Ajuste solicitado: seletor e valor de NaCl lado a lado dentro de cada coluna. */
+#secaoParametros .campo-inline,
+#secaoPrescricao .campo-inline {
+  display:grid;
+  grid-template-columns:clamp(56px,28%,90px) minmax(0,1fr);
+  column-gap:4px;
+  align-items:center;
+}
+#secaoParametros .campo-inline select,
+#secaoPrescricao .campo-inline select {
+  width:100%; min-width:0; padding-left:3px; padding-right:2px; font-size:.88rem;
+}
+#secaoParametros .campo-inline input,
+#secaoPrescricao .campo-inline input {
+  width:100%; min-width:0; padding-left:5px; padding-right:5px;
+}
+/* Evitar contato entre unidade de uma linha e o campo seguinte. */
+#secaoParametros > .secao-body > .grid-2 { row-gap:12px; }
+/* Manter os controles de potássio e gluconato alinhados quando algum rótulo quebra. */
+#secaoParametros > .secao-body > .grid-2 > .campo:nth-child(5) > label,
+#secaoParametros > .secao-body > .grid-2 > .campo:nth-child(6) > label {
+  min-height:0; letter-spacing:0;
+}
+
+/* Distância constante de 2px entre rótulo e controle nas três abas.
+   O subgrid alinha controles pareados mesmo com rótulos em duas linhas. */
+#secaoParametros > .secao-body > .grid-2,
+#secaoPrescricao > .secao-body > .grid-2,
+#secaoMistura > .secao-body > .grid-2,
+#secaoPrescricao .prescricao-resultados-compactos {
+  column-gap:13px;
+  row-gap:2px;
+}
+#secaoParametros > .secao-body > .grid-2 > .campo,
+#secaoPrescricao > .secao-body > .grid-2 > .campo,
+#secaoMistura > .secao-body > .grid-2 > .campo,
+#secaoPrescricao .prescricao-resultados-compactos > .campo {
+  display:grid;
+  grid-row:span 3;
+  grid-template-rows:subgrid;
+  row-gap:2px;
+  min-width:0;
+  margin-bottom:9px;
+}
+#secaoPrescricao .prescricao-resultados-compactos > .campo { margin-bottom:9px; }
+#secaoPrescricao .prescricao-resultados-compactos + .prescricao-resultados-compactos { margin-top:2px; }
+#secaoPrescricao .hidra-eletrólitos + .prescricao-resultados-compactos { margin-top:2px; }
+#secaoParametros > .secao-body > .grid-2 > .campo > label,
+#secaoPrescricao > .secao-body > .grid-2 > .campo > label,
+#secaoMistura > .secao-body > .grid-2 > .campo > label,
+#secaoPrescricao .prescricao-resultados-compactos > .campo > label {
+  min-height:0;
+  display:block;
+  align-self:end;
+}
+
+/* Alinhamento dimensional: seletor e valor de sódio não devem elevar a linha. */
+#secaoParametros .campo-inline,
+#secaoPrescricao .campo-inline {
+  height:44px;
+  min-height:44px;
+  align-self:start;
+}
+
+/* Mistura incorporada à prescrição: campos de glicose primeiro, eletrólitos depois. */
+#secaoPrescricao .hidra-mistura-subtitulo {
+  color:var(--azul); font-weight:700; font-size:.92rem; margin:0 0 12px;
+}
+#secaoPrescricao > .secao-body > .hidra-eletrólitos {
+  margin-top:2px;
+}
+/* NaCl usa exatamente a meia coluna e a mesma proporção seletor/valor da Entrada. */
+#secaoPrescricao > .secao-body > .hidra-eletrólitos > .hidra-nacl-integrado {
+  display:grid;
+  grid-column:auto;
+  width:auto;
+  min-height:0;
+}
+#secaoPrescricao > .secao-body > .hidra-eletrólitos > .hidra-nacl-integrado > label {
+  align-self:stretch;
+}
+#secaoPrescricao .hidra-nacl-integrado .campo-inline {
+  align-self:stretch;
+  width:100%;
+  grid-template-columns:clamp(56px,28%,90px) minmax(0,1fr);
+}
 </style>
-  <!-- AndroidVersionName="1.014.11.01" AndroidVersionCode="262950945" BuildTimestamp="2026-10-22T09:45:17-03:00" -->
+  <!-- AndroidVersionName="1.15.11.09" AndroidVersionCode="263112236" BuildTimestamp="2026-11-07T22:36:43-03:00" -->
 </head>
 <body>
 
@@ -543,11 +742,8 @@ header p { margin:4px 0 0; color:#61778f; }
   </header>
   <div class="standard-top-actions header-controls">
       <button type="reset" form="formHidra" class="btn btn-reset" data-clear-top="true">Limpar dados</button>
-      <div class="language-control"><label id="languageControl" for="languageSelect">Idioma</label>
-          <select id="languageSelect" aria-label="Selecionar idioma">
-            <option value="pt-BR">Português</option><option value="en-US">English</option>
-          </select>
-      </div>
+      <button class="btn btn-reset" id="btnSair" type="button">Sair</button>
+      <select id="languageSelect" hidden aria-hidden="true" tabindex="-1" style="display:none!important"><option value="pt-BR" selected>Português</option><option value="en-US">English</option></select>
     </div>
 
 <div id="hidraRestoredNotice" class="hidra-restored-notice" role="status" hidden><strong>Dados recuperados</strong><span>Dados e resultados anteriores foram recuperados. Confirme as informações antes de utilizar os resultados.</span></div>
@@ -556,30 +752,30 @@ header p { margin:4px 0 0; color:#61778f; }
 
   <!-- ====== SEÇÃO 1: PARÂMETROS DE ENTRADA ====== -->
   <div class="secao" id="secaoParametros">
-    <div class="secao-header">① Parâmetros de Entrada</div>
+    <div class="secao-header">Parâmetros de Entrada</div>
     <div class="secao-body">
       <div class="grid-2">
         <div class="campo">
           <label>Peso de cálculo</label>
-          <input type="text" inputmode="decimal" maxlength="6" name="peso" value="3,000">
+          <input type="text" inputmode="decimal" maxlength="6" name="peso" value="">
           <span class="unidade">kg</span>
         </div>
         <div class="campo">
-          <label>Número de etapas/Intervalo em horas</label>
+          <label>Número de Etapas</label>
           <select name="etapas">
-            <option value="1" selected>1 (24/24 horas)</option>
-            <option value="2">2 (12/12 horas)</option>
-            <option value="3">3 (08/08 horas)</option>
-            <option value="4">4 (06/06 horas)</option>
-            <option value="6">6 (04/04 horas)</option>
-            <option value="8">8 (03/03 horas)</option>
-            <option value="12">12 (02/02 horas)</option>
+            <option value="1" selected>1 (24/24 h)</option>
+            <option value="2">2 (12/12 h)</option>
+            <option value="3">3 (08/08 h)</option>
+            <option value="4">4 (06/06 h)</option>
+            <option value="6">6 (04/04 h)</option>
+            <option value="8">8 (03/03 h)</option>
+            <option value="12">12 (02/02 h)</option>
           </select>
           <span class="unidade">etapas/dia</span>
         </div>
         <div class="campo">
           <label>Taxa hídrica total</label>
-          <input type="text" inputmode="decimal" name="volume" value="70">
+          <input type="text" inputmode="decimal" name="volume" value="">
           <span class="unidade">mL/kg/dia</span>
         </div>
         <div class="campo">
@@ -589,19 +785,19 @@ header p { margin:4px 0 0; color:#61778f; }
               <option value="1">10%</option>
               <option value="2" selected>20%</option>
             </select>
-            <input type="text" inputmode="decimal" name="sodio" value="3.4">
+            <input type="text" inputmode="decimal" name="sodio" value="">
           </div>
           <span class="unidade">mEq/kg/dia</span>
         </div>
         <div class="campo">
           <label>Potássio (KCl 10%)</label>
-          <input type="text" inputmode="decimal" name="potassio" value="1.3">
+          <input type="text" inputmode="decimal" name="potassio" value="">
           <span class="unidade">mEq/kg/dia</span>
         </div>
         <div class="campo">
-          <label>Cálcio (gluconato de cálcio 10%)</label>
-          <input type="text" inputmode="numeric" name="calcio" value="150">
-          <span class="unidade">mg/kg/dia de gluconato de cálcio 10%</span>
+          <label>Gluc. de Cálcio 10%</label>
+          <input type="text" inputmode="numeric" name="calcio" value="">
+          <span class="unidade">mg/kg/dia</span>
         </div>
       </div>
 
@@ -615,175 +811,146 @@ header p { margin:4px 0 0; color:#61778f; }
     </div>
   </div>
 
-  <!-- ====== SEÇÃO 2: PRESCRIÇÃO POR ETAPA ====== -->
+  <!-- ====== SEÇÃO 2: PRESCRIÇÃO POR ETAPA (COM MISTURA INTEGRADA) ====== -->
   <div class="secao" id="secaoPrescricao">
-    <div class="secao-header">② Prescrição por Etapa</div>
+    <div class="secao-header">Prescrição por Etapa</div>
     <div class="secao-body">
-      <div class="grid-2">
+      <div class="hidra-mistura-subtitulo" hidden aria-hidden="true"></div>
+      <div class="grid-2" id="secaoMistura">
         <div class="campo">
-          <label>Volume base glicosado por etapa</label>
-          <input type="text" name="volumetotal" value="0" inputmode="decimal">
-          <span class="unidade">mL</span>
+        <label>Volume por etapa</label>
+        <input inputmode="decimal" name="volumetotal" type="text" value=""/>
+        <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>NaCl por etapa</label>
+        <label>Concentração desejada</label>
+        <input inputmode="decimal" name="cd" type="text" value="10"/>
+        <span class="unidade">% glicose</span>
+        </div>
+        <div class="campo">
+        <label>Primeiro Soro (menor)</label>
+        <select name="cs1">
+        <option value="0">0% (Água destilada)</option>
+        <option selected="" value="5">5%</option>
+        <option value="10">10%</option>
+        <option value="25">25%</option>
+        <option value="50">50%</option>
+        </select>
+        <span class="unidade">% glicose</span>
+        </div>
+        <div class="campo">
+        <label>Segundo Soro (maior)</label>
+        <select name="cs2">
+        <option value="0">0% (Água destilada)</option>
+        <option value="5">5%</option>
+        <option selected="" value="10">10%</option>
+        <option value="25">25%</option>
+        <option value="50">50%</option>
+        </select>
+        <span class="unidade">% glicose</span>
+        </div>
+        <div class="campo">
+        <label>Volume do 1º soro</label>
+        <input class="resultado-amarelo" inputmode="decimal" name="vs1" type="text" value=""/>
+        <span class="unidade">mL</span>
+        </div>
+        <div class="campo">
+        <label>Volume do 2º soro</label>
+        <input class="resultado-amarelo" inputmode="decimal" name="vs2" type="text" value=""/>
+        <span class="unidade">mL</span>
+        </div>
+        <div class="campo">
+        <label>T.I.G.</label>
+        <input class="resultado-verde" inputmode="decimal" name="tig" type="text" value=""/>
+        <span class="unidade">mg/kg/minuto</span>
+        </div>
+        <div class="campo">
+        <label>Osmolaridade estimada</label>
+        <input class="resultado-amarelo" id="osmolaridadeMistura" readonly="" tabindex="-1" type="text" value=""/>
+        <span class="unidade">mOsm/L</span>
+        </div>
+        <div class="campo is-hidden">
+        <label>Volume por etapa</label>
+        <input inputmode="decimal" name="volume3" type="text" value=""/>
+        <span class="unidade">mL</span>
+        </div>
+      </div>
+      <div class="grid-2 hidra-eletrólitos">
+        <div class="campo hidra-nacl-integrado">
+          <label>NaCl 20%</label>
           <div class="campo-inline">
             <select name="concsodio">
               <option value="1">10%</option>
-              <option value="2" selected>20%</option>
+              <option selected="" value="2">20%</option>
             </select>
-            <input type="text" name="sodiototal" value="0" inputmode="decimal">
+            <input inputmode="decimal" name="sodiototal" type="text" value=""/>
           </div>
           <span class="unidade">mL</span>
         </div>
         <div class="campo">
-          <label>KCl 10% por etapa</label>
-          <input type="text" name="potassiototal" value="0" inputmode="decimal">
-          <span class="unidade">mL</span>
-        </div>
-        <div class="campo">
-          <label>Gluconato de cálcio 10% por etapa</label>
-          <input type="text" name="calciototal" value="0" inputmode="decimal">
+          <label>KCl 10%</label>
+          <input inputmode="decimal" name="potassiototal" type="text" value=""/>
           <span class="unidade">mL</span>
         </div>
       </div>
-
-      <hr class="divider">
-
       <div class="prescricao-resultados-compactos">
+        <div class="campo">
+          <label>Gluc. de Cálcio 10%</label>
+          <input inputmode="decimal" name="calciototal" type="text" value=""/>
+          <span class="unidade">mL</span>
+        </div>
         <div class="campo">
           <label>Volume total da etapa</label>
-          <input type="text" name="volt" value="0" class="resultado-verde" inputmode="decimal">
+          <input class="resultado-verde" inputmode="decimal" name="volt" type="text" value=""/>
           <span class="unidade">mL</span>
         </div>
+      </div>
+      <div class="prescricao-resultados-compactos">
         <div class="campo">
           <label>Velocidade de infusão</label>
-          <input type="text" name="mlhora" value="0" class="resultado-verde" inputmode="decimal">
+          <input class="resultado-verde" inputmode="decimal" name="mlhora" type="text" value=""/>
           <span class="unidade">mL/h</span>
         </div>
-      </div>
-
-      <div class="prescricao-resultados-compactos">
         <div class="campo">
           <label>Tempo por etapa</label>
-          <input type="text" name="tempohoras" value="0" class="resultado-verde" readonly>
+          <input class="resultado-verde" name="tempohoras" readonly="" type="text" value=""/>
           <span class="unidade">horas</span>
         </div>
-        <div class="campo">
-          <label>Volume nas 24h</label>
-          <input type="text" name="volume1" value="0" inputmode="decimal">
-          <span class="unidade">mL</span>
-        </div>
       </div>
-
-      <div class="prescricao-resultados-compactos">
-        <div class="campo">
-          <label>Taxa hídrica total</label>
-          <input type="text" name="volume2" value="0" inputmode="decimal">
-          <span class="unidade">mL/kg/dia</span>
-        </div>
-        <div class="campo">
-          <label>Peso de cálculo</label>
-          <input type="text" inputmode="decimal" maxlength="6" name="peso1" value="0">
-          <span class="unidade">kg</span>
-        </div>
-      </div>
-
-      <div class="prescricao-resultados-compactos">
-        <div class="campo">
-          <label>Número de etapas/Intervalo em horas</label>
-          <select name="etapas2">
-            <option value="1" selected>1 (24/24 horas)</option>
-            <option value="2">2 (12/12 horas)</option>
-            <option value="3">3 (08/08 horas)</option>
-            <option value="4">4 (06/06 horas)</option>
-            <option value="6">6 (04/04 horas)</option>
-            <option value="8">8 (03/03 horas)</option>
-            <option value="12">12 (02/02 horas)</option>
-          </select>
-          <span class="unidade">etapas/dia</span>
-        </div>
-        <div class="campo">
-          <label>Osmolaridade estimada</label>
-          <input type="text" name="osmolaridade" value="0" class="resultado-amarelo" readonly>
-          <span class="unidade">mOsm/L</span>
-        </div>
-      </div>
-      <div id="alertaSolucao" class="alerta-solucao is-hidden" role="alert" aria-live="polite"></div>
-
-      <div class="standard-bottom-actions" data-section-actions="secaoPrescricao">
-        <button type="button" class="btn btn-primary" data-calculate-section="secaoPrescricao">Calcular</button>
-        <button type="reset" class="btn btn-reset">Limpar</button>
-        <button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-      </div>
-
+      <div class="prescricao-resultados-compactos is-hidden" style="grid-template-columns:minmax(0,1fr)">
+<input class="is-hidden" name="volume1" tabindex="-1" aria-hidden="true" inputmode="decimal" type="text" value=""/>
+<input class="is-hidden" name="volume2" tabindex="-1" aria-hidden="true" type="text" value=""/>
+<div class="campo">
+<label>Osmolaridade estimada</label>
+<input class="resultado-amarelo" name="osmolaridade" readonly="" type="text" value=""/>
+<span class="unidade">mOsm/L</span>
+</div>
+</div>
+<div class="prescricao-resultados-compactos prescricao-etapas-linha is-hidden">
+<div class="campo">
+<label>Número de Etapas</label>
+<select name="etapas2">
+<option selected="" value="1">1 (24/24 h)</option>
+<option value="2">2 (12/12 h)</option>
+<option value="3">3 (08/08 h)</option>
+<option value="4">4 (06/06 h)</option>
+<option value="6">6 (04/04 h)</option>
+<option value="8">8 (03/03 h)</option>
+<option value="12">12 (02/02 h)</option>
+</select>
+<span class="unidade">etapas/dia</span>
+</div>
+</div>
+<div class="standard-bottom-actions" data-section-actions="secaoPrescricao">
+<button class="btn btn-primary" data-calculate-section="secaoPrescricao" type="button">Calcular</button>
+<button class="btn btn-reset" type="reset">Limpar</button>
+<button aria-label="Voltar ao início" class="hidra-up" title="Voltar ao início" type="button"><svg aria-hidden="true" focusable="false" viewbox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"></path></svg></button>
+</div>
+<div aria-live="polite" class="alerta-solucao is-hidden" id="alertaSolucao" role="alert"></div>
+<div aria-live="assertive" class="alerta-solucao alerta-ajuste-automatico is-hidden" id="alertaAjusteAutomaticoMistura" role="alert"></div>
+<div aria-live="polite" class="alerta-solucao is-hidden" id="alertaMistura" role="alert"></div>
     </div>
   </div>
-
-  <!-- ====== SEÇÃO 3: MISTURA DE GLICOSE ====== -->
-  <details class="secao secao-collapsible" id="secaoMistura" open>
-    <summary class="secao-header">③ Mistura de Soluções Glicosadas</summary>
-    <div class="secao-body">
-      <div class="grid-2">
-        <div class="campo">
-          <label>Volume base glicosado por etapa</label>
-          <input type="text" name="volume3" value="0" inputmode="decimal">
-          <span class="unidade">mL</span>
-        </div>
-        <div class="campo">
-          <label>Concentração desejada</label>
-          <input type="text" inputmode="decimal" name="cd" value="10">
-          <span class="unidade">% glicose</span>
-        </div>
-        <div class="campo">
-          <label>Concentração do 1º soro (menor)</label>
-          <select name="cs1">
-            <option value="0">0% (Água destilada)</option>
-            <option value="5" selected>5%</option>
-            <option value="10">10%</option>
-            <option value="25">25%</option>
-            <option value="50">50%</option>
-          </select>
-          <span class="unidade">% glicose</span>
-        </div>
-        <div class="campo">
-          <label>Volume do 1º soro</label>
-          <input type="text" name="vs1" value="0" class="resultado-amarelo" inputmode="decimal">
-          <span class="unidade">mL</span>
-        </div>
-        <div class="campo">
-          <label>Concentração do 2º soro (maior)</label>
-          <select name="cs2">
-            <option value="0">0% (Água destilada)</option>
-            <option value="5">5%</option>
-            <option value="10" selected>10%</option>
-            <option value="25">25%</option>
-            <option value="50">50%</option>
-          </select>
-          <span class="unidade">% glicose</span>
-        </div>
-        <div class="campo">
-          <label>Volume do 2º soro</label>
-          <input type="text" name="vs2" value="0" class="resultado-amarelo" inputmode="decimal">
-          <span class="unidade">mL</span>
-        </div>
-        <div class="campo">
-          <label>T.I.G.</label>
-          <input type="text" name="tig" value="0" class="resultado-verde" inputmode="decimal">
-          <span class="unidade">mg/kg/minuto</span>
-        </div>
-      </div>
-      <div id="alertaAjusteAutomaticoMistura" class="alerta-solucao alerta-ajuste-automatico is-hidden" role="alert" aria-live="assertive"></div>
-      <div id="alertaMistura" class="alerta-solucao is-hidden" role="alert" aria-live="polite"></div>
-
-      <div class="standard-bottom-actions" data-section-actions="secaoMistura">
-        <button type="button" class="btn btn-primary" data-calculate-section="secaoMistura">Calcular</button>
-        <button type="reset" class="btn btn-reset">Limpar</button>
-        <button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
-      </div>
-    </div>
-  </details>
-
 
 </div><!-- /wrapper -->
 </form>
@@ -805,7 +972,10 @@ header p { margin:4px 0 0; color:#61778f; }
     Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.
   </div>
 </details>
-<div class="hidra-footer"><div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.014.11.01</span></div><button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
+
+<a class="legal-disclaimer legal-policy-row" id="privacyPolicyLink" href="https://adaocouto.github.io/pp/" rel="noopener noreferrer"><span>Política de Privacidade</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 13v6H5V5h6"/></svg></a>
+<a class="legal-disclaimer legal-policy-row" id="termsPolicyLink" href="https://adaocouto.github.io/ts/" rel="noopener noreferrer"><span>Termos de Serviço</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 13v6H5V5h6"/></svg></a>
+<div class="hidra-footer"><div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.15.11.09</span></div><button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
 
 
 <script>
@@ -1103,13 +1273,15 @@ header p { margin:4px 0 0; color:#61778f; }
     // Peso em kg: sempre três casas decimais ao confirmar, sem alterar seu valor clínico.
     if (name === "peso" || name === "peso1") return 3;
 
-    // O volume base glicosado por etapa fecha a soma exibida e deve manter 1 casa decimal em todos os pesos.
-    if (name === "volumetotal" || name === "volume3") return 1;
+    // Volumes montados dos soros: mL inteiros; eletrólitos conforme precisão neonatal.
+    if (["volumetotal", "volume3", "vs1", "vs2"].indexOf(name) >= 0) return 0;
+    if (name === "tig") return 2;
+    if (name === "calciototal") return 1;
 
     // Em peso < 1,5 kg, eletrólitos exibem 2 casas decimais para reduzir erro proporcional.
     if (
       isPrecisionMode(referenceSnapshot) &&
-      (name === "sodiototal" || name === "potassiototal" || name === "calciototal")
+      (name === "sodiototal" || name === "potassiototal")
     ) {
       return 2;
     }
@@ -1119,10 +1291,10 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function getFieldRoleTitle(role) {
     var titles = {
-      "input-direto": "Campo editável de entrada direta.",
-      "input-inverso": "Campo editável para recálculo inverso da prescrição.",
-      "reverso": "Campo editável com cálculo reverso.",
-      "exibicao": "Campo apenas de exibição automática."
+      "input-direto": window.HidraAndroidI18n.format("message_role_direct",[]),
+      "input-inverso": window.HidraAndroidI18n.format("message_role_inverse",[]),
+      "reverso": window.HidraAndroidI18n.format("message_role_reverse",[]),
+      "exibicao": window.HidraAndroidI18n.format("message_role_display",[])
     };
     return titles[role] || "";
   }
@@ -1311,7 +1483,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function chooseGlucosePairForCd(cd) {
     if (!Number.isFinite(cd) || cd < 0 - EPS || cd > 50 + EPS) {
-      throw new Error("A TIG calculada gerou concentração fora da faixa possível (0% a 50%).");
+      throw new Error(window.HidraAndroidI18n.format("message_a_tig_calculada_gerou_concentrac",[]));
     }
     if (cd <= 5 + EPS) return { cs1: 0, cs2: 5 };
     if (cd <= 10 + EPS) return { cs1: 5, cs2: 10 };
@@ -1321,7 +1493,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function chooseGlucosePairForCdPreferCurrent(cd, currentCs1, currentCs2) {
     if (!Number.isFinite(cd) || cd < 0 - EPS || cd > 50 + EPS) {
-      throw new Error("A TIG calculada gerou concentração fora da faixa possível (0% a 50%).");
+      throw new Error(window.HidraAndroidI18n.format("message_a_tig_calculada_gerou_concentrac",[]));
     }
 
     var normalizedCs1 = Number(currentCs1);
@@ -1448,7 +1620,7 @@ header p { margin:4px 0 0; color:#61778f; }
     snapshot.prescricao.calciototal *= factor;
 
     syncDerivedFromPrescription(snapshot);
-    snapshot.clinical.volume = Math.round(snapshot.derivados.volume2 * 10) / 10;
+    snapshot.clinical.volume = snapshot.derivados.volume2;
 
     ensureMeta(snapshot).stageAutoAdjustment = {
       from: currentStages,
@@ -1461,34 +1633,89 @@ header p { margin:4px 0 0; color:#61778f; }
   }
 
   function validateCommon(snapshot) {
-    if (snapshot.clinical.peso < 0.3) throw new Error("Peso < 0,3 kg não suportado por esta ferramenta.");
-    if (snapshot.clinical.peso > MAX_WEIGHT_KG) throw new Error("Peso > 20 kg não suportado por esta ferramenta.");
+    if (snapshot.clinical.peso < 0.3) throw new Error(window.HidraAndroidI18n.format("message_peso_0_3_kg_nao_suportado_por_es",[]));
+    if (snapshot.clinical.peso > MAX_WEIGHT_KG) throw new Error(window.HidraAndroidI18n.format("message_peso_20_kg_nao_suportado_por_est",[]));
 
     if (!Number.isInteger(snapshot.clinical.etapas) || !isAllowedStageCount(snapshot.clinical.etapas)) {
-      throw new Error("Etapas devem ser uma das opções permitidas: 1, 2, 3, 4, 6, 8 ou 12.");
+      throw new Error(window.HidraAndroidI18n.format("message_etapas_devem_ser_uma_das_opcoes_",[]));
     }
 
     snapshot.derivados.tempohoras = 24 / snapshot.clinical.etapas;
 
     if (!Number.isInteger(snapshot.derivados.tempohoras) || snapshot.derivados.tempohoras <= 0 || snapshot.derivados.tempohoras > 24) {
-      throw new Error("Horas por etapa inválidas.");
+      throw new Error(window.HidraAndroidI18n.format("message_horas_por_etapa_invalidas",[]));
     }
 
     if (!isAllowedGlucose(snapshot.mistura.cs1) || !isAllowedGlucose(snapshot.mistura.cs2)) {
-      throw new Error("Os soros glicosados permitidos são: 0%, 5%, 10%, 25% e 50%.");
+      throw new Error(window.HidraAndroidI18n.format("message_os_soros_glicosados_permitidos_s",[]));
     }
 
     if (snapshot.mistura.cs1 >= snapshot.mistura.cs2) {
-      throw new Error("O 1º soro deve ter concentração menor que o 2º.");
+      throw new Error(window.HidraAndroidI18n.format("message_o_1o_soro_deve_ter_concentracao_",[]));
     }
 
     if (snapshot.mistura.vs1 < -EPS || snapshot.mistura.vs2 < -EPS) {
-      throw new Error("Volumes dos soros não podem ser negativos.");
+      throw new Error(window.HidraAndroidI18n.format("message_volumes_dos_soros_nao_podem_ser_",[]));
     }
   }
 
   // A camada de apresentação só existe em formatField()/render().
   // Nenhuma função de cálculo deve consumir valores arredondados para exibição.
+
+  // O que aparece na montagem é o volume realmente preparado.
+  function quantizeElectrolytes(snapshot) {
+    var decimals = isPrecisionMode(snapshot) ? 2 : 1;
+    snapshot.prescricao.sodiototal = round(snapshot.prescricao.sodiototal, decimals);
+    snapshot.prescricao.potassiototal = round(snapshot.prescricao.potassiototal, decimals);
+    snapshot.prescricao.calciototal = round(snapshot.prescricao.calciototal, 1);
+  }
+
+  function electrolyteTotal(snapshot) {
+    return snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal;
+  }
+
+  // Preserva a taxa hídrica prescrita; a quantização em mL inteiros
+  // pode produzir pequena diferença no volume efetivamente obtido.
+  function compensateElectrolyteChange(snapshot, targetRate, targetTig) {
+    var targetTotal = targetRate * snapshot.clinical.peso / snapshot.clinical.etapas;
+    var base = targetTotal - electrolyteTotal(snapshot);
+    if (base < -EPS) throw new Error("Os eletrólitos ultrapassam o volume-alvo da etapa.");
+    snapshot.prescricao.volumetotal = Math.max(0, Math.round(base));
+    syncDerivedFromPrescription(snapshot);
+    recomputeMixFromCd(snapshot);
+    preserveGlucoseDeliveryTarget(snapshot, targetTig);
+    snapshot.clinical.volume = targetRate;
+  }
+
+  // A TIG anterior é a meta ao modificar eletrólitos. Como ambos os soros
+  // são inteiros, a TIG obtida pode diferir da meta: nunca mascarar o resultado.
+  function preserveGlucoseDeliveryTarget(snapshot, targetTig) {
+    if (!Number.isFinite(targetTig) || targetTig < 0) return;
+    var total = Math.round(snapshot.prescricao.volumetotal);
+    var low = snapshot.mistura.cs1, high = snapshot.mistura.cs2;
+    if (total < 0 || high <= low) return;
+    // TIG (mg/kg/min) = soma(volume_mL * concentração_%)*10*etapas/(1440*peso).
+    var targetWeighted = targetTig * 1440 * snapshot.clinical.peso /
+      (10 * snapshot.clinical.etapas);
+    var lowMl = Math.max(0, Math.min(total,
+      Math.round((total * high - targetWeighted) / (high - low))));
+    snapshot.mistura.vs1 = lowMl;
+    snapshot.mistura.vs2 = total - lowMl;
+    recalcActualGlucose(snapshot);
+    ensureMeta(snapshot).targetTig = targetTig;
+    ensureMeta(snapshot).tigDifference = snapshot.mistura.tig - targetTig;
+  }
+
+  function recalcActualGlucose(snapshot) {
+    var v1 = snapshot.mistura.vs1, v2 = snapshot.mistura.vs2;
+    var total = v1 + v2;
+    var actual = total > 0 ? (v1 * snapshot.mistura.cs1 + v2 * snapshot.mistura.cs2) / total : 0;
+    ensureMeta(snapshot).actualCd = actual;
+    snapshot.mistura.tig = total > 0 ?
+      ((v1 * snapshot.mistura.cs1 + v2 * snapshot.mistura.cs2) * 10 * snapshot.clinical.etapas) /
+      (1440 * snapshot.clinical.peso) : 0;
+    snapshot.derivados.osmolaridade = computeEstimatedOsmolarity(snapshot);
+  }
 
   function syncDerivedFromPrescription(snapshot) {
     snapshot.derivados.tempohoras = 24 / snapshot.clinical.etapas;
@@ -1567,9 +1794,7 @@ header p { margin:4px 0 0; color:#61778f; }
     var maxVolumeBase = getBudgetRemainingForState(snapshot, "volumetotal");
     if (Number.isFinite(maxVolumeBase) && adjustedVolume > maxVolumeBase + EPS) {
       throw new Error(
-        "O volume mínimo para tornar a mistura glicosada operacional com 1 casa decimal seria " +
-        formatAlertNumber(adjustedVolume, 1) +
-        " mL por etapa, mas isso ultrapassa o limite máximo permitido para o volume hídrico total. Revisar concentração desejada, soros selecionados, número de etapas e prescrição."
+        window.HidraAndroidI18n.format("message_o_volume_minimo_para_tornar_a_mi",[formatAlertNumber(adjustedVolume, 1)])
       );
     }
 
@@ -1578,7 +1803,7 @@ header p { margin:4px 0 0; color:#61778f; }
     snapshot.mistura.volume3 = adjustedVolume;
     snapshot.prescricao.volumetotal = adjustedVolume;
     syncDerivedFromPrescription(snapshot);
-    snapshot.clinical.volume = Math.round(snapshot.derivados.volume2 * 10) / 10;
+    snapshot.clinical.volume = snapshot.derivados.volume2;
 
     ensureMeta(snapshot).mixVolumeAutoAdjustment = {
       from: previousVolume,
@@ -1592,51 +1817,18 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function recomputeMixFromCd(snapshot) {
     clearMixVolumeAutoAdjustment(snapshot);
-
     var cd = snapshot.mistura.cd;
-    var cs1 = snapshot.mistura.cs1;
-    var cs2 = snapshot.mistura.cs2;
-    var volume3 = snapshot.mistura.volume3;
-
-    snapshot.prescricao.volumetotal = volume3;
-    syncDerivedFromPrescription(snapshot);
-
-    // O cálculo da mistura deve usar exatamente o volume bruto sincronizado com a Prescrição por Etapa.
-    volume3 = snapshot.mistura.volume3;
-
-    if (volume3 <= 0) {
-      snapshot.mistura.vs1 = 0;
-      snapshot.mistura.vs2 = 0;
-      snapshot.mistura.tig = 0;
-      return;
-    }
-
+    var cs1 = snapshot.mistura.cs1, cs2 = snapshot.mistura.cs2;
     if (cd < cs1 - EPS || cd > cs2 + EPS) {
-      throw new Error("Concentração desejada deve estar entre os dois soros (inclusive).");
+      throw new Error(window.HidraAndroidI18n.format("message_concentracao_desejada_deve_estar",[]));
     }
-
-    // Se a mistura resultar em componente real positivo menor que 0,1 mL,
-    // aumenta o volume base glicosado para o menor volume operacional exibível
-    // com 1 casa decimal e recalcula inversamente a taxa hídrica total.
-    applyMinimumOperationalMixVolume(snapshot);
-
-    cd = snapshot.mistura.cd;
-    cs1 = snapshot.mistura.cs1;
-    cs2 = snapshot.mistura.cs2;
-    volume3 = snapshot.mistura.volume3;
-
-    var total = cs2 - cs1;
-    var vs1 = total === 0 ? volume3 : ((cs2 - cd) * volume3) / total;
-    var vs2 = volume3 - vs1;
-
-    if (vs1 < -EPS || vs2 < -EPS) {
-      throw new Error("A mistura resultou em volume negativo.");
-    }
-
-    snapshot.mistura.vs1 = vs1;
-    snapshot.mistura.vs2 = vs2;
-    snapshot.mistura.tig = (volume3 * cd / 100 * 1000 * snapshot.clinical.etapas) / (1440 * snapshot.clinical.peso);
-    snapshot.derivados.osmolaridade = computeEstimatedOsmolarity(snapshot);
+    snapshot.prescricao.volumetotal = Math.max(0, Math.round(snapshot.prescricao.volumetotal));
+    syncDerivedFromPrescription(snapshot);
+    var total = snapshot.mistura.volume3;
+    var v1 = Math.max(0, Math.min(total, Math.round(total * (cs2 - cd) / (cs2 - cs1))));
+    snapshot.mistura.vs1 = v1;
+    snapshot.mistura.vs2 = total - v1;
+    recalcActualGlucose(snapshot);
   }
 
   function recomputeMixFromCdWithAutoPair(snapshot) {
@@ -1662,101 +1854,49 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function recomputeMixFromVs(snapshot, origin) {
     clearMixVolumeAutoAdjustment(snapshot);
-    var volume3 = snapshot.mistura.volume3;
-    snapshot.prescricao.volumetotal = volume3;
+    snapshot.mistura[origin] = Math.max(0, Math.round(snapshot.mistura[origin]));
+    // Editar um soro mantém o outro como montado e altera a taxa hídrica.
+    snapshot.prescricao.volumetotal = snapshot.mistura.vs1 + snapshot.mistura.vs2;
     syncDerivedFromPrescription(snapshot);
-
-    // O volume da mistura acompanha o volume bruto do quadro Prescrição por Etapa.
-    volume3 = snapshot.mistura.volume3;
-
-    if (volume3 <= 0) throw new Error("Volume base da etapa inválido.");
-
-    if (origin === "vs1") snapshot.mistura.vs2 = volume3 - snapshot.mistura.vs1;
-    else snapshot.mistura.vs1 = volume3 - snapshot.mistura.vs2;
-
-    if (snapshot.mistura.vs1 < -EPS || snapshot.mistura.vs2 < -EPS) {
-      throw new Error("Os volumes dos soros não podem exceder o volume base.");
-    }
-
-    snapshot.mistura.cd =
-      ((snapshot.mistura.cs1 * snapshot.mistura.vs1) + (snapshot.mistura.cs2 * snapshot.mistura.vs2)) /
-      volume3;
-
-    if (snapshot.mistura.cd < snapshot.mistura.cs1 - EPS || snapshot.mistura.cd > snapshot.mistura.cs2 + EPS) {
-      throw new Error("Concentração desejada fora do intervalo entre os soros.");
-    }
-
-    snapshot.mistura.tig =
-      (volume3 * snapshot.mistura.cd / 100 * 1000 * snapshot.clinical.etapas) /
-      (1440 * snapshot.clinical.peso);
-    snapshot.derivados.osmolaridade = computeEstimatedOsmolarity(snapshot);
+    snapshot.clinical.volume = snapshot.derivados.volume2;
+    recalcActualGlucose(snapshot);
   }
 
-  function computeDirect(snapshot) {
+  function computeDirect(snapshot, targetTig) {
     validateCommon(snapshot);
-
-    var peso = snapshot.clinical.peso;
-    var etapas = snapshot.clinical.etapas;
-    var volume = snapshot.clinical.volume;
-    var sodio = snapshot.clinical.sodio;
-    var potassio = snapshot.clinical.potassio;
-    var calcio = snapshot.clinical.calcio;
-    var concso = snapshot.clinical.concso;
-
-    if (volume < 0 || sodio < 0 || potassio < 0 || calcio < 0) {
-      throw new Error("Valores clínicos não podem ser negativos.");
+    var peso = snapshot.clinical.peso, etapas = snapshot.clinical.etapas;
+    if ([snapshot.clinical.volume, snapshot.clinical.sodio, snapshot.clinical.potassio, snapshot.clinical.calcio].some(function(v){return v < 0;})) {
+      throw new Error(window.HidraAndroidI18n.format("message_valores_clinicos_nao_podem_ser_n",[]));
     }
-
-    var sodiototal = (peso * sodio) / 1.7 / etapas / concso;
-    var potassiototal = (peso * potassio) / 1.34 / etapas;
-    var calciototal = (calcio * peso) / 100 / etapas;
-
-    var eletrilitosTotal = sodiototal + potassiototal + calciototal;
-    var volumeEtapaDesejado = (peso * volume) / etapas;
-    var volumeEtapaFinal = Math.max(volumeEtapaDesejado, eletrilitosTotal);
-    var volumetotal = volumeEtapaFinal - eletrilitosTotal;
-
-    if ((volumeEtapaFinal - volumeEtapaDesejado) > 0.1) {
-      snapshot.clinical.volume = (volumeEtapaFinal * etapas) / peso;
-    }
-
-    snapshot.prescricao.concsodio = concso;
-    snapshot.prescricao.volumetotal = volumetotal;
-    snapshot.prescricao.sodiototal = sodiototal;
-    snapshot.prescricao.potassiototal = potassiototal;
-    snapshot.prescricao.calciototal = calciototal;
-
-    syncDerivedFromPrescription(snapshot);
+    snapshot.prescricao.concsodio = snapshot.clinical.concso;
+    snapshot.prescricao.sodiototal = peso * snapshot.clinical.sodio / (1.7 * etapas * snapshot.clinical.concso);
+    snapshot.prescricao.potassiototal = peso * snapshot.clinical.potassio / (1.34 * etapas);
+    snapshot.prescricao.calciototal = peso * snapshot.clinical.calcio / (100 * etapas);
+    quantizeElectrolytes(snapshot);
+    compensateElectrolyteChange(snapshot, snapshot.clinical.volume, targetTig);
     enforceMaxGlycosatedBaseVolumePerStage(snapshot);
-    recomputeMixFromCd(snapshot);
   }
 
-  function computeInverse(snapshot) {
+  function computeInverse(snapshot, preserveRate, targetTig) {
     validateCommon(snapshot);
-
-    var volumetotal = snapshot.prescricao.volumetotal;
-    var sodiototal = snapshot.prescricao.sodiototal;
-    var potassiototal = snapshot.prescricao.potassiototal;
-    var calciototal = snapshot.prescricao.calciototal;
-    var concsodio = snapshot.prescricao.concsodio;
-    var peso = snapshot.clinical.peso;
-    var etapas = snapshot.clinical.etapas;
-
-    if (peso < 0.3) throw new Error("Peso < 0,3 kg não suportado por esta ferramenta.");
-    if (peso > MAX_WEIGHT_KG) throw new Error("Peso > 20 kg não suportado por esta ferramenta.");
-    if ([volumetotal, sodiototal, potassiototal, calciototal].some(function (v) { return v < -EPS; })) {
-      throw new Error("Volumes não podem ser negativos.");
+    if ([snapshot.prescricao.volumetotal, snapshot.prescricao.sodiototal, snapshot.prescricao.potassiototal, snapshot.prescricao.calciototal].some(function(v){return v < -EPS;})) {
+      throw new Error(window.HidraAndroidI18n.format("message_volumes_nao_podem_ser_negativos",[]));
     }
-
-    snapshot.clinical.concso = concsodio;
-    snapshot.clinical.sodio = sodiototal * 1.7 * etapas / peso * concsodio;
-    snapshot.clinical.potassio = potassiototal * 1.34 * etapas / peso;
-    snapshot.clinical.calcio = calciototal * 100 * etapas / peso;
-
-    syncDerivedFromPrescription(snapshot);
-    snapshot.clinical.volume = Math.round(snapshot.derivados.volume2 * 10) / 10;
-    enforceMaxGlycosatedBaseVolumePerStage(snapshot);
-    recomputeMixFromCd(snapshot);
+    quantizeElectrolytes(snapshot);
+    var peso = snapshot.clinical.peso, etapas = snapshot.clinical.etapas;
+    snapshot.clinical.concso = snapshot.prescricao.concsodio;
+    snapshot.clinical.sodio = snapshot.prescricao.sodiototal * 1.7 * etapas * snapshot.prescricao.concsodio / peso;
+    snapshot.clinical.potassio = snapshot.prescricao.potassiototal * 1.34 * etapas / peso;
+    snapshot.clinical.calcio = snapshot.prescricao.calciototal * 100 * etapas / peso;
+    if (preserveRate) {
+      compensateElectrolyteChange(snapshot, preserveRate, targetTig);
+    } else {
+      snapshot.prescricao.volumetotal = Math.max(0, Math.round(snapshot.prescricao.volumetotal));
+      syncDerivedFromPrescription(snapshot);
+      snapshot.clinical.volume = snapshot.derivados.volume2;
+      recomputeMixFromCd(snapshot);
+      enforceMaxGlycosatedBaseVolumePerStage(snapshot);
+    }
   }
 
   function reverseFromVolt(snapshot) {
@@ -1767,7 +1907,7 @@ header p { margin:4px 0 0; color:#61778f; }
       snapshot.prescricao.calciototal;
 
     if (novoSoro < -EPS) {
-      throw new Error("Volume total da etapa menor que a soma bruta dos eletrólitos.");
+      throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_menor_que_",[]));
     }
 
     snapshot.prescricao.volumetotal = novoSoro;
@@ -1799,7 +1939,7 @@ header p { margin:4px 0 0; color:#61778f; }
     var preservedVolume = currentMixTotal > EPS ? currentMixTotal : safeNonNegative(snapshot.mistura.volume3);
 
     if (preservedVolume <= 0) {
-      throw new Error("Volume base da etapa inválido.");
+      throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_etapa_invalido",[]));
     }
 
     snapshot.mistura.volume3 = preservedVolume;
@@ -1829,7 +1969,7 @@ header p { margin:4px 0 0; color:#61778f; }
     validateCommon(snapshot);
 
     if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) {
-      throw new Error("Invariante violada: volume base da mistura deve acompanhar o volume base bruto da prescrição.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_volume_base_d",[]));
     }
 
     var sumVolt =
@@ -1839,31 +1979,31 @@ header p { margin:4px 0 0; color:#61778f; }
       snapshot.prescricao.calciototal;
 
     if (Math.abs(snapshot.derivados.volt - sumVolt) > 1e-6) {
-      throw new Error("Invariante violada: volume total da etapa deve ser a soma dos valores brutos da prescrição.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_volume_total_",[]));
     }
 
     if (Math.abs(snapshot.derivados.volume1 - (snapshot.derivados.volt * snapshot.clinical.etapas)) > 1e-6) {
-      throw new Error("Invariante violada: volume 24h inconsistente.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_volume_24h_in",[]));
     }
 
     if (Math.abs(snapshot.derivados.volume2 - (snapshot.derivados.volume1 / snapshot.clinical.peso)) > 1e-6) {
-      throw new Error("Invariante violada: taxa hídrica inconsistente.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_taxa_hidrica_",[]));
     }
 
     if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) {
-      throw new Error("Invariante violada: mL/h inconsistente.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_ml_h_inconsis",[]));
     }
 
     if (Math.abs((snapshot.mistura.vs1 + snapshot.mistura.vs2) - snapshot.mistura.volume3) > 1e-6) {
-      throw new Error("Invariante violada: vs1 + vs2 deve ser igual ao volume base.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_vs1_vs2_deve_",[]));
     }
 
     if (snapshot.mistura.cd < snapshot.mistura.cs1 - EPS || snapshot.mistura.cd > snapshot.mistura.cs2 + EPS) {
-      throw new Error("Concentração desejada fora do intervalo entre os soros.");
+      throw new Error(window.HidraAndroidI18n.format("message_concentracao_desejada_fora_do_in",[]));
     }
 
     if (Math.abs(snapshot.derivados.osmolaridade - computeEstimatedOsmolarity(snapshot)) > 1e-6) {
-      throw new Error("Invariante violada: osmolaridade estimada inconsistente.");
+      throw new Error(window.HidraAndroidI18n.format("message_invariante_violada_osmolaridade_",[]));
     }
   }
 
@@ -1897,11 +2037,7 @@ header p { margin:4px 0 0; color:#61778f; }
       (calcioVolumeMl * CALCIUM_GLUCONATE_OSMOTIC_FACTOR);
 
     if (hasGlicoseCalculada && glicoseMosmPorMl >= targetPerMl - EPS) {
-      return (
-        " Mantendo a mesma concentração de glicose desejada, não há volume total finito capaz de reduzir a osmolaridade estimada até " +
-        formatAlertNumber(targetOsmolarity, 0) +
-        " mOsm/L; seria necessário reduzir a concentração de glicose e/ou a carga de solutos."
-      );
+      return window.HidraAndroidI18n.format("message_osm_no_finite_volume",[formatAlertNumber(targetOsmolarity, 0)]);
     }
 
     var numerador = osmolesFixos - (glicoseMosmPorMl * volumeAditivosMl);
@@ -1909,26 +2045,19 @@ header p { margin:4px 0 0; color:#61778f; }
     var volumeMinimoOsm = numerador / denominador;
 
     if (!Number.isFinite(volumeMinimoOsm) || volumeMinimoOsm <= EPS) {
-      return " Não foi possível estimar com segurança o volume mínimo apenas a partir da osmolaridade calculada.";
+      return window.HidraAndroidI18n.format("message_osm_no_safe_minimum",[]);
     }
 
     volumeMinimoOsm = Math.max(volumeMinimoOsm, volumeAditivosMl);
     var taxaMinimaOsm = (peso > EPS && etapas > 0) ? (volumeMinimoOsm * etapas) / peso : 0;
-    var contextoOsmolaridade = hasGlicoseCalculada
-      ? " Mantendo a mesma concentração de glicose desejada e as mesmas cargas de eletrólitos, o volume total estimado da solução precisaria ser de pelo menos "
-      : " Mantendo as mesmas cargas de eletrólitos, o volume total estimado da solução precisaria ser de pelo menos ";
     var componentesOsmolaridade = hasGlicoseCalculada
-      ? "glicose, NaCl, KCl ou gluconato de cálcio"
-      : "NaCl, KCl ou gluconato de cálcio";
-
-    return (
-      contextoOsmolaridade +
-      formatAlertNumber(volumeMinimoOsm, 1) +
-      " mL por etapa" +
-      (taxaMinimaOsm > 0 ? ", equivalente a " + formatAlertNumber(taxaMinimaOsm, 1) + " mL/kg/dia de volume hídrico total" : "") +
-      ", para atingir essa referência. Esse valor é uma estimativa físico-química e não corresponde ao volume de " +
-      componentesOsmolaridade +
-      "."
+      ? window.HidraAndroidI18n.format("message_osm_components_glucose",[])
+      : window.HidraAndroidI18n.format("message_osm_components_noglucose",[]);
+    var taxaSuffix = taxaMinimaOsm > 0
+      ? window.HidraAndroidI18n.format("message_osm_minimum_suffix",[formatAlertNumber(taxaMinimaOsm,1)]) : "";
+    return window.HidraAndroidI18n.format(
+      hasGlicoseCalculada ? "message_osm_minimum_with_glucose" : "message_osm_minimum_without_glucose",
+      [formatAlertNumber(volumeMinimoOsm,1),taxaSuffix,componentesOsmolaridade]
     );
   }
 
@@ -1967,7 +2096,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
     if (isPrecisionMode(snapshot)) {
       messages.push(
-        "Modo precisão ativado para peso < 1,5 kg: os volumes de NaCl, KCl e gluconato de cálcio são exibidos com 2 casas decimais para reduzir erro proporcional por arredondamento. O volume base glicosado por etapa permanece com 1 casa decimal."
+        window.HidraAndroidI18n.format("message_modo_precisao_ativado_para_peso_",[])
       );
     }
 
@@ -1976,15 +2105,7 @@ header p { margin:4px 0 0; color:#61778f; }
       var taxaMinimaK = (peso > EPS && etapas > 0) ? (volumeMinimoK * etapas) / peso : 0;
 
       messages.push(
-        "Potássio elevado: concentração final estimada de " +
-        formatAlertNumber(potassioFinalMeqL, 1) +
-        " mEq/L, acima da referência conservadora de " +
-        formatAlertNumber(limitePotassio, 0) +
-        " mEq/L. Para diluir a dose de potássio prescrita até 40 mEq/L, o volume total da solução precisaria ser de pelo menos " +
-        formatAlertNumber(volumeMinimoK, 1) +
-        " mL por etapa" +
-        (taxaMinimaK > 0 ? ", equivalente a " + formatAlertNumber(taxaMinimaK, 1) + " mL/kg/dia de volume hídrico total." : ".") +
-        " Esse valor não corresponde ao volume de KCl. Revisar dose de K, volume final, número de etapas, velocidade de infusão, monitorização, via de infusão e protocolo institucional."
+        window.HidraAndroidI18n.format("message_potassio_elevado_concentracao_fi",[formatAlertNumber(potassioFinalMeqL, 1),formatAlertNumber(limitePotassio, 0),formatAlertNumber(volumeMinimoK, 1),taxaMinimaK > 0 ? window.HidraAndroidI18n.format("message_rate_equivalent",[formatAlertNumber(taxaMinimaK, 1)]) : "."])
       );
     }
 
@@ -1993,15 +2114,7 @@ header p { margin:4px 0 0; color:#61778f; }
       var taxaMinimaNa = (peso > EPS && etapas > 0) ? (volumeMinimoNa * etapas) / peso : 0;
 
       messages.push(
-        "Sódio elevado: concentração final estimada de " +
-        formatAlertNumber(sodioFinalMeqL, 1) +
-        " mEq/L, acima da referência isotônica de " +
-        formatAlertNumber(referenciaSodioIsotonico, 0) +
-        " mEq/L. Para diluir a carga de sódio prescrita até a referência isotônica de 154 mEq/L, o volume total da solução precisaria ser de pelo menos " +
-        formatAlertNumber(volumeMinimoNa, 1) +
-        " mL por etapa" +
-        (taxaMinimaNa > 0 ? ", equivalente a " + formatAlertNumber(taxaMinimaNa, 1) + " mL/kg/dia de volume hídrico total." : ".") +
-        " Esse valor não corresponde ao volume de NaCl. Revisar indicação, sódio sérico, volume final, número de etapas, osmolaridade final, velocidade de infusão, via de infusão e protocolo institucional."
+        window.HidraAndroidI18n.format("message_sodio_elevado_concentracao_final",[formatAlertNumber(sodioFinalMeqL, 1),formatAlertNumber(referenciaSodioIsotonico, 0),formatAlertNumber(volumeMinimoNa, 1),taxaMinimaNa > 0 ? window.HidraAndroidI18n.format("message_rate_equivalent",[formatAlertNumber(taxaMinimaNa, 1)]) : "."])
       );
     }
 
@@ -2010,56 +2123,28 @@ header p { margin:4px 0 0; color:#61778f; }
       var taxaMinimaCaBolus = (peso > EPS && etapas > 0) ? (volumeMinimoCaBolus * etapas) / peso : 0;
 
       messages.push(
-        "Gluconato de cálcio muito concentrado: concentração final estimada de " +
-        formatAlertNumber(calcioGluconatoMgMl, 1) +
-        " mg/mL de gluconato de cálcio na solução. Esse valor está acima de 50 mg/mL, concentração máxima descrita para bolus diluído, e é inadequado como referência para infusão contínua. Para ficar em até 50 mg/mL, o volume total da solução precisaria ser de pelo menos " +
-        formatAlertNumber(volumeMinimoCaBolus, 1) +
-        " mL por etapa" +
-        (taxaMinimaCaBolus > 0 ? ", equivalente a " + formatAlertNumber(taxaMinimaCaBolus, 1) + " mL/kg/dia de volume hídrico total." : ".") +
-        " Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional."
+        window.HidraAndroidI18n.format("message_gluconato_de_calcio_muito_concen",[formatAlertNumber(calcioGluconatoMgMl, 1),formatAlertNumber(volumeMinimoCaBolus, 1),taxaMinimaCaBolus > 0 ? window.HidraAndroidI18n.format("message_rate_equivalent",[formatAlertNumber(taxaMinimaCaBolus, 1)]) : "."])
       );
     } else if (calcioGluconatoMg > EPS && calcioGluconatoMgMl > ALERT_LIMITS.calciumContinuousMaxMgMl + EPS) {
       var volumeMinimoCaContinuo = calcioGluconatoMg / ALERT_LIMITS.calciumContinuousMaxMgMl;
       var taxaMinimaCaContinuo = (peso > EPS && etapas > 0) ? (volumeMinimoCaContinuo * etapas) / peso : 0;
 
       messages.push(
-        "Gluconato de cálcio concentrado: concentração final estimada de " +
-        formatAlertNumber(calcioGluconatoMgMl, 1) +
-        " mg/mL de gluconato de cálcio na solução. Para infusão contínua, referências de bula descrevem diluição usual até 10 mg/mL. Para ficar em até 10 mg/mL, o volume total da solução precisaria ser de pelo menos " +
-        formatAlertNumber(volumeMinimoCaContinuo, 1) +
-        " mL por etapa" +
-        (taxaMinimaCaContinuo > 0 ? ", equivalente a " + formatAlertNumber(taxaMinimaCaContinuo, 1) + " mL/kg/dia de volume hídrico total." : ".") +
-        " Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional."
+        window.HidraAndroidI18n.format("message_gluconato_de_calcio_concentrado_",[formatAlertNumber(calcioGluconatoMgMl, 1),formatAlertNumber(volumeMinimoCaContinuo, 1),taxaMinimaCaContinuo > 0 ? window.HidraAndroidI18n.format("message_rate_equivalent",[formatAlertNumber(taxaMinimaCaContinuo, 1)]) : "."])
       );
     }
 
     if (volumeFinalMl > EPS && osmolaridade < ALERT_LIMITS.osmLow - EPS) {
       messages.push(
-        "Osmolaridade reduzida / solução hipotônica: osmolaridade estimada de " +
-        formatAlertNumber(osmolaridade, 0) +
-        " mOsm/L, abaixo da referência conservadora de " +
-        formatAlertNumber(ALERT_LIMITS.osmLow, 0) +
-        " mOsm/L. Soluções muito hipotônicas podem promover entrada de água nas células, edema celular e hemólise, especialmente em infusão rápida, via periférica ou contato com sangue/hemoderivados. Revisar composição da solução, concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão e protocolo institucional antes de infundir."
+        window.HidraAndroidI18n.format("message_osmolaridade_reduzida_solucao_hi",[formatAlertNumber(osmolaridade, 0),formatAlertNumber(ALERT_LIMITS.osmLow, 0)])
       );
     } else if (osmolaridade >= ALERT_LIMITS.osmHigh - EPS) {
       messages.push(
-        "Osmolaridade aumentada: osmolaridade estimada de " +
-        formatAlertNumber(osmolaridade, 0) +
-        " mOsm/L, acima da referência conservadora de " +
-        formatAlertNumber(ALERT_LIMITS.osmHigh, 0) +
-        " mOsm/L." +
-        formatOsmolarityMinimumVolumeText(snapshot, ALERT_LIMITS.osmHigh, peso, etapas) +
-        " Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional."
+        window.HidraAndroidI18n.format("message_osmolaridade_aumentada_osmolarid",[formatAlertNumber(osmolaridade, 0),formatAlertNumber(ALERT_LIMITS.osmHigh, 0),formatOsmolarityMinimumVolumeText(snapshot, ALERT_LIMITS.osmHigh, peso, etapas)])
       );
     } else if (osmolaridade >= ALERT_LIMITS.osmPeripheralCaution - EPS) {
       messages.push(
-        "Osmolaridade limítrofe/elevada: osmolaridade estimada de " +
-        formatAlertNumber(osmolaridade, 0) +
-        " mOsm/L, acima da referência de alerta de " +
-        formatAlertNumber(ALERT_LIMITS.osmPeripheralCaution, 0) +
-        " mOsm/L." +
-        formatOsmolarityMinimumVolumeText(snapshot, ALERT_LIMITS.osmPeripheralCaution, peso, etapas) +
-        " Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional."
+        window.HidraAndroidI18n.format("message_osmolaridade_limitrofe_elevada_o",[formatAlertNumber(osmolaridade, 0),formatAlertNumber(ALERT_LIMITS.osmPeripheralCaution, 0),formatOsmolarityMinimumVolumeText(snapshot, ALERT_LIMITS.osmPeripheralCaution, peso, etapas)])
       );
     }
 
@@ -2068,7 +2153,7 @@ header p { margin:4px 0 0; color:#61778f; }
       (sodioMeq > EPS || potassioMeq > EPS || calcioGluconatoMg > EPS)
     ) {
       messages.push(
-        "Volume base SG por etapa igual a zero. A etapa calculada ficou composta apenas por eletrólitos; revisar a adequação do volume final, osmolaridade e segurança da infusão."
+        window.HidraAndroidI18n.format("message_volume_base_sg_por_etapa_igual_a",[])
       );
     }
 
@@ -2081,15 +2166,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
     if (adjustment) {
       messages.push(
-        "Volume base glicosado aumentado automaticamente: a mistura calculada tinha " +
-        adjustment.components +
-        " com volume positivo menor que " +
-        formatAlertNumber(adjustment.minComponent, 1) +
-        " mL. Para manter a exibição com 1 casa decimal e tornar a mistura operacionalmente representável, o volume base foi aumentado de " +
-        formatAlertNumber(adjustment.from, 1) +
-        " mL para " +
-        formatAlertNumber(adjustment.to, 1) +
-        " mL por etapa. A taxa hídrica total e a TIG foram recalculadas."
+        window.HidraAndroidI18n.format("message_volume_base_glicosado_aumentado_",[adjustment.components,formatAlertNumber(adjustment.minComponent, 1),formatAlertNumber(adjustment.from, 1),formatAlertNumber(adjustment.to, 1)])
       );
     }
 
@@ -2107,31 +2184,21 @@ header p { margin:4px 0 0; color:#61778f; }
 
     if (glicosePercentual > ALERT_LIMITS.glucoseConcentrated + EPS) {
       messages.push(
-        "Glicose concentrada: concentração desejada de " +
-        formatAlertNumber(glicosePercentual, 1) +
-        "%. Concentrações acima de " +
-        formatAlertNumber(ALERT_LIMITS.glucoseConcentrated, 1) +
-        "% exigem revisão da osmolaridade, glicemia, compatibilidade, velocidade de infusão e via de acesso; em geral, evitar acesso periférico de rotina e considerar acesso central ou umbilical com ponta central confirmada conforme protocolo institucional."
+        window.HidraAndroidI18n.format("message_glicose_concentrada_concentracao",[formatAlertNumber(glicosePercentual, 1),formatAlertNumber(ALERT_LIMITS.glucoseConcentrated, 1)])
       );
     } else if (glicosePercentual > ALERT_LIMITS.glucosePeripheralCaution + EPS) {
       messages.push(
-        "Glicose acima de 10%: concentração desejada de " +
-        formatAlertNumber(glicosePercentual, 1) +
-        "%. Revisar osmolaridade final, sítio venoso, risco de flebite/extravasamento, glicemia e protocolo institucional."
+        window.HidraAndroidI18n.format("message_glicose_acima_de_10_concentracao",[formatAlertNumber(glicosePercentual, 1)])
       );
     }
 
     if (tig > ALERT_LIMITS.tigVeryHigh + EPS) {
       messages.push(
-        "TIG muito elevada: " +
-        formatAlertNumber(tig, 2) +
-        " mg/kg/min. Revisar glicemia, idade gestacional, dia de vida, necessidade metabólica, concentração de glicose, volume, velocidade de infusão e protocolo institucional."
+        window.HidraAndroidI18n.format("message_tig_muito_elevada_1_s_mg_kg_min_",[formatAlertNumber(tig, 2)])
       );
     } else if (tig > ALERT_LIMITS.tigHigh + EPS) {
       messages.push(
-        "TIG elevada: " +
-        formatAlertNumber(tig, 2) +
-        " mg/kg/min. Correlacionar com glicemia, prematuridade, dia de vida, necessidade metabólica, concentração de glicose, volume e segurança da infusão."
+        window.HidraAndroidI18n.format("message_tig_elevada_1_s_mg_kg_min_correl",[formatAlertNumber(tig, 2)])
       );
     }
 
@@ -2193,20 +2260,26 @@ header p { margin:4px 0 0; color:#61778f; }
       }
     });
 
+    window.HidraAndroidI18n.updateConcsodioLabel();
+    var misturaOsmolaridade = document.getElementById("osmolaridadeMistura");
+    if (misturaOsmolaridade && form.osmolaridade) {
+      misturaOsmolaridade.value = form.osmolaridade.value;
+    }
+
     renderAlertList(
       "alertaSolucao",
       getElectrolyteOsmolarityAlertMessages(snapshot),
-      "ALERTAS CLÍNICOS"
+      window.HidraAndroidI18n.format("message_alertas_clinicos",[])
     );
     renderAlertList(
       "alertaAjusteAutomaticoMistura",
       getMixAutoAdjustmentAlertMessages(snapshot),
-      "AJUSTE AUTOMÁTICO DA MISTURA"
+      window.HidraAndroidI18n.format("message_ajuste_automatico_da_mistura",[])
     );
     renderAlertList(
       "alertaMistura",
       getGlucoseTigAlertMessages(snapshot),
-      "ALERTAS CLÍNICOS"
+      window.HidraAndroidI18n.format("message_alertas_clinicos",[])
     );
 
     revealNewAlerts();
@@ -2245,7 +2318,7 @@ header p { margin:4px 0 0; color:#61778f; }
   }
 
   function showErrorToast(message) {
-    errorToastMessage.textContent = message || "Ocorreu um erro inesperado.";
+    errorToastMessage.textContent = message || window.HidraAndroidI18n.format("message_unexpected_error",[]);
     errorToast.classList.remove("show");
     void errorToast.offsetWidth;
     errorToast.classList.add("show");
@@ -2256,26 +2329,14 @@ header p { margin:4px 0 0; color:#61778f; }
   function showWeightAutoAdjustmentToast(adjustment) {
     if (!adjustment) return;
     showErrorToast(
-      "Peso ajustado automaticamente de " +
-      formatField("peso", adjustment.from, { clinical: { peso: adjustment.from } }) +
-      " kg para " +
-      formatField("peso", adjustment.to, { clinical: { peso: adjustment.to } }) +
-      " kg, pois o peso máximo permitido nesta ferramenta é 20 kg."
+      window.HidraAndroidI18n.format("message_peso_ajustado_automaticamente_de",[formatField("peso", adjustment.from, { clinical: { peso: adjustment.from } }),formatField("peso", adjustment.to, { clinical: { peso: adjustment.to } })])
     );
   }
 
   function showStageAutoAdjustmentToast(adjustment) {
     if (!adjustment) return;
     showErrorToast(
-      "Número de etapas ajustado automaticamente de " +
-      adjustment.from +
-      " para " +
-      adjustment.to +
-      ", para manter o Volume base glicosado por Etapa em até " +
-      formatAlertNumber(MAX_GLYCOSATED_BASE_VOLUME_PER_STAGE_ML, 0) +
-      " mL. Novo volume base: " +
-      formatAlertNumber(adjustment.newBaseVolume, 1) +
-      " mL por etapa."
+      window.HidraAndroidI18n.format("message_numero_de_etapas_ajustado_automa",[adjustment.from,adjustment.to,formatAlertNumber(MAX_GLYCOSATED_BASE_VOLUME_PER_STAGE_ML, 0),formatAlertNumber(adjustment.newBaseVolume, 1)])
     );
   }
 
@@ -2308,7 +2369,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function getMissingRequiredDirectLabels() {
     var labels = {
-      peso: "Peso de Cálculo"
+      peso: window.HidraAndroidI18n.format("message_peso_de_calculo_label",[])
     };
 
     return REQUIRED_DIRECT_FIELDS
@@ -2325,7 +2386,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function assertWeightBeforeCalculate() {
     if (isWeightRequiredFieldEmpty()) {
-      throw new Error("Informe o Peso de Cálculo antes de calcular.");
+      throw new Error(window.HidraAndroidI18n.format("message_informe_o_peso_de_calculo_antes_",[]));
     }
   }
 
@@ -2365,11 +2426,15 @@ header p { margin:4px 0 0; color:#61778f; }
       if (form[name]) form[name].value = "";
     });
 
+    var misturaOsmolaridade = document.getElementById("osmolaridadeMistura");
+    if (misturaOsmolaridade) misturaOsmolaridade.value = "";
+
     if (form.concso) form.concso.value = "2";
     if (form.concsodio) form.concsodio.value = "2";
+    window.HidraAndroidI18n.updateConcsodioLabel();
     if (form.etapas) form.etapas.value = "1";
     if (form.etapas2) form.etapas2.value = "1";
-    if (form.cd) form.cd.value = "";
+    if (form.cd) form.cd.value = "10";
     if (form.cs1) form.cs1.value = "5";
     if (form.cs2) form.cs2.value = "10";
 
@@ -2436,16 +2501,23 @@ header p { margin:4px 0 0; color:#61778f; }
     if (name === "vs1") return INTENT.MIX_VS1;
     if (name === "vs2") return INTENT.MIX_VS2;
     if (name === "tig") return INTENT.REVERSE_TIG;
-    throw new Error("Campo não mapeado.");
+    throw new Error(window.HidraAndroidI18n.format("message_campo_nao_mapeado",[]));
   }
 
-  function computeByIntent(snapshot, intent) {
+  function computeByIntent(snapshot, intent, originName, previous) {
     switch (intent) {
       case INTENT.DIRECT:
-        computeDirect(snapshot);
+        computeDirect(snapshot, previous && ["sodio", "potassio", "calcio", "concso"].indexOf(originName) >= 0 ? previous.mistura.tig : undefined);
         return;
       case INTENT.INVERSE:
-        computeInverse(snapshot);
+        if (["sodiototal", "potassiototal", "calciototal", "concsodio"].indexOf(originName) >= 0 && previous) {
+          if (originName === "concsodio") {
+            // Troca 10%/20% mantém a dose de sódio original.
+            snapshot.prescricao.sodiototal = previous.clinical.sodio * snapshot.clinical.peso /
+              (1.7 * snapshot.clinical.etapas * snapshot.prescricao.concsodio);
+          }
+          computeInverse(snapshot, previous.clinical.volume, previous.mistura.tig);
+        } else computeInverse(snapshot);
         return;
       case INTENT.REVERSE_VOLT:
         reverseFromVolt(snapshot);
@@ -2477,16 +2549,16 @@ header p { margin:4px 0 0; color:#61778f; }
         reverseFromTig(snapshot);
         return;
       default:
-        throw new Error("Intenção de cálculo não mapeada.");
+        throw new Error(window.HidraAndroidI18n.format("message_intencao_de_calculo_nao_mapeada",[]));
     }
   }
 
   function updateFromUserField(name, rawValue, renderOptions) {
-    if (!FIELD_META[name]) throw new Error("Campo não mapeado.");
+    if (!FIELD_META[name]) throw new Error(window.HidraAndroidI18n.format("message_campo_nao_mapeado",[]));
 
     var parsed = parseFieldValueForCalculation(name, rawValue, 0);
     if (!Number.isFinite(parsed)) {
-      throw new Error("Valor numérico inválido.");
+      throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
     }
 
     atomic(function (candidate) {
@@ -2503,7 +2575,7 @@ header p { margin:4px 0 0; color:#61778f; }
           if (!FIELD_META[directName] || !form[directName]) return;
           var directParsed = parseFieldValueForCalculation(directName, form[directName].value, 0);
           if (!Number.isFinite(directParsed)) {
-            throw new Error("Valor numérico inválido.");
+            throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
           }
           setByPath(candidate, FIELD_META[directName].path, directParsed);
           sanitizeFieldInState(directName, candidate);
@@ -2513,7 +2585,7 @@ header p { margin:4px 0 0; color:#61778f; }
         sanitizeFieldInState(name, candidate);
       }
 
-      computeByIntent(candidate, intent);
+      computeByIntent(candidate, intent, name, state);
     }, renderOptions);
   }
 
@@ -2556,8 +2628,7 @@ header p { margin:4px 0 0; color:#61778f; }
       setSectionOpen(sectionId, true);
     });
 
-    var mistura = document.getElementById("secaoMistura");
-    if (mistura) mistura.open = true;
+    // A mistura agora faz parte da prescrição; não existe aba independente.
   }
 
   function scrollSectionToTop(sectionId) {
@@ -2568,9 +2639,7 @@ header p { margin:4px 0 0; color:#61778f; }
       setSectionOpen("secaoPrescricao", true);
     }
 
-    if (sectionId === "secaoMistura" && "open" in section) {
-      section.open = true;
-    }
+    if (sectionId === "secaoMistura") setSectionOpen("secaoPrescricao", true);
 
     var scrollAction = function () {
       if (typeof section.scrollIntoView === "function") {
@@ -2611,7 +2680,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function getFieldEdit(name) {
     if (!fieldEdits[name]) {
-      fieldEdits[name] = { dirty: false, replaceOnInput: false, literalWeight: false, lastValidWeight: form[name].value };
+      fieldEdits[name] = { dirty: false, replaceOnInput: false, literalWeight: false, lastValidWeight: form[name] ? form[name].value : "" };
     }
     return fieldEdits[name];
   }
@@ -2655,6 +2724,8 @@ header p { margin:4px 0 0; color:#61778f; }
       el.disabled = true;
       if (el.tagName !== "SELECT") el.value = "";
     });
+    var misturaOsmolaridade = document.getElementById("osmolaridadeMistura");
+    if (misturaOsmolaridade) misturaOsmolaridade.value = "";
     ["secaoPrescricao", "secaoMistura"].forEach(function (id) {
       document.getElementById(id).setAttribute("aria-busy", "true");
     });
@@ -2664,8 +2735,7 @@ header p { margin:4px 0 0; color:#61778f; }
   function openFieldSection(el) {
     var section = el && el.closest(".secao");
     if (!section) return;
-    if (section.id === "secaoMistura") section.open = true;
-    else setSectionOpen(section.id, true);
+    setSectionOpen(section.id, true);
   }
 
   function clearFieldErrors() {
@@ -2721,7 +2791,7 @@ header p { margin:4px 0 0; color:#61778f; }
       var label = container.querySelector("label");
       var mainControl = container.querySelector("input") || container.querySelector("select");
       if (label && mainControl === el) label.setAttribute("for", el.id);
-      else el.setAttribute("aria-label", name === "concso" ? "Concentração de NaCl" : "Concentração de NaCl por etapa");
+      else el.setAttribute("aria-label", name === "concso" ? window.HidraAndroidI18n.format("message_nacl_label",[]) : window.HidraAndroidI18n.format("message_nacl_stage_label",[]));
       var descriptions = [];
       var unit = container.querySelector(".unidade");
       if (unit && mainControl === el) {
@@ -2745,7 +2815,7 @@ header p { margin:4px 0 0; color:#61778f; }
     ["alertaSolucao", "alertaAjusteAutomaticoMistura", "alertaMistura"].forEach(function (id) {
       var el = document.getElementById(id);
       var content = el.innerHTML;
-      if (content && content !== lastAlertContents[id]) openFieldSection(el);
+      if (content && content !== lastAlertContents[id] && id === "alertaSolucao") openFieldSection(el);
       lastAlertContents[id] = content;
     });
   }
@@ -2806,7 +2876,7 @@ header p { margin:4px 0 0; color:#61778f; }
       if (!confirmedCalculation || edit.dirty) {
         var text = String(form[name].value || "").trim();
         current = text === "" && name !== "peso" ? 0 : parseDecimal(text);
-        if (!Number.isFinite(current)) throw new Error("Valor numérico inválido.");
+        if (!Number.isFinite(current)) throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
         if (edit.dirty) context.enteredValues[name] = current;
         setByPath(candidate, FIELD_META[name].path, current);
       }
@@ -2835,22 +2905,22 @@ header p { margin:4px 0 0; color:#61778f; }
         Object.keys(FIELD_META).forEach(function (field) {
           if (field === name || isDirectField(field) || !getFieldEdit(field).dirty) return;
           var pendingValue = parseFieldValueForCalculation(field, form[field].value, 0);
-          if (!Number.isFinite(pendingValue)) throw new Error("Valor numérico inválido.");
+          if (!Number.isFinite(pendingValue)) throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
           context.enteredValues[field] = pendingValue;
           setByPath(candidate, FIELD_META[field].path, pendingValue);
           sanitizeFieldInState(field, candidate);
         });
         var parsed = parseFieldValueForCalculation(name, form[name].value, 0);
-        if (!Number.isFinite(parsed)) throw new Error("Valor numérico inválido.");
+        if (!Number.isFinite(parsed)) throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
         context.enteredValues[name] = parsed;
         setByPath(candidate, FIELD_META[name].path, parsed);
         sanitizeFieldInState(name, candidate);
-        computeByIntent(candidate, getIntentForField(name));
+        computeByIntent(candidate, getIntentForField(name), name, state);
       } else {
         ["cd", "cs1", "cs2"].forEach(function (field) {
           if (!getFieldEdit(field).dirty) return;
           var parsed = parseFieldValueForCalculation(field, form[field].value, 0);
-          if (!Number.isFinite(parsed)) throw new Error("Valor numérico inválido.");
+          if (!Number.isFinite(parsed)) throw new Error(window.HidraAndroidI18n.format("message_valor_numerico_invalido",[]));
           context.enteredValues[field] = parsed;
           setByPath(candidate, FIELD_META[field].path, parsed);
           sanitizeFieldInState(field, candidate);
@@ -2871,6 +2941,17 @@ header p { margin:4px 0 0; color:#61778f; }
   }
 
   function focusNextNumericField(name) {
+    if (name === "calcio" || name === "volume2") {
+      var section = form[name].closest(".secao");
+      var calculateButton = section && section.querySelector(".standard-bottom-actions .btn-primary");
+      if (calculateButton) {
+        calculateButton.focus({ preventScroll: true });
+        if (typeof calculateButton.scrollIntoView === "function") {
+          calculateButton.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        }
+        return;
+      }
+    }
     var inputs = Array.prototype.slice.call(form.querySelectorAll("input[name]"))
       .filter(function (el) { return !el.readOnly && !el.disabled && el.getClientRects().length > 0 && FIELD_META[el.name]; });
     var index = inputs.indexOf(form[name]);
@@ -2897,14 +2978,14 @@ header p { margin:4px 0 0; color:#61778f; }
         });
         return;
       }
-      el.setAttribute("enterkeyhint", name === "tig" ? "done" : "next");
+      el.setAttribute("enterkeyhint", name === "calcio" || name === "volume2" ? "done" : "next");
       el.addEventListener("focus", function () {
         var edit = getFieldEdit(name);
         edit.replaceOnInput = false;
         edit.literalWeight = false;
         edit.weightExplicitSeparator = false;
         edit.lastValidWeight = el.value;
-        if (el.value !== "") el.select();
+        // Não selecionar automaticamente o conteúdo ao receber foco.
       });
       if (name === "peso" || name === "peso1") {
         el.addEventListener("beforeinput", function (event) {
@@ -2951,7 +3032,7 @@ header p { margin:4px 0 0; color:#61778f; }
 
   function assertAlmostEqual(actual, expected, message) {
     if (Math.abs(actual - expected) > 1e-6) {
-      throw new Error(message + " | esperado: " + expected + " | obtido: " + actual);
+      throw new Error(window.HidraAndroidI18n.format("message_text_1_s_esperado_2_s_obtido_3_s",[message,expected,actual]));
     }
   }
 
@@ -3006,11 +3087,11 @@ header p { margin:4px 0 0; color:#61778f; }
       } catch (error) {
         threw = true;
         if (messageFragment && String(error.message || error).indexOf(messageFragment) === -1) {
-          throw new Error("Mensagem de erro inesperada: " + (error.message || error));
+          throw new Error(window.HidraAndroidI18n.format("message_mensagem_de_erro_inesperada_1_s",[error.message || error]));
         }
       }
       if (!threw) {
-        throw new Error("Era esperado erro e a função não falhou.");
+        throw new Error(window.HidraAndroidI18n.format("message_era_esperado_erro_e_a_funcao_nao",[]));
       }
     }
 
@@ -3030,7 +3111,7 @@ header p { margin:4px 0 0; color:#61778f; }
         "Taxa hídrica total em função do volume total bruto"
       );
       if (!(snapshot.derivados.osmolaridade > 0)) {
-        throw new Error("Osmolaridade estimada deve ser maior que zero.");
+        throw new Error(window.HidraAndroidI18n.format("message_osmolaridade_estimada_deve_ser_m",[]));
       }
       assertAlmostEqual(snapshot.mistura.vs1 + snapshot.mistura.vs2, snapshot.mistura.volume3, "Mistura fecha o volume");
     });
@@ -3050,31 +3131,31 @@ header p { margin:4px 0 0; color:#61778f; }
 
     tests.push(function testOneDecimalVisibleFormatting() {
       var snapshot = createKnownGoodState();
-      if (formatField("peso", snapshot.clinical.peso, snapshot) !== "3,000") throw new Error("Peso < 5 kg deve exibir 3 casas decimais.");
+      if (formatField("peso", snapshot.clinical.peso, snapshot) !== "3,000") throw new Error(window.HidraAndroidI18n.format("message_peso_5_kg_deve_exibir_3_casas_de",[]));
       snapshot.clinical.peso = 5;
-      if (formatField("peso", snapshot.clinical.peso, snapshot) !== "5,000") throw new Error("Peso >= 5 kg deve exibir 3 casas decimais.");
+      if (formatField("peso", snapshot.clinical.peso, snapshot) !== "5,000") throw new Error(window.HidraAndroidI18n.format("message_peso_5_kg_deve_exibir_3_casas_de_2",[]));
       snapshot.clinical.peso = 25;
       sanitizeFieldInState("peso", snapshot);
-      if (Math.abs(snapshot.clinical.peso - 20) > 1e-9) throw new Error("Peso máximo deve ser 20 kg.");
+      if (Math.abs(snapshot.clinical.peso - 20) > 1e-9) throw new Error(window.HidraAndroidI18n.format("message_peso_maximo_deve_ser_20_kg",[]));
       assertThrows(function () {
         var invalid = createKnownGoodState();
         invalid.clinical.peso = 20.001;
         computeDirect(invalid);
       }, "Peso > 20 kg");
       snapshot.clinical.peso = 3;
-      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error("Volume base glicosado por etapa deve exibir 1 casa decimal em peso >= 1,5 kg.");
-      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error("Volume base da mistura deve exibir 1 casa decimal em peso >= 1,5 kg.");
-      if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error("Volume base da mistura deve ser igual ao volume bruto da prescrição.");
-      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 1) throw new Error("Sódio deve exibir 1 casa decimal em peso >= 1,5 kg.");
-      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 1) throw new Error("Potássio deve exibir 1 casa decimal em peso >= 1,5 kg.");
-      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 1) throw new Error("Cálcio deve exibir 1 casa decimal em peso >= 1,5 kg.");
-      if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error("Volume Total da Etapa deve ser a soma dos valores brutos.");
-      if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error("mL/hora deve ser calculado a partir do Volume Total da Etapa bruto.");
-      if (formatField("volt", snapshot.derivados.volt, snapshot).split(".")[1].length !== 2) throw new Error("Volume Total da Etapa deve manter 2 casas decimais.");
-      if (formatField("mlhora", snapshot.derivados.mlhora, snapshot).split(".")[1].length !== 1) throw new Error("mL/h deve exibir 1 casa decimal.");
-      if (formatField("osmolaridade", snapshot.derivados.osmolaridade, snapshot).split(".")[1].length !== 1) throw new Error("Osmolaridade deve exibir 1 casa decimal.");
-      if (formatField("tig", snapshot.mistura.tig, snapshot).split(".")[1].length !== 1) throw new Error("TIG deve exibir 1 casa decimal.");
-      if (formatAlertNumber(40, 0) !== "40,0") throw new Error("Alertas devem exibir 1 casa decimal.");
+      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_glicosado_por_etapa_",[]));
+      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib",[]));
+      if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_ser_",[]));
+      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_1_casa_decimal",[]));
+      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_1_casa_deci",[]));
+      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_1_casa_decima",[]));
+      if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_deve_ser_a",[]));
+      if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_ml_hora_deve_ser_calculado_a_par",[]));
+      if (formatField("volt", snapshot.derivados.volt, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_deve_mante",[]));
+      if (formatField("mlhora", snapshot.derivados.mlhora, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_ml_h_deve_exibir_1_casa_decimal",[]));
+      if (formatField("osmolaridade", snapshot.derivados.osmolaridade, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_osmolaridade_deve_exibir_1_casa_",[]));
+      if (formatField("tig", snapshot.mistura.tig, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_tig_deve_exibir_1_casa_decimal",[]));
+      if (formatAlertNumber(40, 0) !== "40,0") throw new Error(window.HidraAndroidI18n.format("message_alertas_devem_exibir_1_casa_deci",[]));
     });
 
     tests.push(function testPrecisionModeForWeightBelowOnePointFive() {
@@ -3086,17 +3167,17 @@ header p { margin:4px 0 0; color:#61778f; }
       snapshot.clinical.calcio = 100;
       computeDirect(snapshot);
 
-      if (!isPrecisionMode(snapshot)) throw new Error("Modo precisão deveria estar ativo para peso < 1,5 kg.");
-      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error("Volume base deve exibir 1 casa decimal no modo precisão.");
-      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error("Volume base da mistura deve exibir 1 casa decimal no modo precisão.");
-      if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error("Volume base da mistura deve ser igual ao volume bruto da prescrição no modo precisão.");
-      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 2) throw new Error("Sódio deve exibir 2 casas decimais no modo precisão.");
-      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 2) throw new Error("Potássio deve exibir 2 casas decimais no modo precisão.");
-      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 2) throw new Error("Cálcio deve exibir 2 casas decimais no modo precisão.");
-      if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error("Volume Total deve somar os valores brutos no modo precisão.");
-      if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error("mL/h deve derivar do Volume Total bruto no modo precisão.");
+      if (!isPrecisionMode(snapshot)) throw new Error(window.HidraAndroidI18n.format("message_modo_precisao_deveria_estar_ativ",[]));
+      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_deve_exibir_1_casa_d",[]));
+      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib_2",[]));
+      if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_ser__2",[]));
+      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_2_casas_decima",[]));
+      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_2_casas_dec",[]));
+      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_2_casas_decim",[]));
+      if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_total_deve_somar_os_valor",[]));
+      if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_ml_h_deve_derivar_do_volume_tota",[]));
       if (!getElectrolyteOsmolarityAlertMessages(snapshot).some(function (message) { return message.indexOf("Modo precisão ativado") === 0; })) {
-        throw new Error("Alerta informativo do modo precisão deveria ser exibido.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_informativo_do_modo_preci",[]));
       }
     });
 
@@ -3105,12 +3186,25 @@ header p { margin:4px 0 0; color:#61778f; }
       computeInverse(snapshot);
       assertAlmostEqual(
         snapshot.clinical.volume,
-        Math.round(snapshot.derivados.volume2 * 10) / 10,
-        "Volume/kg/dia calculado a partir do volume total bruto arredondado no inverso"
+        snapshot.derivados.volume2,
+        "Volume/kg/dia inverso conserva a precisão integral do valor calculado"
       );
       assertAlmostEqual(snapshot.clinical.sodio, 3.4, "Sódio preservado no inverso");
       assertAlmostEqual(snapshot.clinical.potassio, 1.3, "Potássio preservado no inverso");
       assertAlmostEqual(snapshot.clinical.calcio, 150, "Cálcio preservado no inverso");
+    });
+
+    tests.push(function testInversePrecisionSurvivesDirectRecalculation() {
+      var snapshot = createKnownGoodState();
+      computeDirect(snapshot);
+      snapshot.prescricao.sodiototal = 2;
+      computeInverse(snapshot);
+      var expectedStageVolume = snapshot.derivados.volt;
+      var expectedBaseVolume = snapshot.prescricao.volumetotal;
+      assertAlmostEqual(snapshot.clinical.volume, snapshot.derivados.volume2, "Taxa hídrica inversa sem perda de precisão");
+      computeDirect(snapshot);
+      assertAlmostEqual(snapshot.derivados.volt, expectedStageVolume, "Volume total estável após Calcular");
+      assertAlmostEqual(snapshot.prescricao.volumetotal, expectedBaseVolume, "Volume base estável após Calcular");
     });
 
     tests.push(function testVolumeClinicalDoesNotDriftFromSeventy() {
@@ -3120,14 +3214,14 @@ header p { margin:4px 0 0; color:#61778f; }
       computeInverse(snapshot);
       computeDirect(snapshot);
       if (formatField("volume", snapshot.clinical.volume, snapshot) !== "70.00") {
-        throw new Error("Volume clínico não deve derivar para 70,1 após ciclos direto/inverso.");
+        throw new Error(window.HidraAndroidI18n.format("message_volume_clinico_nao_deve_derivar_",[]));
       }
     });
 
     tests.push(function testPesoNeonatalProgressivo() {
       var expected = {"1":"1","12":"1,2","123":"1,23","1234":"1,234","12345":"12,345","01234":"1,234","00000":"0"};
       Object.keys(expected).forEach(function (typed) {
-        if (maskWeightInputValue(typed) !== expected[typed]) throw new Error("Máscara neonatal: " + typed);
+        if (maskWeightInputValue(typed) !== expected[typed]) throw new Error(window.HidraAndroidI18n.format("message_mascara_neonatal_1_s",[typed]));
       });
       assertAlmostEqual(getMaskedWeightNumericValue("12345"), 12.345, "12345 = 12,345 kg");
       assertAlmostEqual(getMaskedWeightNumericValue("12"), 1.2, "12 = 1,200 kg");
@@ -3135,40 +3229,40 @@ header p { margin:4px 0 0; color:#61778f; }
     tests.push(function testPesoNeonatalSeparadorManual() {
       if (maskWeightInputValue("1.1", true) !== "1,1" || maskWeightInputValue("0,350", true) !== "0,350" ||
           maskWeightInputValue("12,34", true) !== "12,34" || maskWeightInputValue("") !== "") {
-        throw new Error("Separador manual neonatal mudou a grandeza.");
+        throw new Error(window.HidraAndroidI18n.format("message_separador_manual_neonatal_mudou_",[]));
       }
       assertAlmostEqual(getMaskedWeightNumericValue("0,350", true), 0.350, "Peso decimal manual 0,350");
     });
     tests.push(function testPesoNeonatalLimite() {
       if (!isWeightInputAboveMax("20001") || isWeightInputAboveMax("20000") ||
           isWeightInputAboveMax("12345") || !isWeightInputAboveMax("20,001", true))
-        throw new Error("Limite neonatal de 20 kg alterado.");
+        throw new Error(window.HidraAndroidI18n.format("message_limite_neonatal_de_20_kg_alterad",[]));
     });
     tests.push(function testPesoNeonatalTresCasasEmTodasIdades() {
       var sample = createKnownGoodState();
       sample.clinical.peso = 12.345;
-      if (formatField("peso", sample.clinical.peso, sample) !== "12,345") throw new Error("Peso >= 5 kg perdeu precisão neonatal.");
+      if (formatField("peso", sample.clinical.peso, sample) !== "12,345") throw new Error(window.HidraAndroidI18n.format("message_peso_5_kg_perdeu_precisao_neonat",[]));
     });
 
     tests.push(function testAutomaticDecimalMasks() {
-      if (maskDecimalInputValue("1", 1, 2) !== "1") throw new Error("Máscara #,##: 1 deve permanecer 1.");
-      if (maskDecimalInputValue("12", 1, 2) !== "1,2") throw new Error("Máscara #,##: 12 deve virar 1,2.");
-      if (maskDecimalInputValue("123", 1, 2) !== "1,23") throw new Error("Máscara #,##: 123 deve virar 1,23.");
+      if (maskDecimalInputValue("1", 1, 2) !== "1") throw new Error(window.HidraAndroidI18n.format("message_mascara_1_deve_permanecer_1",[]));
+      if (maskDecimalInputValue("12", 1, 2) !== "1,2") throw new Error(window.HidraAndroidI18n.format("message_mascara_12_deve_virar_1_2",[]));
+      if (maskDecimalInputValue("123", 1, 2) !== "1,23") throw new Error(window.HidraAndroidI18n.format("message_mascara_123_deve_virar_1_23",[]));
 
-      if (maskDecimalInputValue("1", 2, 2) !== "1") throw new Error("Máscara ##,##: 1 deve permanecer 1.");
-      if (maskDecimalInputValue("12", 2, 2) !== "12") throw new Error("Máscara ##,##: 12 deve permanecer 12.");
-      if (maskDecimalInputValue("123", 2, 2) !== "12,3") throw new Error("Máscara ##,##: 123 deve virar 12,3.");
-      if (maskDecimalInputValue("1234", 2, 2) !== "12,34") throw new Error("Máscara ##,##: 1234 deve virar 12,34.");
-      if (maskDecimalInputValue("12345", 2, 2) !== "12,34") throw new Error("Máscara ##,## deve limitar a 4 dígitos totais.");
+      if (maskDecimalInputValue("1", 2, 2) !== "1") throw new Error(window.HidraAndroidI18n.format("message_mascara_1_deve_permanecer_1_2",[]));
+      if (maskDecimalInputValue("12", 2, 2) !== "12") throw new Error(window.HidraAndroidI18n.format("message_mascara_12_deve_permanecer_12",[]));
+      if (maskDecimalInputValue("123", 2, 2) !== "12,3") throw new Error(window.HidraAndroidI18n.format("message_mascara_123_deve_virar_12_3",[]));
+      if (maskDecimalInputValue("1234", 2, 2) !== "12,34") throw new Error(window.HidraAndroidI18n.format("message_mascara_1234_deve_virar_12_34",[]));
+      if (maskDecimalInputValue("12345", 2, 2) !== "12,34") throw new Error(window.HidraAndroidI18n.format("message_mascara_deve_limitar_a_4_digitos",[]));
 
-      if (maskDecimalInputValue("1", 3, 2) !== "1") throw new Error("Máscara ###,##: 1 deve permanecer 1.");
-      if (maskDecimalInputValue("12", 3, 2) !== "12") throw new Error("Máscara ###,##: 12 deve permanecer 12.");
-      if (maskDecimalInputValue("123", 3, 2) !== "123") throw new Error("Máscara ###,##: 123 deve permanecer 123.");
-      if (maskDecimalInputValue("1234", 3, 2) !== "123,4") throw new Error("Máscara ###,##: 1234 deve virar 123,4.");
-      if (maskDecimalInputValue("12345", 3, 2) !== "123,45") throw new Error("Máscara ###,##: 12345 deve virar 123,45.");
-      if (maskDecimalInputValue("12a3b45", 3, 2) !== "123,45") throw new Error("Máscara deve aceitar apenas números e remover letras.");
+      if (maskDecimalInputValue("1", 3, 2) !== "1") throw new Error(window.HidraAndroidI18n.format("message_mascara_1_deve_permanecer_1_3",[]));
+      if (maskDecimalInputValue("12", 3, 2) !== "12") throw new Error(window.HidraAndroidI18n.format("message_mascara_12_deve_permanecer_12_2",[]));
+      if (maskDecimalInputValue("123", 3, 2) !== "123") throw new Error(window.HidraAndroidI18n.format("message_mascara_123_deve_permanecer_123",[]));
+      if (maskDecimalInputValue("1234", 3, 2) !== "123,4") throw new Error(window.HidraAndroidI18n.format("message_mascara_1234_deve_virar_123_4",[]));
+      if (maskDecimalInputValue("12345", 3, 2) !== "123,45") throw new Error(window.HidraAndroidI18n.format("message_mascara_12345_deve_virar_123_45",[]));
+      if (maskDecimalInputValue("12a3b45", 3, 2) !== "123,45") throw new Error(window.HidraAndroidI18n.format("message_mascara_deve_aceitar_apenas_nume",[]));
 
-      if (maskDecimalInputValue("12345", 4, 0) !== "1234") throw new Error("Máscara inteira deve manter apenas dígitos inteiros permitidos.");
+      if (maskDecimalInputValue("12345", 4, 0) !== "1234") throw new Error(window.HidraAndroidI18n.format("message_mascara_inteira_deve_manter_apen",[]));
     });
 
     tests.push(function testReverseModes() {
@@ -3198,14 +3292,14 @@ header p { margin:4px 0 0; color:#61778f; }
     tests.push(function testZeroPercentSelection() {
       var pair = chooseGlucosePairForCdPreferCurrent(2.5, 0, 5);
       if (pair.cs1 !== 0 || pair.cs2 !== 5) {
-        throw new Error("Seleção de soro 0% não preservada.");
+        throw new Error(window.HidraAndroidI18n.format("message_selecao_de_soro_0_nao_preservada",[]));
       }
     });
 
     tests.push(function testAutoPairSelection() {
       var pair = chooseGlucosePairForCdPreferCurrent(18, 5, 10);
       if (pair.cs1 !== 5 || pair.cs2 !== 25) {
-        throw new Error("Par automático inadequado para CD=18.");
+        throw new Error(window.HidraAndroidI18n.format("message_par_automatico_inadequado_para_c",[]));
       }
     });
 
@@ -3226,10 +3320,10 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       validateInvariants(snapshot);
       if (snapshot.prescricao.volumetotal > MAX_GLYCOSATED_BASE_VOLUME_PER_STAGE_ML + EPS) {
-        throw new Error("Volume base glicosado por etapa ultrapassou 500 mL após ajuste automático.");
+        throw new Error(window.HidraAndroidI18n.format("message_volume_base_glicosado_por_etapa__2",[]));
       }
       if (snapshot.clinical.etapas !== 8) {
-        throw new Error("Peso 20 kg, 200 mL/kg/dia deveria ajustar automaticamente para 8 etapas.");
+        throw new Error(window.HidraAndroidI18n.format("message_peso_20_kg_200_ml_kg_dia_deveria",[]));
       }
     });
 
@@ -3251,7 +3345,7 @@ header p { margin:4px 0 0; color:#61778f; }
         "Taxa hídrica deve acompanhar o volume total exibido"
       );
       if (snapshot.clinical.volume <= 3) {
-        throw new Error("Taxa hídrica não foi aumentada apesar do volume insuficiente.");
+        throw new Error(window.HidraAndroidI18n.format("message_taxa_hidrica_nao_foi_aumentada_a",[]));
       }
     });
 
@@ -3261,10 +3355,10 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot);
       if (!messages.some(function (message) { return message.indexOf("Potássio elevado") === 0; })) {
-        throw new Error("Alerta de potássio deveria ser emitido para concentração final elevada.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_potassio_deveria_ser_e",[]));
       }
       if (messages.join(" | ").indexOf("não corresponde ao volume de KCl") === -1) {
-        throw new Error("Alerta de potássio deve esclarecer volume hídrico total.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_potassio_deve_esclarec",[]));
       }
     });
 
@@ -3275,7 +3369,7 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Sódio elevado") === -1 || messages.indexOf("não corresponde ao volume de NaCl") === -1) {
-        throw new Error("Alerta de sódio deveria esclarecer volume hídrico total e volume de NaCl.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_sodio_deveria_esclarec",[]));
       }
     });
 
@@ -3288,10 +3382,10 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Gluconato de cálcio concentrado") === -1) {
-        throw new Error("Alerta de gluconato de cálcio concentrado deveria ser emitido.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_gluconato_de_calcio_co",[]));
       }
       if (messages.indexOf("não corresponde ao volume de gluconato de cálcio") === -1) {
-        throw new Error("Alerta de cálcio deve esclarecer volume hídrico total.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_calcio_deve_esclarecer",[]));
       }
     });
 
@@ -3304,7 +3398,7 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Gluconato de cálcio muito concentrado") === -1) {
-        throw new Error("Alerta forte de gluconato de cálcio deveria ser emitido.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_forte_de_gluconato_de_cal",[]));
       }
     });
 
@@ -3339,14 +3433,14 @@ header p { margin:4px 0 0; color:#61778f; }
       assertAlmostEqual(snapshot.mistura.vs1, 0.3, "Volume do 1º soro após ajuste operacional");
       assertAlmostEqual(snapshot.mistura.vs2, 0.1, "Volume do 2º soro após ajuste operacional");
       if (!snapshot._meta || !snapshot._meta.mixVolumeAutoAdjustment) {
-        throw new Error("Ajuste automático da mistura deveria ser registrado em _meta.");
+        throw new Error(window.HidraAndroidI18n.format("message_ajuste_automatico_da_mistura_dev",[]));
       }
       var messages = getMixAutoAdjustmentAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Volume base glicosado aumentado automaticamente") === -1) {
-        throw new Error("Alerta de aumento automático da mistura deveria ser exibido no alerta vermelho específico.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_aumento_automatico_da_",[]));
       }
       if (getGlucoseTigAlertMessages(snapshot).join(" | ").indexOf("Volume base glicosado aumentado automaticamente") !== -1) {
-        throw new Error("Alerta de ajuste automático não deve ficar misturado aos alertas clínicos amarelos da mistura.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_ajuste_automatico_nao_",[]));
       }
     });
 
@@ -3361,10 +3455,10 @@ header p { margin:4px 0 0; color:#61778f; }
       computeDirect(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Osmolaridade reduzida") === -1) {
-        throw new Error("Alerta de osmolaridade reduzida deveria ser emitido.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_osmolaridade_reduzida_",[]));
       }
       if (messages.indexOf("hemólise") === -1) {
-        throw new Error("Alerta de osmolaridade reduzida deve citar risco de hemólise.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_osmolaridade_reduzida__2",[]));
       }
     });
 
@@ -3374,13 +3468,13 @@ header p { margin:4px 0 0; color:#61778f; }
       recomputeMixFromCdWithAutoPair(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Osmolaridade aumentada") === -1) {
-        throw new Error("Alerta universal de osmolaridade aumentada não foi gerado.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_universal_de_osmolaridade",[]));
       }
       if (messages.indexOf("mL/kg/dia de volume hídrico total") === -1) {
-        throw new Error("Alerta de osmolaridade deve informar volume hídrico mínimo estimado.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_osmolaridade_deve_info",[]));
       }
       if (messages.indexOf("estimativa físico-química") === -1) {
-        throw new Error("Alerta de osmolaridade deve explicitar que é estimativa físico-química.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_osmolaridade_deve_expl",[]));
       }
     });
 
@@ -3390,7 +3484,7 @@ header p { margin:4px 0 0; color:#61778f; }
       recomputeMixFromCdWithAutoPair(snapshot);
       var messages = getGlucoseTigAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Glicose concentrada") === -1) {
-        throw new Error("Alerta universal de glicose concentrada não foi gerado.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_universal_de_glicose_conc",[]));
       }
     });
 
@@ -3400,7 +3494,7 @@ header p { margin:4px 0 0; color:#61778f; }
       recomputeMixFromCdWithAutoPair(snapshot);
       var messages = getGlucoseTigAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("TIG elevada") === -1 && messages.indexOf("TIG muito elevada") === -1) {
-        throw new Error("Alerta universal de TIG elevada não foi gerado.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_universal_de_tig_elevada_",[]));
       }
     });
 
@@ -3411,10 +3505,10 @@ header p { margin:4px 0 0; color:#61778f; }
       var solutionMessages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       var glucoseMessages = getGlucoseTigAlertMessages(snapshot).join(" | ");
       if (solutionMessages.indexOf("Glicose") !== -1 || solutionMessages.indexOf("TIG") !== -1) {
-        throw new Error("Alertas de glicose/TIG não devem aparecer no bloco de eletrólitos/osmolaridade.");
+        throw new Error(window.HidraAndroidI18n.format("message_alertas_de_glicose_tig_nao_devem",[]));
       }
       if (glucoseMessages.indexOf("Glicose concentrada") === -1) {
-        throw new Error("Alerta de glicose concentrada deveria aparecer no bloco de mistura.");
+        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_glicose_concentrada_de",[]));
       }
     });
 
@@ -3448,7 +3542,7 @@ header p { margin:4px 0 0; color:#61778f; }
         if (sec) open[id] = !sec.classList.contains('is-collapsed');
       });
       var mixture = document.getElementById('secaoMistura');
-      if (mixture) open.secaoMistura = mixture.open;
+      // A mistura acompanha a abertura da seção Prescrição por Etapa.
       var snapshot = {
         schemaVersion: APP_STATE_SCHEMA_VERSION,
         model: deepClone(state), fields: fields,
@@ -3475,12 +3569,18 @@ header p { margin:4px 0 0; color:#61778f; }
         !snapshot.model || !snapshot.fields || typeof snapshot.fields !== 'object') return;
     restoringAppState = true;
     try {
-      // Validate the stored model with the original invariants before reuse.
-      var storedState = deepClone(snapshot.model);
-      validateInvariants(storedState);
-      state = storedState;
+      // Estado incompleto ainda não foi calculado: recuperar a digitação sem
+      // transformar campos vazios em zeros nem validar um resultado inexistente.
       confirmedCalculation = !!snapshot.confirmedCalculation;
-      render(state);
+      if (confirmedCalculation) {
+        var storedState = deepClone(snapshot.model);
+        validateInvariants(storedState);
+        state = storedState;
+        render(state);
+      } else {
+        applyEmptyInitialDisplay();
+        state = deepClone(initialRawState);
+      }
       Object.keys(snapshot.fields).forEach(function(name) {
         var el = form.elements.namedItem(name);
         if (!el || el.disabled || el.readOnly || el.type === 'file' || el.type === 'password') return;
@@ -3493,15 +3593,20 @@ header p { margin:4px 0 0; color:#61778f; }
           getFieldEdit(name).dirty = el.value !== formatField(name, getByPath(state, FIELD_META[name].path), state);
         }
       });
+      if (form.concso && form.concsodio) form.concsodio.value = form.concso.value;
+      window.HidraAndroidI18n.updateConcsodioLabel();
       if (snapshot.openSections && typeof snapshot.openSections === 'object') {
         ['secaoParametros','secaoPrescricao'].forEach(function(id) {
           if (typeof snapshot.openSections[id] === 'boolean') setSectionOpen(id, snapshot.openSections[id]);
         });
         var mixture = document.getElementById('secaoMistura');
-        if (mixture && typeof snapshot.openSections.secaoMistura === 'boolean') mixture.open = snapshot.openSections.secaoMistura;
+        // A mistura acompanha a visibilidade da prescrição.
       }
       var restoredNotice = document.getElementById("hidraRestoredNotice");
-      if (restoredNotice) restoredNotice.hidden = false;
+      if (restoredNotice) restoredNotice.hidden = !Object.keys(snapshot.fields).some(function(name) {
+        var el = form.elements.namedItem(name);
+        return el && el.tagName !== 'SELECT' && !el.readOnly && String(snapshot.fields[name] || '').trim() !== '';
+      });
       requestAnimationFrame(function() { window.scrollTo(0, 0); });
     } catch (error) {
       if (window.console && window.console.warn) window.console.warn('Hidra: snapshot incompatível; preservado para investigação', error);
@@ -3527,9 +3632,10 @@ header p { margin:4px 0 0; color:#61778f; }
     initializeFieldAccessibility();
     initializeCollapsibleSections();
 
+    // Sem sessão anterior, iniciar sem valores clínicos ou resultados calculados.
+    applyEmptyInitialDisplay();
     initialRawState = createStateFromForm();
     state = deepClone(initialRawState);
-    confirmFieldEdit(null, true);
 
     try {
       window.HidraCalculator.selfTest = runSelfTests();
@@ -3587,7 +3693,7 @@ header p { margin:4px 0 0; color:#61778f; }
 <script>
 (function(){
 'use strict';
-const LOOKUP = {"Cálculo de Hidratação Venosa":"Neonatal Intravenous Fluid Calculator","Erro de validação":"Validation error","💧Hidratação Venosa Neonatal":"💧Neonatal Intravenous Hydration","Preparo por etapas de Hidratação Venosa Neonatal com mistura de soluções e cálculo da Taxa de Infusão de Glicose":"Stepwise preparation of neonatal intravenous fluids, solution mixing, and glucose infusion rate calculation","① Parâmetros de Entrada":"① Input parameters","② Prescrição por Etapa":"② Prescription per stage","③ Mistura de Soluções Glicosadas":"③ Dextrose solution mixing","Peso de cálculo":"Calculation weight","Peso de Cálculo":"Calculation weight","Número de etapas/Intervalo em horas":"Number of stages / interval in hours","Taxa hídrica total":"Total fluid rate","Sódio (NaCl)":"Sodium (NaCl)","Potássio (KCl 10%)":"Potassium (KCl 10%)","Cálcio (gluconato de cálcio 10%)":"Calcium (calcium gluconate 10%)","mg/kg/dia de gluconato de cálcio 10%":"mg/kg/day of calcium gluconate 10%","Calcular":"Calculate","Limpar Dados":"Clear data","Limpar dados":"Clear data","Limpar":"Clear","Volume base glicosado por etapa":"Dextrose base volume per stage","NaCl por etapa":"NaCl per stage","KCl 10% por etapa":"KCl 10% per stage","Gluconato de cálcio 10% por etapa":"Calcium gluconate 10% per stage","Volume total da etapa":"Total stage volume","Velocidade de infusão":"Infusion rate","Tempo por etapa":"Time per stage","horas":"hours","Volume nas 24h":"24-hour volume","etapas/dia":"stages/day","Osmolaridade estimada":"Estimated osmolarity","Concentração desejada":"Target concentration","Concentração do 1º soro (menor)":"First solution concentration (lower)","Concentração do 2º soro (maior)":"Second solution concentration (higher)","0% (Água destilada)":"0% (distilled water)","Volume do 1º soro":"First solution volume","Volume do 2º soro":"Second solution volume","mg/kg/minuto":"mg/kg/minute","% glicose":"% dextrose","Aviso Legal e Isenção de Responsabilidade":"Legal Notice and Disclaimer","Referências":"References","Desenvolvido por Adão L. L. Couto":"Developed by Adão L. L. Couto","Idioma":"Language","Selecionar idioma":"Select language","Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.":"This software and all information contained herein are provided solely for educational purposes and as an aid to medical reference. THIS SYSTEM DOES NOT REPLACE INDIVIDUAL CLINICAL JUDGMENT, MEDICAL HISTORY TAKING, OR PHYSICAL EXAMINATION. The information presented must not be used in isolation for patient diagnosis, management, or treatment. Final responsibility for any clinical decision, prescription, or intervention rests exclusively with the appropriately licensed healthcare professional providing care. The developers do not guarantee absolute accuracy and disclaim liability for any direct, indirect, material, or non-material harm arising from misuse, misinterpretation, or exclusive reliance on this system. Patients and non-professional users should always seek advice from a qualified physician before making decisions about their health.","Campo editável de entrada direta.":"Editable direct-input field.","Campo editável para recálculo inverso da prescrição.":"Editable field for reverse prescription calculation.","Campo editável com cálculo reverso.":"Editable field with reverse calculation.","Campo apenas de exibição automática.":"Read-only automatically calculated field.","Concentração de NaCl por etapa":"NaCl concentration per stage","Concentração de NaCl":"NaCl concentration","ALERTAS CLÍNICOS":"CLINICAL ALERTS","AJUSTE AUTOMÁTICO DA MISTURA":"AUTOMATIC MIXTURE ADJUSTMENT","Ocorreu um erro inesperado.":"An unexpected error occurred.","Informe o Peso de Cálculo antes de calcular.":"Enter the calculation weight before calculating.","Valor numérico inválido.":"Invalid numeric value.","Campo não mapeado.":"Unmapped field.","Intenção de cálculo não mapeada.":"Unmapped calculation intent.","Peso < 0,3 kg não suportado por esta ferramenta.":"Weight < 0.3 kg is not supported by this tool.","Peso > 20 kg não suportado por esta ferramenta.":"Weight > 20 kg is not supported by this tool.","Etapas devem ser uma das opções permitidas: 1, 2, 3, 4, 6, 8 ou 12.":"Stages must be one of the permitted options: 1, 2, 3, 4, 6, 8, or 12.","Horas por etapa inválidas.":"Invalid hours per stage.","Os soros glicosados permitidos são: 0%, 5%, 10%, 25% e 50%.":"Permitted dextrose solutions: 0%, 5%, 10%, 25%, and 50%.","O 1º soro deve ter concentração menor que o 2º.":"The first solution must have a lower concentration than the second.","Volumes dos soros não podem ser negativos.":"Solution volumes cannot be negative.","Concentração desejada deve estar entre os dois soros (inclusive).":"Target concentration must lie between the two solution concentrations (inclusive).","Concentração desejada fora do intervalo entre os soros.":"Target concentration is outside the range between the solutions.","Os volumes dos soros não podem exceder o volume base.":"Solution volumes cannot exceed the base volume.","Valores clínicos não podem ser negativos.":"Clinical values cannot be negative.","Volume total da etapa menor que a soma bruta dos eletrólitos.":"Total stage volume is lower than the sum of the electrolyte volumes.","A TIG calculada gerou concentração fora da faixa possível (0% a 50%).":"Calculated glucose infusion rate would require a concentration outside the allowed range (0% to 50%).","Modo precisão ativado para peso < 1,5 kg: os volumes de NaCl, KCl e gluconato de cálcio são exibidos com 2 casas decimais para reduzir erro proporcional por arredondamento. O volume base glicosado por etapa permanece com 1 casa decimal.":"Precision mode for weight < 1.5 kg: NaCl, KCl and calcium gluconate volumes are displayed to 2 decimal places to reduce relative rounding errors. The dextrose base volume remains displayed to 1 decimal place.","Volume base SG por etapa igual a zero. A etapa calculada ficou composta apenas por eletrólitos; revisar a adequação do volume final, osmolaridade e segurança da infusão.":"Dextrose base volume per stage is zero. The calculated stage contains only electrolytes; review total volume, osmolarity, and infusion safety.","Não foi possível estimar com segurança o volume mínimo apenas a partir da osmolaridade calculada.":"A minimum volume could not be estimated reliably from calculated osmolarity alone.","Gluconato de cálcio muito concentrado: concentração final estimada de ":"Highly concentrated calcium gluconate: estimated final concentration of ","Gluconato de cálcio concentrado: concentração final estimada de ":"Concentrated calcium gluconate: estimated final concentration of ","Potássio elevado: concentração final estimada de ":"High potassium concentration: estimated final concentration of ","Sódio elevado: concentração final estimada de ":"High sodium concentration: estimated final concentration of ","Osmolaridade reduzida / solução hipotônica: osmolaridade estimada de ":"Low osmolarity / hypotonic solution: estimated osmolarity of ","Osmolaridade aumentada: osmolaridade estimada de ":"High osmolarity: estimated osmolarity of ","Osmolaridade limítrofe/elevada: osmolaridade estimada de ":"Borderline/high osmolarity: estimated osmolarity of ","Glicose concentrada: concentração desejada de ":"Concentrated dextrose: target concentration of ","Glicose acima de 10%: concentração desejada de ":"Dextrose above 10%: target concentration of ","TIG muito elevada: ":"Very high glucose infusion rate: ","TIG elevada: ":"High glucose infusion rate: ","Volume base glicosado aumentado automaticamente: a mistura calculada tinha ":"Dextrose base volume increased automatically: the calculated mixture had ","Peso ajustado automaticamente de ":"Weight automatically adjusted from ","Número de etapas ajustado automaticamente de ":"Number of stages automatically adjusted from ","mL/kg/dia de volume hídrico total":"mL/kg/day of total fluid volume","mL por etapa":"mL per stage","o volume total da solução precisaria ser de pelo menos ":"the total solution volume would need to be at least ","o volume total estimado da solução precisaria ser de pelo menos ":"the estimated total solution volume would need to be at least "," Mantendo a mesma concentração de glicose desejada, não há volume total finito capaz de reduzir a osmolaridade estimada até ":" Keeping the same target dextrose concentration, no finite total volume can reduce estimated osmolarity to "," mOsm/L; seria necessário reduzir a concentração de glicose e/ou a carga de solutos.":" mOsm/L; the dextrose concentration and/or solute load would need to be reduced."," Mantendo a mesma concentração de glicose desejada e as mesmas cargas de eletrólitos, ":" Keeping the same target dextrose concentration and electrolyte loads, "," Mantendo as mesmas cargas de eletrólitos, ":" Keeping the same electrolyte loads, ",", para atingir essa referência. Esse valor é uma estimativa físico-química e não corresponde ao volume de ":", to reach this target. This is a physicochemical estimate and does not represent the volume of ","glicose, NaCl, KCl ou gluconato de cálcio":"dextrose, NaCl, KCl, or calcium gluconate","NaCl, KCl ou gluconato de cálcio":"NaCl, KCl, or calcium gluconate","mEq/L, acima da referência conservadora de ":"mEq/L, above the conservative reference value of ","mEq/L, acima da referência isotônica de ":"mEq/L, above the isotonic reference value of ","mOsm/L, abaixo da referência conservadora de ":"mOsm/L, below the conservative reference value of ","mOsm/L, acima da referência conservadora de ":"mOsm/L, above the conservative reference value of ","mOsm/L, acima da referência de alerta de ":"mOsm/L, above the alert reference value of ","mEq/L. Para diluir a dose de potássio prescrita até 40 mEq/L, ":"mEq/L. To dilute the prescribed potassium dose to 40 mEq/L, ","mEq/L. Para diluir a carga de sódio prescrita até a referência isotônica de 154 mEq/L, ":"mEq/L. To dilute the sodium load to the 154 mEq/L isotonic reference value, "," Esse valor não corresponde ao volume de KCl. Revisar dose de K, volume final, número de etapas, velocidade de infusão, monitorização, via de infusão e protocolo institucional.":" This value does not represent the volume of KCl. Review potassium dose, final volume, stages, infusion rate, monitoring, route, and institutional protocol."," Esse valor não corresponde ao volume de NaCl. Revisar indicação, sódio sérico, volume final, número de etapas, osmolaridade final, velocidade de infusão, via de infusão e protocolo institucional.":" This value does not represent the volume of NaCl. Review indication, serum sodium, final volume, stages, final osmolarity, infusion rate, route, and institutional protocol."," mg/mL de gluconato de cálcio na solução. Esse valor está acima de 50 mg/mL, concentração máxima descrita para bolus diluído, e é inadequado como referência para infusão contínua. Para ficar em até 50 mg/mL, ":" mg/mL of calcium gluconate in the solution. This exceeds 50 mg/mL, a stated upper concentration for a diluted bolus and is not an appropriate reference for continuous infusion. To reach at most 50 mg/mL, "," mg/mL de gluconato de cálcio na solução. Para infusão contínua, referências de bula descrevem diluição usual até 10 mg/mL. Para ficar em até 10 mg/mL, ":" mg/mL of calcium gluconate in the solution. For continuous infusion, product labeling describes usual dilution to 10 mg/mL or less. To reach at most 10 mg/mL, "," Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional.":" This does not represent the calcium gluconate volume. Review dose, total volume, infusion rate, serum/ionized calcium, compatibility, extravasation risk, route, and institutional protocol."," Soluções muito hipotônicas podem promover entrada de água nas células, edema celular e hemólise, especialmente em infusão rápida, via periférica ou contato com sangue/hemoderivados. Revisar composição da solução, concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão e protocolo institucional antes de infundir.":" Very hypotonic solutions can promote cellular water influx, swelling, and hemolysis, especially with rapid infusion, peripheral access, or contact with blood products. Review composition, dextrose concentration, electrolytes, final volume, infusion rate, route, and institutional protocol before infusion."," Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional.":" Review dextrose concentration, electrolytes, total volume, infusion rate, route, compatibility, and institutional protocol."," com volume positivo menor que ":" with positive volume below "," mL. Para manter a exibição com 1 casa decimal e tornar a mistura operacionalmente representável, o volume base foi aumentado de ":" mL. To retain one-decimal display and make the mixture operationally representable, base volume was increased from "," mL para ":" mL to "," mL por etapa. A taxa hídrica total e a TIG foram recalculadas.":" mL per stage. Total fluid rate and glucose infusion rate were recalculated.","%. Concentrações acima de ":"%. Concentrations above ","% exigem revisão da osmolaridade, glicemia, compatibilidade, velocidade de infusão e via de acesso; em geral, evitar acesso periférico de rotina e considerar acesso central ou umbilical com ponta central confirmada conforme protocolo institucional.":"% require review of osmolarity, glucose, compatibility, infusion rate, and access route; generally avoid routine peripheral administration and consider central or umbilical access with confirmed central tip per institutional protocol.","%. Revisar osmolaridade final, sítio venoso, risco de flebite/extravasamento, glicemia e protocolo institucional.":"%. Review final osmolarity, venous access site, phlebitis/extravasation risk, glucose, and institutional protocol."," mg/kg/min. Revisar glicemia, idade gestacional, dia de vida, necessidade metabólica, concentração de glicose, volume, velocidade de infusão e protocolo institucional.":" mg/kg/min. Review glucose, gestational age, postnatal day, metabolic needs, dextrose concentration, volume, infusion rate, and institutional protocol."," mg/kg/min. Correlacionar com glicemia, prematuridade, dia de vida, necessidade metabólica, concentração de glicose, volume e segurança da infusão.":" mg/kg/min. Correlate with glucose, prematurity, postnatal day, metabolic needs, dextrose concentration, volume, and infusion safety."," kg para ":" kg to "," kg, pois o peso máximo permitido nesta ferramenta é 20 kg.":" kg because the maximum weight supported by this tool is 20 kg.",", para manter o Volume base glicosado por Etapa em até ":", to keep dextrose base volume per stage at or below "," mL. Novo volume base: ":" mL. New base volume: "," mL por etapa.":" mL per stage.","não corresponde ao volume de":"does not correspond to the volume of","equivalente a":"equivalent to","por etapa":"per stage","para manter":"to maintain"};
+const LOOKUP = {"Volume por etapa":"Volume per stage","Primeiro Soro (menor)":"First solution (lower)","Segundo Soro (maior)":"Second solution (higher)","Cálculo de Hidratação Venosa":"Neonatal Intravenous Fluid Calculator","Erro de validação":"Validation error","💧Hidratação Venosa Neonatal":"💧Neonatal Intravenous Hydration","Preparo por etapas de Hidratação Venosa Neonatal com mistura de soluções e cálculo da Taxa de Infusão de Glicose":"Stepwise preparation of neonatal intravenous fluids, solution mixing, and glucose infusion rate calculation","Parâmetros de Entrada":"Input parameters","Prescrição por Etapa":"Prescription per stage","Mistura de Soluções Glicosadas":"Dextrose solution mixing","Peso de cálculo":"Calculation weight","Peso de Cálculo":"Calculation weight","Número de Etapas":"Number of stages","Taxa hídrica total":"Total fluid rate","Sódio (NaCl)":"Sodium (NaCl)","Potássio (KCl 10%)":"Potassium (KCl 10%)","Gluc. de Cálcio 10%":"Calcium (calcium gluconate 10%)","mg/kg/dia":"mg/kg/day","Calcular":"Calculate","Limpar Dados":"Clear data","Limpar dados":"Clear data","Limpar":"Clear","Volume base glicosado por etapa":"Dextrose base volume per stage","NaCl 20%":"NaCl 20%","KCl 10%":"KCl 10%","Gluc. de Cálcio 10%":"Calcium gluconate 10%","Volume total da etapa":"Total stage volume","Velocidade de infusão":"Infusion rate","Tempo por etapa":"Time per stage","horas":"hours","Volume nas 24h":"24-hour volume","etapas/dia":"stages/day","Osmolaridade estimada":"Estimated osmolarity","Concentração desejada":"Target concentration","Concentração do 1º soro (menor)":"First solution concentration (lower)","Concentração do 2º soro (maior)":"Second solution concentration (higher)","0% (Água destilada)":"0% (distilled water)","Volume do 1º soro":"First solution volume","Volume do 2º soro":"Second solution volume","mg/kg/minuto":"mg/kg/minute","% glicose":"% dextrose","Aviso Legal e Isenção de Responsabilidade":"Legal Notice and Disclaimer","Referências":"References","Desenvolvido por Adão L. L. Couto":"Developed by Adão L. L. Couto","Idioma":"Language","Selecionar idioma":"Select language","Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.":"This software and all information contained herein are provided solely for educational purposes and as an aid to medical reference. THIS SYSTEM DOES NOT REPLACE INDIVIDUAL CLINICAL JUDGMENT, MEDICAL HISTORY TAKING, OR PHYSICAL EXAMINATION. The information presented must not be used in isolation for patient diagnosis, management, or treatment. Final responsibility for any clinical decision, prescription, or intervention rests exclusively with the appropriately licensed healthcare professional providing care. The developers do not guarantee absolute accuracy and disclaim liability for any direct, indirect, material, or non-material harm arising from misuse, misinterpretation, or exclusive reliance on this system. Patients and non-professional users should always seek advice from a qualified physician before making decisions about their health.","Campo editável de entrada direta.":"Editable direct-input field.","Campo editável para recálculo inverso da prescrição.":"Editable field for reverse prescription calculation.","Campo editável com cálculo reverso.":"Editable field with reverse calculation.","Campo apenas de exibição automática.":"Read-only automatically calculated field.","Concentração de NaCl por etapa":"NaCl concentration per stage","Concentração de NaCl":"NaCl concentration","ALERTAS CLÍNICOS":"CLINICAL ALERTS","AJUSTE AUTOMÁTICO DA MISTURA":"AUTOMATIC MIXTURE ADJUSTMENT","Ocorreu um erro inesperado.":"An unexpected error occurred.","Informe o Peso de Cálculo antes de calcular.":"Enter the calculation weight before calculating.","Valor numérico inválido.":"Invalid numeric value.","Campo não mapeado.":"Unmapped field.","Intenção de cálculo não mapeada.":"Unmapped calculation intent.","Peso < 0,3 kg não suportado por esta ferramenta.":"Weight < 0.3 kg is not supported by this tool.","Peso > 20 kg não suportado por esta ferramenta.":"Weight > 20 kg is not supported by this tool.","Etapas devem ser uma das opções permitidas: 1, 2, 3, 4, 6, 8 ou 12.":"Stages must be one of the permitted options: 1, 2, 3, 4, 6, 8, or 12.","Horas por etapa inválidas.":"Invalid hours per stage.","Os soros glicosados permitidos são: 0%, 5%, 10%, 25% e 50%.":"Permitted dextrose solutions: 0%, 5%, 10%, 25%, and 50%.","O 1º soro deve ter concentração menor que o 2º.":"The first solution must have a lower concentration than the second.","Volumes dos soros não podem ser negativos.":"Solution volumes cannot be negative.","Concentração desejada deve estar entre os dois soros (inclusive).":"Target concentration must lie between the two solution concentrations (inclusive).","Concentração desejada fora do intervalo entre os soros.":"Target concentration is outside the range between the solutions.","Os volumes dos soros não podem exceder o volume base.":"Solution volumes cannot exceed the base volume.","Valores clínicos não podem ser negativos.":"Clinical values cannot be negative.","Volume total da etapa menor que a soma bruta dos eletrólitos.":"Total stage volume is lower than the sum of the electrolyte volumes.","A TIG calculada gerou concentração fora da faixa possível (0% a 50%).":"Calculated glucose infusion rate would require a concentration outside the allowed range (0% to 50%).","Modo precisão ativado para peso < 1,5 kg: os volumes de NaCl, KCl e gluconato de cálcio são exibidos com 2 casas decimais para reduzir erro proporcional por arredondamento. O volume base glicosado por etapa permanece com 1 casa decimal.":"Precision mode for weight < 1.5 kg: NaCl, KCl and calcium gluconate volumes are displayed to 2 decimal places to reduce relative rounding errors. The dextrose base volume remains displayed to 1 decimal place.","Volume base SG por etapa igual a zero. A etapa calculada ficou composta apenas por eletrólitos; revisar a adequação do volume final, osmolaridade e segurança da infusão.":"Dextrose base volume per stage is zero. The calculated stage contains only electrolytes; review total volume, osmolarity, and infusion safety.","Não foi possível estimar com segurança o volume mínimo apenas a partir da osmolaridade calculada.":"A minimum volume could not be estimated reliably from calculated osmolarity alone.","Gluconato de cálcio muito concentrado: concentração final estimada de ":"Highly concentrated calcium gluconate: estimated final concentration of ","Gluconato de cálcio concentrado: concentração final estimada de ":"Concentrated calcium gluconate: estimated final concentration of ","Potássio elevado: concentração final estimada de ":"High potassium concentration: estimated final concentration of ","Sódio elevado: concentração final estimada de ":"High sodium concentration: estimated final concentration of ","Osmolaridade reduzida / solução hipotônica: osmolaridade estimada de ":"Low osmolarity / hypotonic solution: estimated osmolarity of ","Osmolaridade aumentada: osmolaridade estimada de ":"High osmolarity: estimated osmolarity of ","Osmolaridade limítrofe/elevada: osmolaridade estimada de ":"Borderline/high osmolarity: estimated osmolarity of ","Glicose concentrada: concentração desejada de ":"Concentrated dextrose: target concentration of ","Glicose acima de 10%: concentração desejada de ":"Dextrose above 10%: target concentration of ","TIG muito elevada: ":"Very high glucose infusion rate: ","TIG elevada: ":"High glucose infusion rate: ","Volume base glicosado aumentado automaticamente: a mistura calculada tinha ":"Dextrose base volume increased automatically: the calculated mixture had ","Peso ajustado automaticamente de ":"Weight automatically adjusted from ","Número de etapas ajustado automaticamente de ":"Number of stages automatically adjusted from ","mL/kg/dia de volume hídrico total":"mL/kg/day of total fluid volume","mL por etapa":"mL per stage","o volume total da solução precisaria ser de pelo menos ":"the total solution volume would need to be at least ","o volume total estimado da solução precisaria ser de pelo menos ":"the estimated total solution volume would need to be at least "," Mantendo a mesma concentração de glicose desejada, não há volume total finito capaz de reduzir a osmolaridade estimada até ":" Keeping the same target dextrose concentration, no finite total volume can reduce estimated osmolarity to "," mOsm/L; seria necessário reduzir a concentração de glicose e/ou a carga de solutos.":" mOsm/L; the dextrose concentration and/or solute load would need to be reduced."," Mantendo a mesma concentração de glicose desejada e as mesmas cargas de eletrólitos, ":" Keeping the same target dextrose concentration and electrolyte loads, "," Mantendo as mesmas cargas de eletrólitos, ":" Keeping the same electrolyte loads, ",", para atingir essa referência. Esse valor é uma estimativa físico-química e não corresponde ao volume de ":", to reach this target. This is a physicochemical estimate and does not represent the volume of ","glicose, NaCl, KCl ou gluconato de cálcio":"dextrose, NaCl, KCl, or calcium gluconate","NaCl, KCl ou gluconato de cálcio":"NaCl, KCl, or calcium gluconate","mEq/L, acima da referência conservadora de ":"mEq/L, above the conservative reference value of ","mEq/L, acima da referência isotônica de ":"mEq/L, above the isotonic reference value of ","mOsm/L, abaixo da referência conservadora de ":"mOsm/L, below the conservative reference value of ","mOsm/L, acima da referência conservadora de ":"mOsm/L, above the conservative reference value of ","mOsm/L, acima da referência de alerta de ":"mOsm/L, above the alert reference value of ","mEq/L. Para diluir a dose de potássio prescrita até 40 mEq/L, ":"mEq/L. To dilute the prescribed potassium dose to 40 mEq/L, ","mEq/L. Para diluir a carga de sódio prescrita até a referência isotônica de 154 mEq/L, ":"mEq/L. To dilute the sodium load to the 154 mEq/L isotonic reference value, "," Esse valor não corresponde ao volume de KCl. Revisar dose de K, volume final, número de etapas, velocidade de infusão, monitorização, via de infusão e protocolo institucional.":" This value does not represent the volume of KCl. Review potassium dose, final volume, stages, infusion rate, monitoring, route, and institutional protocol."," Esse valor não corresponde ao volume de NaCl. Revisar indicação, sódio sérico, volume final, número de etapas, osmolaridade final, velocidade de infusão, via de infusão e protocolo institucional.":" This value does not represent the volume of NaCl. Review indication, serum sodium, final volume, stages, final osmolarity, infusion rate, route, and institutional protocol."," mg/mL de gluconato de cálcio na solução. Esse valor está acima de 50 mg/mL, concentração máxima descrita para bolus diluído, e é inadequado como referência para infusão contínua. Para ficar em até 50 mg/mL, ":" mg/mL of calcium gluconate in the solution. This exceeds 50 mg/mL, a stated upper concentration for a diluted bolus and is not an appropriate reference for continuous infusion. To reach at most 50 mg/mL, "," mg/mL de gluconato de cálcio na solução. Para infusão contínua, referências de bula descrevem diluição usual até 10 mg/mL. Para ficar em até 10 mg/mL, ":" mg/mL of calcium gluconate in the solution. For continuous infusion, product labeling describes usual dilution to 10 mg/mL or less. To reach at most 10 mg/mL, "," Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional.":" This does not represent the calcium gluconate volume. Review dose, total volume, infusion rate, serum/ionized calcium, compatibility, extravasation risk, route, and institutional protocol."," Soluções muito hipotônicas podem promover entrada de água nas células, edema celular e hemólise, especialmente em infusão rápida, via periférica ou contato com sangue/hemoderivados. Revisar composição da solução, concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão e protocolo institucional antes de infundir.":" Very hypotonic solutions can promote cellular water influx, swelling, and hemolysis, especially with rapid infusion, peripheral access, or contact with blood products. Review composition, dextrose concentration, electrolytes, final volume, infusion rate, route, and institutional protocol before infusion."," Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional.":" Review dextrose concentration, electrolytes, total volume, infusion rate, route, compatibility, and institutional protocol."," com volume positivo menor que ":" with positive volume below "," mL. Para manter a exibição com 1 casa decimal e tornar a mistura operacionalmente representável, o volume base foi aumentado de ":" mL. To retain one-decimal display and make the mixture operationally representable, base volume was increased from "," mL para ":" mL to "," mL por etapa. A taxa hídrica total e a TIG foram recalculadas.":" mL per stage. Total fluid rate and glucose infusion rate were recalculated.","%. Concentrações acima de ":"%. Concentrations above ","% exigem revisão da osmolaridade, glicemia, compatibilidade, velocidade de infusão e via de acesso; em geral, evitar acesso periférico de rotina e considerar acesso central ou umbilical com ponta central confirmada conforme protocolo institucional.":"% require review of osmolarity, glucose, compatibility, infusion rate, and access route; generally avoid routine peripheral administration and consider central or umbilical access with confirmed central tip per institutional protocol.","%. Revisar osmolaridade final, sítio venoso, risco de flebite/extravasamento, glicemia e protocolo institucional.":"%. Review final osmolarity, venous access site, phlebitis/extravasation risk, glucose, and institutional protocol."," mg/kg/min. Revisar glicemia, idade gestacional, dia de vida, necessidade metabólica, concentração de glicose, volume, velocidade de infusão e protocolo institucional.":" mg/kg/min. Review glucose, gestational age, postnatal day, metabolic needs, dextrose concentration, volume, infusion rate, and institutional protocol."," mg/kg/min. Correlacionar com glicemia, prematuridade, dia de vida, necessidade metabólica, concentração de glicose, volume e segurança da infusão.":" mg/kg/min. Correlate with glucose, prematurity, postnatal day, metabolic needs, dextrose concentration, volume, and infusion safety."," kg para ":" kg to "," kg, pois o peso máximo permitido nesta ferramenta é 20 kg.":" kg because the maximum weight supported by this tool is 20 kg.",", para manter o Volume base glicosado por Etapa em até ":", to keep dextrose base volume per stage at or below "," mL. Novo volume base: ":" mL. New base volume: "," mL por etapa.":" mL per stage.","não corresponde ao volume de":"does not correspond to the volume of","equivalente a":"equivalent to","por etapa":"per stage","para manter":"to maintain"};
 const pairs = Object.entries(LOOKUP).sort((a,b)=>b[0].length-a[0].length);
 const savedNodes = new WeakMap(), savedAttributes = new WeakMap();
 const langSelect = document.getElementById('languageSelect');
@@ -3664,7 +3770,7 @@ const observer=new MutationObserver(function(events){
 document.addEventListener('DOMContentLoaded',function(){
  let previous='pt-BR';
  try{previous=localStorage.getItem('hidra.language.v1')||'pt-BR';}catch(e){}
- setLanguage(previous,false);
+ setLanguage('pt-BR',false);
  observer.observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['title','aria-label']});
  langSelect.addEventListener('change',e=>setLanguage(e.target.value));
 });
@@ -3672,5 +3778,103 @@ window.HidraI18n={setLanguage,getLanguage:()=>language,translate};
 })();
 </script>
 <script>document.querySelectorAll('.hidra-up').forEach(function(b){b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});});</script>
+
+<script>
+/* Comandos superiores de navegação. Não altera resultados nem apaga dados. */
+(function () {
+  'use strict';
+  var exitButton = document.getElementById('btnSair');
+  if (!exitButton) return;
+  exitButton.addEventListener('click', function () {
+    try {
+      if (window.AndroidApp && typeof window.AndroidApp.exitApp === 'function') {
+        window.AndroidApp.exitApp();
+        return;
+      }
+    } catch (_error) { /* A ponte nativa não está disponível. */ }
+    if (window.history.length > 1) {
+      window.history.back();
+      return;
+    }
+    try { window.close(); } catch (_error) { /* Fechamento bloqueado. */ }
+    if (!window.closed) {
+      window.alert('O navegador não permite fechar esta aba automaticamente. Feche-a pelos controles do navegador.');
+    }
+  });
+})();
+</script>
+
+
+<script id="android-i18n-catalog" type="application/json">{"pt-BR":{"ui_hidra_parametros_sem_numero":"Parâmetros de Entrada","ui_hidra_prescricao_sem_numero":"Prescrição por Etapa","ui_hidra_mistura_sem_numero":"Mistura de Soluções Glicosadas","ui_hidra_volume_por_etapa":"Volume por etapa","ui_hidra_primeiro_soro_menor":"Primeiro Soro (menor)","ui_hidra_segundo_soro_maior":"Segundo Soro (maior)","ui_calculo_de_hidratacao_venosa":"Cálculo de Hidratação Venosa","ui_erro_de_validacao":"Erro de validação","ui_hidratacao_venosa_neonatal":"Hidratação Venosa Neonatal","ui_preparo_por_etapas_de_hidratacao":"Preparo por etapas de Hidratação Venosa Neonatal com mistura de soluções e cálculo da Taxa de Infusão de Glicose","ui_limpar_dados":"Limpar dados","ui_sair":"Sair","ui_portugues":"Português","ui_dados_recuperados":"Dados recuperados","ui_dados_e_resultados_anteriores_fo":"Dados e resultados anteriores foram recuperados. Confirme as informações antes de utilizar os resultados.","ui_text_1_parametros_de_entrada":"① Parâmetros de Entrada","ui_peso_de_calculo":"Peso de cálculo","ui_kg":"kg","ui_numero_de_etapas_intervalo_em_ho":"Número de Etapas","ui_text_1_24_24_horas":"1 (24/24 h)","ui_text_2_12_12_horas":"2 (12/12 h)","ui_text_3_08_08_horas":"3 (08/08 h)","ui_text_4_06_06_horas":"4 (06/06 h)","ui_text_6_04_04_horas":"6 (04/04 h)","ui_text_8_03_03_horas":"8 (03/03 h)","ui_text_12_02_02_horas":"12 (02/02 h)","ui_etapas_dia":"etapas/dia","ui_taxa_hidrica_total":"Taxa hídrica total","ui_ml_kg_dia":"mL/kg/dia","ui_sodio_nacl":"Sódio (NaCl)","ui_meq_kg_dia":"mEq/kg/dia","ui_potassio_kcl_10":"Potássio (KCl 10%)","ui_calcio_gluconato_de_calcio_10":"Gluc. de Cálcio 10%","ui_mg_kg_dia_de_gluconato_de_calcio":"mg/kg/dia","ui_calcular":"Calcular","ui_limpar":"Limpar","ui_voltar_ao_inicio":"Voltar ao início","ui_text_2_prescricao_por_etapa":"② Prescrição por Etapa","ui_volume_base_glicosado_por_etapa":"Volume por etapa","ui_ml":"mL","ui_nacl_por_etapa":"NaCl 20%","ui_kcl_10_por_etapa":"KCl 10%","ui_gluconato_de_calcio_10_por_etapa":"Gluc. de Cálcio 10%","ui_volume_total_da_etapa":"Volume total da etapa","ui_velocidade_de_infusao":"Velocidade de infusão","ui_ml_h":"mL/h","ui_tempo_por_etapa":"Tempo por etapa","ui_horas":"horas","ui_volume_nas_24h":"Volume nas 24h","ui_osmolaridade_estimada":"Osmolaridade estimada","ui_mosm_l":"mOsm/L","ui_text_3_mistura_de_solucoes_glicosadas":"③ Mistura de Soluções Glicosadas","ui_concentracao_desejada":"Concentração desejada","ui_glicose":"% glicose","ui_concentracao_do_1o_soro_menor":"Concentração do 1º soro (menor)","ui_text_0_agua_destilada":"0% (Água destilada)","ui_volume_do_1o_soro":"Volume do 1º soro","ui_concentracao_do_2o_soro_maior":"Concentração do 2º soro (maior)","ui_volume_do_2o_soro":"Volume do 2º soro","ui_t_i_g":"T.I.G.","ui_mg_kg_minuto":"mg/kg/minuto","ui_referencias":"Referências","ui_eichenwald_e_c_et_al":"EICHENWALD, E. C. et al.","ui_text_8_ed_philadelphia_wolters_kluwer":". 8. ed. Philadelphia: Wolters Kluwer, 2017.","ui_cloherty_and_stark_s_manual_of_n":"Cloherty and Stark's Manual of Neonatal Care","ui_trissel_l_a":"TRISSEL, L. A.","ui_text_18_ed_bethesda_american_society_":". 18. ed. Bethesda: American Society of Health-System Pharmacists, 2015.","ui_handbook_on_injectable_drugs":"Handbook on Injectable Drugs","ui_aviso_legal_e_isencao_de_respons":"Aviso Legal e Isenção de Responsabilidade","ui_este_software_e_todas_as_informa":"Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.","ui_politica_de_privacidade":"Política de Privacidade","ui_termos_de_servico":"Termos de Serviço","ui_desenvolvido_por_adao_l_l_couto":"Desenvolvido por Adão L. L. Couto","message_a_tig_calculada_gerou_concentrac":"A TIG calculada gerou concentração fora da faixa possível (0% a 50%).","message_peso_0_3_kg_nao_suportado_por_es":"Peso < 0,3 kg não suportado por esta ferramenta.","message_peso_20_kg_nao_suportado_por_est":"Peso > 20 kg não suportado por esta ferramenta.","message_etapas_devem_ser_uma_das_opcoes_":"Etapas devem ser uma das opções permitidas: 1, 2, 3, 4, 6, 8 ou 12.","message_horas_por_etapa_invalidas":"Horas por etapa inválidas.","message_os_soros_glicosados_permitidos_s":"Os soros glicosados permitidos são: 0%, 5%, 10%, 25% e 50%.","message_o_1o_soro_deve_ter_concentracao_":"O 1º soro deve ter concentração menor que o 2º.","message_volumes_dos_soros_nao_podem_ser_":"Volumes dos soros não podem ser negativos.","message_o_volume_minimo_para_tornar_a_mi":"O volume mínimo para tornar a mistura glicosada operacional com 1 casa decimal seria %1$s mL por etapa, mas isso ultrapassa o limite máximo permitido para o volume hídrico total. Revisar concentração desejada, soros selecionados, número de etapas e prescrição.","message_concentracao_desejada_deve_estar":"Concentração desejada deve estar entre os dois soros (inclusive).","message_a_mistura_resultou_em_volume_neg":"A mistura resultou em volume negativo.","message_volume_base_da_etapa_invalido":"Volume base da etapa inválido.","message_os_volumes_dos_soros_nao_podem_e":"Os volumes dos soros não podem exceder o volume base.","message_concentracao_desejada_fora_do_in":"Concentração desejada fora do intervalo entre os soros.","message_valores_clinicos_nao_podem_ser_n":"Valores clínicos não podem ser negativos.","message_volumes_nao_podem_ser_negativos":"Volumes não podem ser negativos.","message_volume_total_da_etapa_menor_que_":"Volume total da etapa menor que a soma bruta dos eletrólitos.","message_invariante_violada_volume_base_d":"Invariante violada: volume base da mistura deve acompanhar o volume base bruto da prescrição.","message_invariante_violada_volume_total_":"Invariante violada: volume total da etapa deve ser a soma dos valores brutos da prescrição.","message_invariante_violada_volume_24h_in":"Invariante violada: volume 24h inconsistente.","message_invariante_violada_taxa_hidrica_":"Invariante violada: taxa hídrica inconsistente.","message_invariante_violada_ml_h_inconsis":"Invariante violada: mL/h inconsistente.","message_invariante_violada_vs1_vs2_deve_":"Invariante violada: vs1 + vs2 deve ser igual ao volume base.","message_invariante_violada_osmolaridade_":"Invariante violada: osmolaridade estimada inconsistente.","message_modo_precisao_ativado_para_peso_":"Modo precisão ativado para peso < 1,5 kg: os volumes de NaCl, KCl e gluconato de cálcio são exibidos com 2 casas decimais para reduzir erro proporcional por arredondamento. O volume base glicosado por etapa permanece com 1 casa decimal.","message_potassio_elevado_concentracao_fi":"Potássio elevado: concentração final estimada de %1$s mEq/L, acima da referência conservadora de %2$s mEq/L. Para diluir a dose de potássio prescrita até 40 mEq/L, o volume total da solução precisaria ser de pelo menos %3$s mL por etapa%4$s Esse valor não corresponde ao volume de KCl. Revisar dose de K, volume final, número de etapas, velocidade de infusão, monitorização, via de infusão e protocolo institucional.","message_sodio_elevado_concentracao_final":"Sódio elevado: concentração final estimada de %1$s mEq/L, acima da referência isotônica de %2$s mEq/L. Para diluir a carga de sódio prescrita até a referência isotônica de 154 mEq/L, o volume total da solução precisaria ser de pelo menos %3$s mL por etapa%4$s Esse valor não corresponde ao volume de NaCl. Revisar indicação, sódio sérico, volume final, número de etapas, osmolaridade final, velocidade de infusão, via de infusão e protocolo institucional.","message_gluconato_de_calcio_muito_concen":"Gluconato de cálcio muito concentrado: concentração final estimada de %1$s mg/mL de gluconato de cálcio na solução. Esse valor está acima de 50 mg/mL, concentração máxima descrita para bolus diluído, e é inadequado como referência para infusão contínua. Para ficar em até 50 mg/mL, o volume total da solução precisaria ser de pelo menos %2$s mL por etapa%3$s Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional.","message_gluconato_de_calcio_concentrado_":"Gluconato de cálcio concentrado: concentração final estimada de %1$s mg/mL de gluconato de cálcio na solução. Para infusão contínua, referências de bula descrevem diluição usual até 10 mg/mL. Para ficar em até 10 mg/mL, o volume total da solução precisaria ser de pelo menos %2$s mL por etapa%3$s Esse valor não corresponde ao volume de gluconato de cálcio. Revisar dose, volume final, velocidade de infusão, cálcio sérico/ionizado, compatibilidades, risco de extravasamento, via de infusão e protocolo institucional.","message_osmolaridade_reduzida_solucao_hi":"Osmolaridade reduzida / solução hipotônica: osmolaridade estimada de %1$s mOsm/L, abaixo da referência conservadora de %2$s mOsm/L. Soluções muito hipotônicas podem promover entrada de água nas células, edema celular e hemólise, especialmente em infusão rápida, via periférica ou contato com sangue/hemoderivados. Revisar composição da solução, concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão e protocolo institucional antes de infundir.","message_osmolaridade_aumentada_osmolarid":"Osmolaridade aumentada: osmolaridade estimada de %1$s mOsm/L, acima da referência conservadora de %2$s mOsm/L.%3$s Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional.","message_osmolaridade_limitrofe_elevada_o":"Osmolaridade limítrofe/elevada: osmolaridade estimada de %1$s mOsm/L, acima da referência de alerta de %2$s mOsm/L.%3$s Revisar concentração de glicose, eletrólitos, volume final, velocidade de infusão, via de infusão, compatibilidades e protocolo institucional.","message_volume_base_sg_por_etapa_igual_a":"Volume base SG por etapa igual a zero. A etapa calculada ficou composta apenas por eletrólitos; revisar a adequação do volume final, osmolaridade e segurança da infusão.","message_volume_base_glicosado_aumentado_":"Volume base glicosado aumentado automaticamente: a mistura calculada tinha %1$s com volume positivo menor que %2$s mL. Para manter a exibição com 1 casa decimal e tornar a mistura operacionalmente representável, o volume base foi aumentado de %3$s mL para %4$s mL por etapa. A taxa hídrica total e a TIG foram recalculadas.","message_glicose_concentrada_concentracao":"Glicose concentrada: concentração desejada de %1$s%. Concentrações acima de %2$s% exigem revisão da osmolaridade, glicemia, compatibilidade, velocidade de infusão e via de acesso; em geral, evitar acesso periférico de rotina e considerar acesso central ou umbilical com ponta central confirmada conforme protocolo institucional.","message_glicose_acima_de_10_concentracao":"Glicose acima de 10%: concentração desejada de %1$s%. Revisar osmolaridade final, sítio venoso, risco de flebite/extravasamento, glicemia e protocolo institucional.","message_tig_muito_elevada_1_s_mg_kg_min_":"TIG muito elevada: %1$s mg/kg/min. Revisar glicemia, idade gestacional, dia de vida, necessidade metabólica, concentração de glicose, volume, velocidade de infusão e protocolo institucional.","message_tig_elevada_1_s_mg_kg_min_correl":"TIG elevada: %1$s mg/kg/min. Correlacionar com glicemia, prematuridade, dia de vida, necessidade metabólica, concentração de glicose, volume e segurança da infusão.","message_alertas_clinicos":"ALERTAS CLÍNICOS","message_ajuste_automatico_da_mistura":"AJUSTE AUTOMÁTICO DA MISTURA","message_peso_ajustado_automaticamente_de":"Peso ajustado automaticamente de %1$s kg para %2$s kg, pois o peso máximo permitido nesta ferramenta é 20 kg.","message_numero_de_etapas_ajustado_automa":"Número de etapas ajustado automaticamente de %1$s para %2$s, para manter o Volume base glicosado por Etapa em até %3$s mL. Novo volume base: %4$s mL por etapa.","message_informe_o_peso_de_calculo_antes_":"Informe o Peso de Cálculo antes de calcular.","message_campo_nao_mapeado":"Campo não mapeado.","message_intencao_de_calculo_nao_mapeada":"Intenção de cálculo não mapeada.","message_valor_numerico_invalido":"Valor numérico inválido.","message_text_1_s_esperado_2_s_obtido_3_s":"%1$s | esperado: %2$s | obtido: %3$s","message_mensagem_de_erro_inesperada_1_s":"Mensagem de erro inesperada: %1$s","message_era_esperado_erro_e_a_funcao_nao":"Era esperado erro e a função não falhou.","message_osmolaridade_estimada_deve_ser_m":"Osmolaridade estimada deve ser maior que zero.","message_peso_5_kg_deve_exibir_3_casas_de":"Peso < 5 kg deve exibir 3 casas decimais.","message_peso_5_kg_deve_exibir_3_casas_de_2":"Peso >= 5 kg deve exibir 3 casas decimais.","message_peso_maximo_deve_ser_20_kg":"Peso máximo deve ser 20 kg.","message_volume_base_glicosado_por_etapa_":"Volume base glicosado por etapa deve exibir 1 casa decimal em peso >= 1,5 kg.","message_volume_base_da_mistura_deve_exib":"Volume base da mistura deve exibir 1 casa decimal em peso >= 1,5 kg.","message_volume_base_da_mistura_deve_ser_":"Volume base da mistura deve ser igual ao volume bruto da prescrição.","message_sodio_deve_exibir_1_casa_decimal":"Sódio deve exibir 1 casa decimal em peso >= 1,5 kg.","message_potassio_deve_exibir_1_casa_deci":"Potássio deve exibir 1 casa decimal em peso >= 1,5 kg.","message_calcio_deve_exibir_1_casa_decima":"Cálcio deve exibir 1 casa decimal em peso >= 1,5 kg.","message_volume_total_da_etapa_deve_ser_a":"Volume Total da Etapa deve ser a soma dos valores brutos.","message_ml_hora_deve_ser_calculado_a_par":"mL/hora deve ser calculado a partir do Volume Total da Etapa bruto.","message_volume_total_da_etapa_deve_mante":"Volume Total da Etapa deve manter 2 casas decimais.","message_ml_h_deve_exibir_1_casa_decimal":"mL/h deve exibir 1 casa decimal.","message_osmolaridade_deve_exibir_1_casa_":"Osmolaridade deve exibir 1 casa decimal.","message_tig_deve_exibir_1_casa_decimal":"TIG deve exibir 1 casa decimal.","message_alertas_devem_exibir_1_casa_deci":"Alertas devem exibir 1 casa decimal.","message_modo_precisao_deveria_estar_ativ":"Modo precisão deveria estar ativo para peso < 1,5 kg.","message_volume_base_deve_exibir_1_casa_d":"Volume base deve exibir 1 casa decimal no modo precisão.","message_volume_base_da_mistura_deve_exib_2":"Volume base da mistura deve exibir 1 casa decimal no modo precisão.","message_volume_base_da_mistura_deve_ser__2":"Volume base da mistura deve ser igual ao volume bruto da prescrição no modo precisão.","message_sodio_deve_exibir_2_casas_decima":"Sódio deve exibir 2 casas decimais no modo precisão.","message_potassio_deve_exibir_2_casas_dec":"Potássio deve exibir 2 casas decimais no modo precisão.","message_calcio_deve_exibir_2_casas_decim":"Cálcio deve exibir 2 casas decimais no modo precisão.","message_volume_total_deve_somar_os_valor":"Volume Total deve somar os valores brutos no modo precisão.","message_ml_h_deve_derivar_do_volume_tota":"mL/h deve derivar do Volume Total bruto no modo precisão.","message_alerta_informativo_do_modo_preci":"Alerta informativo do modo precisão deveria ser exibido.","message_volume_clinico_nao_deve_derivar_":"Volume clínico não deve derivar para 70,1 após ciclos direto/inverso.","message_mascara_neonatal_1_s":"Máscara neonatal: %1$s","message_separador_manual_neonatal_mudou_":"Separador manual neonatal mudou a grandeza.","message_limite_neonatal_de_20_kg_alterad":"Limite neonatal de 20 kg alterado.","message_peso_5_kg_perdeu_precisao_neonat":"Peso >= 5 kg perdeu precisão neonatal.","message_mascara_1_deve_permanecer_1":"Máscara #,##: 1 deve permanecer 1.","message_mascara_12_deve_virar_1_2":"Máscara #,##: 12 deve virar 1,2.","message_mascara_123_deve_virar_1_23":"Máscara #,##: 123 deve virar 1,23.","message_mascara_1_deve_permanecer_1_2":"Máscara ##,##: 1 deve permanecer 1.","message_mascara_12_deve_permanecer_12":"Máscara ##,##: 12 deve permanecer 12.","message_mascara_123_deve_virar_12_3":"Máscara ##,##: 123 deve virar 12,3.","message_mascara_1234_deve_virar_12_34":"Máscara ##,##: 1234 deve virar 12,34.","message_mascara_deve_limitar_a_4_digitos":"Máscara ##,## deve limitar a 4 dígitos totais.","message_mascara_1_deve_permanecer_1_3":"Máscara ###,##: 1 deve permanecer 1.","message_mascara_12_deve_permanecer_12_2":"Máscara ###,##: 12 deve permanecer 12.","message_mascara_123_deve_permanecer_123":"Máscara ###,##: 123 deve permanecer 123.","message_mascara_1234_deve_virar_123_4":"Máscara ###,##: 1234 deve virar 123,4.","message_mascara_12345_deve_virar_123_45":"Máscara ###,##: 12345 deve virar 123,45.","message_mascara_deve_aceitar_apenas_nume":"Máscara deve aceitar apenas números e remover letras.","message_mascara_inteira_deve_manter_apen":"Máscara inteira deve manter apenas dígitos inteiros permitidos.","message_selecao_de_soro_0_nao_preservada":"Seleção de soro 0% não preservada.","message_par_automatico_inadequado_para_c":"Par automático inadequado para CD=18.","message_volume_base_glicosado_por_etapa__2":"Volume base glicosado por etapa ultrapassou 500 mL após ajuste automático.","message_peso_20_kg_200_ml_kg_dia_deveria":"Peso 20 kg, 200 mL/kg/dia deveria ajustar automaticamente para 8 etapas.","message_taxa_hidrica_nao_foi_aumentada_a":"Taxa hídrica não foi aumentada apesar do volume insuficiente.","message_alerta_de_potassio_deveria_ser_e":"Alerta de potássio deveria ser emitido para concentração final elevada.","message_alerta_de_potassio_deve_esclarec":"Alerta de potássio deve esclarecer volume hídrico total.","message_alerta_de_sodio_deveria_esclarec":"Alerta de sódio deveria esclarecer volume hídrico total e volume de NaCl.","message_alerta_de_gluconato_de_calcio_co":"Alerta de gluconato de cálcio concentrado deveria ser emitido.","message_alerta_de_calcio_deve_esclarecer":"Alerta de cálcio deve esclarecer volume hídrico total.","message_alerta_forte_de_gluconato_de_cal":"Alerta forte de gluconato de cálcio deveria ser emitido.","message_ajuste_automatico_da_mistura_dev":"Ajuste automático da mistura deveria ser registrado em _meta.","message_alerta_de_aumento_automatico_da_":"Alerta de aumento automático da mistura deveria ser exibido no alerta vermelho específico.","message_alerta_de_ajuste_automatico_nao_":"Alerta de ajuste automático não deve ficar misturado aos alertas clínicos amarelos da mistura.","message_alerta_de_osmolaridade_reduzida_":"Alerta de osmolaridade reduzida deveria ser emitido.","message_alerta_de_osmolaridade_reduzida__2":"Alerta de osmolaridade reduzida deve citar risco de hemólise.","message_alerta_universal_de_osmolaridade":"Alerta universal de osmolaridade aumentada não foi gerado.","message_alerta_de_osmolaridade_deve_info":"Alerta de osmolaridade deve informar volume hídrico mínimo estimado.","message_alerta_de_osmolaridade_deve_expl":"Alerta de osmolaridade deve explicitar que é estimativa físico-química.","message_alerta_universal_de_glicose_conc":"Alerta universal de glicose concentrada não foi gerado.","message_alerta_universal_de_tig_elevada_":"Alerta universal de TIG elevada não foi gerado.","message_alertas_de_glicose_tig_nao_devem":"Alertas de glicose/TIG não devem aparecer no bloco de eletrólitos/osmolaridade.","message_alerta_de_glicose_concentrada_de":"Alerta de glicose concentrada deveria aparecer no bloco de mistura.","message_osm_no_finite_volume":" Mantendo a mesma concentração de glicose desejada, não há volume total finito capaz de reduzir a osmolaridade estimada até %1$s mOsm/L; seria necessário reduzir a concentração de glicose e/ou a carga de solutos.","message_osm_no_safe_minimum":" Não foi possível estimar com segurança o volume mínimo apenas a partir da osmolaridade calculada.","message_osm_minimum_with_glucose":" Mantendo a mesma concentração de glicose desejada e as mesmas cargas de eletrólitos, o volume total estimado da solução precisaria ser de pelo menos %1$s mL por etapa%2$s, para atingir essa referência. Esse valor é uma estimativa físico-química e não corresponde ao volume de %3$s.","message_osm_minimum_without_glucose":" Mantendo as mesmas cargas de eletrólitos, o volume total estimado da solução precisaria ser de pelo menos %1$s mL por etapa%2$s, para atingir essa referência. Esse valor é uma estimativa físico-química e não corresponde ao volume de %3$s.","message_osm_minimum_suffix":", equivalente a %1$s mL/kg/dia de volume hídrico total","message_osm_components_glucose":"glicose, NaCl, KCl ou gluconato de cálcio","message_osm_components_noglucose":"NaCl, KCl ou gluconato de cálcio","message_role_direct":"Campo editável de entrada direta.","message_role_inverse":"Campo editável para recálculo inverso da prescrição.","message_role_reverse":"Campo editável com cálculo reverso.","message_role_display":"Campo apenas de exibição automática.","message_nacl_label":"Concentração de NaCl","message_nacl_stage_label":"Concentração de NaCl por etapa","message_unexpected_error":"Ocorreu um erro inesperado.","message_rate_equivalent":", equivalente a %1$s mL/kg/dia de volume hídrico total.","message_peso_de_calculo_label":"Peso de Cálculo","ui_nacl_10":"NaCl 10%","ui_nacl_20":"NaCl 20%"}}</script>
+<script id="android-i18n-runtime">
+(function(){
+'use strict';
+const base=JSON.parse(document.getElementById('android-i18n-catalog').textContent)['pt-BR'];
+const bindings=[{"path":"html:nth-of-type(1) > head:nth-of-type(1) > title:nth-of-type(1)","attribute":"#text","key":"ui_calculo_de_hidratacao_venosa","text":"Cálculo de Hidratação Venosa"},{"path":"#errorToast > div:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_erro_de_validacao","text":"Erro de validação"},{"path":"#appHeadingText","attribute":"#text","key":"ui_hidratacao_venosa_neonatal","text":"Hidratação Venosa Neonatal"},{"path":"html:nth-of-type(1) > body:nth-of-type(1) > header:nth-of-type(1) > p:nth-of-type(1)","attribute":"#text","key":"ui_preparo_por_etapas_de_hidratacao","text":"Preparo por etapas de Hidratação Venosa Neonatal com mistura de soluções e cálculo da Taxa de Infusão de Glicose"},{"path":"html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1)","attribute":"#text","key":"ui_limpar_dados","text":"Limpar dados"},{"path":"#btnSair","attribute":"#text","key":"ui_sair","text":"Sair"},{"path":"#languageSelect > option:nth-of-type(1)","attribute":"#text","key":"ui_portugues","text":"Português"},{"path":"#hidraRestoredNotice > strong:nth-of-type(1)","attribute":"#text","key":"ui_dados_recuperados","text":"Dados recuperados"},{"path":"#hidraRestoredNotice > span:nth-of-type(1)","attribute":"#text","key":"ui_dados_e_resultados_anteriores_fo","text":"Dados e resultados anteriores foram recuperados. Confirme as informações antes de utilizar os resultados."},{"path":"#secaoParametros > div:nth-of-type(1)","attribute":"#text","key":"ui_hidra_parametros_sem_numero","text":"Parâmetros de Entrada"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_peso_de_calculo","text":"Peso de cálculo"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_kg","text":"kg"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > label:nth-of-type(1)","attribute":"#text","key":"ui_numero_de_etapas_intervalo_em_ho","text":"Número de Etapas"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(1)","attribute":"#text","key":"ui_text_1_24_24_horas","text":"1 (24/24 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(2)","attribute":"#text","key":"ui_text_2_12_12_horas","text":"2 (12/12 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(3)","attribute":"#text","key":"ui_text_3_08_08_horas","text":"3 (08/08 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(4)","attribute":"#text","key":"ui_text_4_06_06_horas","text":"4 (06/06 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(5)","attribute":"#text","key":"ui_text_6_04_04_horas","text":"6 (04/04 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(6)","attribute":"#text","key":"ui_text_8_03_03_horas","text":"8 (03/03 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > select:nth-of-type(1) > option:nth-of-type(7)","attribute":"#text","key":"ui_text_12_02_02_horas","text":"12 (02/02 h)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(1)","attribute":"#text","key":"ui_etapas_dia","text":"etapas/dia"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(3) > label:nth-of-type(1)","attribute":"#text","key":"ui_taxa_hidrica_total","text":"Taxa hídrica total"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(3) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml_kg_dia","text":"mL/kg/dia"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(4) > label:nth-of-type(1)","attribute":"#text","key":"ui_sodio_nacl","text":"Sódio (NaCl)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(5) > label:nth-of-type(1)","attribute":"#text","key":"ui_potassio_kcl_10","text":"Potássio (KCl 10%)"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(6) > label:nth-of-type(1)","attribute":"#text","key":"ui_calcio_gluconato_de_calcio_10","text":"Gluc. de Cálcio 10%"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(6) > span:nth-of-type(1)","attribute":"#text","key":"ui_mg_kg_dia_de_gluconato_de_calcio","text":"mg/kg/dia"},{"path":"#btnCalcularRodape","attribute":"#text","key":"ui_calcular","text":"Calcular"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(2)","attribute":"#text","key":"ui_limpar","text":"Limpar"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(3)","attribute":"title","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoParametros > div:nth-of-type(2) > div:nth-of-type(2) > button:nth-of-type(3)","attribute":"aria-label","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoPrescricao > div:nth-of-type(1)","attribute":"#text","key":"ui_hidra_prescricao_sem_numero","text":"Prescrição por Etapa"},{"path":"#secaoMistura > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_volume_base_glicosado_por_etapa","text":"Volume por etapa"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_nacl_por_etapa","text":"NaCl 20%"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(2) > label:nth-of-type(1)","attribute":"#text","key":"ui_kcl_10_por_etapa","text":"KCl 10%"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(4) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_gluconato_de_calcio_10_por_etapa","text":"Gluc. de Cálcio 10%"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(4) > div:nth-of-type(2) > label:nth-of-type(1)","attribute":"#text","key":"ui_volume_total_da_etapa","text":"Volume total da etapa"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_velocidade_de_infusao","text":"Velocidade de infusão"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml_h","text":"mL/h"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(2) > label:nth-of-type(1)","attribute":"#text","key":"ui_tempo_por_etapa","text":"Tempo por etapa"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(5) > div:nth-of-type(2) > span:nth-of-type(1)","attribute":"#text","key":"ui_horas","text":"horas"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(6) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_taxa_hidrica_total","text":"Taxa hídrica total"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(6) > div:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml_kg_dia","text":"mL/kg/dia"},{"path":"#secaoMistura > div:nth-of-type(8) > label:nth-of-type(1)","attribute":"#text","key":"ui_osmolaridade_estimada","text":"Osmolaridade estimada"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_numero_de_etapas_intervalo_em_ho","text":"Número de Etapas"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(1)","attribute":"#text","key":"ui_text_1_24_24_horas","text":"1 (24/24 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(2)","attribute":"#text","key":"ui_text_2_12_12_horas","text":"2 (12/12 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(3)","attribute":"#text","key":"ui_text_3_08_08_horas","text":"3 (08/08 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(4)","attribute":"#text","key":"ui_text_4_06_06_horas","text":"4 (06/06 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(5)","attribute":"#text","key":"ui_text_6_04_04_horas","text":"6 (04/04 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(6)","attribute":"#text","key":"ui_text_8_03_03_horas","text":"8 (03/03 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > select:nth-of-type(1) > option:nth-of-type(7)","attribute":"#text","key":"ui_text_12_02_02_horas","text":"12 (02/02 h)"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(7) > div:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_etapas_dia","text":"etapas/dia"},{"path":"#secaoMistura > div:nth-of-type(8) > span:nth-of-type(1)","attribute":"#text","key":"ui_mosm_l","text":"mOsm/L"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(8) > button:nth-of-type(1)","attribute":"#text","key":"ui_calcular","text":"Calcular"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(8) > button:nth-of-type(2)","attribute":"#text","key":"ui_limpar","text":"Limpar"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(8) > button:nth-of-type(3)","attribute":"title","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(8) > button:nth-of-type(3)","attribute":"aria-label","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoMistura > summary:nth-of-type(1)","attribute":"#text","key":"ui_hidra_mistura_sem_numero","text":"Mistura de Soluções Glicosadas"},{"path":"#secaoMistura > div:nth-of-type(1) > label:nth-of-type(1)","attribute":"#text","key":"ui_hidra_volume_por_etapa","text":"Volume por etapa"},{"path":"#secaoMistura > div:nth-of-type(1) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml","text":"mL"},{"path":"#secaoMistura > div:nth-of-type(2) > label:nth-of-type(1)","attribute":"#text","key":"ui_concentracao_desejada","text":"Concentração desejada"},{"path":"#secaoMistura > div:nth-of-type(2) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_glicose","text":"% glicose"},{"path":"#secaoMistura > div:nth-of-type(3) > label:nth-of-type(1)","attribute":"#text","key":"ui_hidra_primeiro_soro_menor","text":"Primeiro Soro (menor)"},{"path":"#secaoMistura > div:nth-of-type(3) > select:nth-of-type(1) > option:nth-of-type(1)","attribute":"#text","key":"ui_text_0_agua_destilada","text":"0% (Água destilada)"},{"path":"#secaoMistura > div:nth-of-type(2) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_glicose","text":"% glicose"},{"path":"#secaoMistura > div:nth-of-type(5) > label:nth-of-type(1)","attribute":"#text","key":"ui_volume_do_1o_soro","text":"Volume do 1º soro"},{"path":"#secaoMistura > div:nth-of-type(1) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml","text":"mL"},{"path":"#secaoMistura > div:nth-of-type(4) > label:nth-of-type(1)","attribute":"#text","key":"ui_hidra_segundo_soro_maior","text":"Segundo Soro (maior)"},{"path":"#secaoMistura > div:nth-of-type(3) > select:nth-of-type(1) > option:nth-of-type(1)","attribute":"#text","key":"ui_text_0_agua_destilada","text":"0% (Água destilada)"},{"path":"#secaoMistura > div:nth-of-type(2) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_glicose","text":"% glicose"},{"path":"#secaoMistura > div:nth-of-type(6) > label:nth-of-type(1)","attribute":"#text","key":"ui_volume_do_2o_soro","text":"Volume do 2º soro"},{"path":"#secaoMistura > div:nth-of-type(1) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_ml","text":"mL"},{"path":"#secaoMistura > div:nth-of-type(7) > label:nth-of-type(1)","attribute":"#text","key":"ui_t_i_g","text":"T.I.G."},{"path":"#secaoMistura > div:nth-of-type(7) > input:nth-of-type(1) > span:nth-of-type(1)","attribute":"#text","key":"ui_mg_kg_minuto","text":"mg/kg/minuto"},{"path":"#secaoMistura > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(1)","attribute":"#text","key":"ui_calcular","text":"Calcular"},{"path":"#secaoMistura > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(2)","attribute":"#text","key":"ui_limpar","text":"Limpar"},{"path":"#secaoMistura > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(3)","attribute":"title","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoMistura > div:nth-of-type(1) > div:nth-of-type(2) > button:nth-of-type(3)","attribute":"aria-label","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#referencesDetails > summary:nth-of-type(1)","attribute":"#text","key":"ui_referencias","text":"Referências"},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(1)","attribute":"#text","key":"ui_eichenwald_e_c_et_al","text":"EICHENWALD, E. C. et al."},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(1)","attribute":"#text","key":"ui_text_8_ed_philadelphia_wolters_kluwer","text":". 8. ed. Philadelphia: Wolters Kluwer, 2017."},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(1) > em:nth-of-type(1)","attribute":"#text","key":"ui_cloherty_and_stark_s_manual_of_n","text":"Cloherty and Stark's Manual of Neonatal Care"},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(2)","attribute":"#text","key":"ui_trissel_l_a","text":"TRISSEL, L. A."},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(2)","attribute":"#text","key":"ui_text_18_ed_bethesda_american_society_","text":". 18. ed. Bethesda: American Society of Health-System Pharmacists, 2015."},{"path":"#referenceContent > ol:nth-of-type(1) > li:nth-of-type(2) > em:nth-of-type(1)","attribute":"#text","key":"ui_handbook_on_injectable_drugs","text":"Handbook on Injectable Drugs"},{"path":"#legalDetails > summary:nth-of-type(1)","attribute":"#text","key":"ui_aviso_legal_e_isencao_de_respons","text":"Aviso Legal e Isenção de Responsabilidade"},{"path":"#legalDetails > div:nth-of-type(1)","attribute":"#text","key":"ui_este_software_e_todas_as_informa","text":"Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde."},{"path":"#privacyPolicyLink > span:nth-of-type(1)","attribute":"#text","key":"ui_politica_de_privacidade","text":"Política de Privacidade"},{"path":"#termsPolicyLink > span:nth-of-type(1)","attribute":"#text","key":"ui_termos_de_servico","text":"Termos de Serviço"},{"path":"html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(4) > div:nth-of-type(1) > strong:nth-of-type(1)","attribute":"#text","key":"ui_desenvolvido_por_adao_l_l_couto","text":"Desenvolvido por Adão L. L. Couto"},{"path":"html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(4) > button:nth-of-type(1)","attribute":"title","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(4) > button:nth-of-type(1)","attribute":"aria-label","key":"ui_voltar_ao_inicio","text":"Voltar ao início"},{"path":"#secaoMistura > div:nth-of-type(8) > label:nth-of-type(1)","attribute":"#text","key":"ui_osmolaridade_estimada","text":"Osmolaridade estimada"},{"path":"#secaoPrescricao > div:nth-of-type(2) > div:nth-of-type(1)","attribute":"#text","key":"ui_hidra_mistura_sem_numero","text":"Mistura de Soluções Glicosadas"}];
+let nativeStrings=Object.create(null);
+const lastText=new WeakMap(),lastAttrs=new WeakMap();
+function get(key){return Object.prototype.hasOwnProperty.call(nativeStrings,key)?nativeStrings[key]:base[key]||'';}
+function format(key,parameters){
+ const value=get(key);const args=parameters||[];
+ return value.replace(/%(\d+)\$s/g,function(_,n){return String(args[Number(n)-1]===undefined?'':args[Number(n)-1]);});
+}
+function updateConcsodioLabel(){
+ const select=document.querySelector('#secaoPrescricao select[name="concsodio"]');
+ const label=document.querySelector('#secaoPrescricao .hidra-nacl-integrado > label');
+ if(!select||!label)return;
+ const value=get(select.value==='1'?'ui_nacl_10':'ui_nacl_20');
+ if(label.textContent!==value)label.textContent=value;
+}
+function applyStatic(){
+  for(const binding of bindings){
+   if(binding.key==='ui_nacl_por_etapa')continue;
+  const el=document.querySelector(binding.path);if(!el)continue;
+  const value=get(binding.key);
+  if(binding.attribute==='#text'){
+   for(const n of el.childNodes){
+    if(n.nodeType!==3)continue;
+    const previous=lastText.get(n)||Object.create(null);
+    const current=n.nodeValue||'';
+    const oldValue=previous[binding.key];
+    const match=current.includes(binding.text) ? binding.text :
+      (typeof oldValue==='string' && current.includes(oldValue) ? oldValue : null);
+    if(match!==null){
+      n.nodeValue=current.replace(match,value);
+      previous[binding.key]=value;
+      lastText.set(n,previous);break;
+    }
+   }
+  } else {
+   const last=lastAttrs.get(el)||{};
+   const current=el.getAttribute(binding.attribute);
+   if(current===binding.text || current===last[binding.attribute]) {
+    el.setAttribute(binding.attribute,value);last[binding.attribute]=value;lastAttrs.set(el,last);
+   }
+  }
+ }
+ updateConcsodioLabel();
+}
+function setStrings(values){
+ const next=Object.create(null);
+ if(values && typeof values==='object')for(const key of Object.keys(base)){
+  if(typeof values[key]==='string')next[key]=values[key];
+ }
+ nativeStrings=next;applyStatic();
+}
+window.HidraAndroidI18n={format,get,setStrings,applyStatic,updateConcsodioLabel};
+const concsodioSelect=document.querySelector('#secaoPrescricao select[name="concsodio"]');
+if(concsodioSelect)concsodioSelect.addEventListener('change',updateConcsodioLabel);
+// Mesma concentração de NaCl nas duas abas desde a seleção, sem exigir cálculo.
+document.addEventListener('change',function(event){
+ const el=event.target;
+ if(!el || (el.name!=='concso' && el.name!=='concsodio'))return;
+ const another=document.querySelector(el.name==='concso'?'select[name="concsodio"]':'select[name="concso"]');
+ if(another && another.value!==el.value)another.value=el.value;
+ updateConcsodioLabel();
+},true);
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',applyStatic);
+else applyStatic();
+})();
+</script>
 </body>
 </html>
