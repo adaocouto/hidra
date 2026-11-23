@@ -1,12 +1,12 @@
 <!-- NomeDoApp = "Hidratação Neonatal" -->
-<!-- AndroidVersionName = "1.15.11.09"; AndroidVersionCode = "263112236" -->
-<!-- VersionName = "1.15.11.09" -->
-<!-- VersionCode = "263112236" -->
+<!-- AndroidVersionName = "1.15.11.23"; AndroidVersionCode = "263271919" -->
+<!-- VersionName = "1.15.11.23" -->
+<!-- VersionCode = "263271919" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- AndroidVersionName = "1.15.11.09" -->
-  <!-- AndroidVersionCode = "263112236" -->
+  <!-- AndroidVersionName = "1.15.11.23" -->
+  <!-- AndroidVersionCode = "263271919" -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cálculo de Hidratação Venosa</title>
@@ -723,7 +723,7 @@ header p { margin-top:12px; }
   grid-template-columns:clamp(56px,28%,90px) minmax(0,1fr);
 }
 </style>
-  <!-- AndroidVersionName="1.15.11.09" AndroidVersionCode="263112236" BuildTimestamp="2026-11-07T22:36:43-03:00" -->
+  <!-- AndroidVersionName="1.15.11.23" AndroidVersionCode="263271919" BuildTimestamp="2026-11-07T22:36:43-03:00" -->
 </head>
 <body>
 
@@ -975,7 +975,7 @@ header p { margin-top:12px; }
 
 <a class="legal-disclaimer legal-policy-row" id="privacyPolicyLink" href="https://adaocouto.github.io/pp/" rel="noopener noreferrer"><span>Política de Privacidade</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 13v6H5V5h6"/></svg></a>
 <a class="legal-disclaimer legal-policy-row" id="termsPolicyLink" href="https://adaocouto.github.io/ts/" rel="noopener noreferrer"><span>Termos de Serviço</span><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M13 5h6v6M19 5l-9 9M19 13v6H5V5h6"/></svg></a>
-<div class="hidra-footer"><div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.15.11.09</span></div><button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
+<div class="hidra-footer"><div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.15.11.23</span></div><button type="button" class="hidra-up" aria-label="Voltar ao início" title="Voltar ao início"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button></div>
 
 
 <script>
@@ -1276,16 +1276,15 @@ header p { margin-top:12px; }
     // Volumes montados dos soros: mL inteiros; eletrólitos conforme precisão neonatal.
     if (["volumetotal", "volume3", "vs1", "vs2"].indexOf(name) >= 0) return 0;
     if (name === "tig") return 2;
-    if (name === "calciototal") return 1;
-
-    // Em peso < 1,5 kg, eletrólitos exibem 2 casas decimais para reduzir erro proporcional.
+    // Em peso < 1,5 kg, os três eletrólitos usam 2 casas decimais.
     if (
       isPrecisionMode(referenceSnapshot) &&
-      (name === "sodiototal" || name === "potassiototal")
+      (name === "sodiototal" || name === "potassiototal" || name === "calciototal")
     ) {
       return 2;
     }
 
+    if (name === "calciototal") return 1;
     return FIELD_META[name].decimals;
   }
 
@@ -1619,7 +1618,11 @@ header p { margin-top:12px; }
     snapshot.prescricao.potassiototal *= factor;
     snapshot.prescricao.calciototal *= factor;
 
-    syncDerivedFromPrescription(snapshot);
+    // A nova etapa requer uma nova montagem de soros; não reaproveitar os
+    // volumes vs1/vs2 da etapa anterior, pois deixam de somar o novo volume base.
+    quantizeElectrolytes(snapshot);
+    snapshot.prescricao.volumetotal = Math.round(snapshot.prescricao.volumetotal);
+    recomputeMixFromCd(snapshot);
     snapshot.clinical.volume = snapshot.derivados.volume2;
 
     ensureMeta(snapshot).stageAutoAdjustment = {
@@ -1667,20 +1670,71 @@ header p { margin-top:12px; }
     var decimals = isPrecisionMode(snapshot) ? 2 : 1;
     snapshot.prescricao.sodiototal = round(snapshot.prescricao.sodiototal, decimals);
     snapshot.prescricao.potassiototal = round(snapshot.prescricao.potassiototal, decimals);
-    snapshot.prescricao.calciototal = round(snapshot.prescricao.calciototal, 1);
+    snapshot.prescricao.calciototal = round(snapshot.prescricao.calciototal, decimals);
   }
 
   function electrolyteTotal(snapshot) {
     return snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal;
   }
 
-  // Preserva a taxa hídrica prescrita; a quantização em mL inteiros
-  // pode produzir pequena diferença no volume efetivamente obtido.
+  // A montagem dos soros usa mL inteiros. Não transformar uma base
+  // positiva inferior a 0,5 mL em zero sem informar o usuário.
+  function roundOperationalBaseVolume(value) {
+    var rounded = Math.max(0, Math.round(value));
+    if (value > EPS && rounded === 0) {
+      throw new Error("Volume base glicosado inferior a 0,5 mL por etapa: a montagem em mL inteiros resultaria em 0 mL. Revise a composição ou o volume.");
+    }
+    return rounded;
+  }
+
+  // Se os eletrólitos excederem o volume solicitado, não existe base glicosada
+  // negativa: o mínimo montável é somente a soma dos eletrólitos. Esse mínimo
+  // é volume físico, não uma confirmação de segurança clínica da solução.
+  function adjustInsufficientVolumeForElectrolytes(snapshot, requestedTotal) {
+    var needed = electrolyteTotal(snapshot);
+    var neededRate = needed * snapshot.clinical.etapas / snapshot.clinical.peso;
+    if (neededRate > 200 + EPS) {
+      throw new Error("Volume insuficiente: somente os eletrólitos exigem " +
+        neededRate.toFixed(2).replace(".", ",") +
+        " mL/kg/dia, acima do limite de 200 mL/kg/dia do aplicativo. Revise os dados.");
+    }
+    snapshot.prescricao.volumetotal = 0;
+    syncDerivedFromPrescription(snapshot);
+    recomputeMixFromCd(snapshot);
+    snapshot.clinical.volume = snapshot.derivados.volume2;
+    ensureMeta(snapshot).insufficientVolumeAdjustment = {
+      requestedTotal: requestedTotal,
+      requiredTotal: needed,
+      newRate: snapshot.clinical.volume
+    };
+  }
+
+  // Preserva a taxa hídrica prescrita quando há espaço para os eletrólitos.
+  // Quando não há, ajusta somente ao mínimo que os comporta (base glicosada zero).
   function compensateElectrolyteChange(snapshot, targetRate, targetTig) {
+    var previousAdjustment = ensureMeta(snapshot).insufficientVolumeAdjustment;
     var targetTotal = targetRate * snapshot.clinical.peso / snapshot.clinical.etapas;
-    var base = targetTotal - electrolyteTotal(snapshot);
-    if (base < -EPS) throw new Error("Os eletrólitos ultrapassam o volume-alvo da etapa.");
-    snapshot.prescricao.volumetotal = Math.max(0, Math.round(base));
+    var needed = electrolyteTotal(snapshot);
+    var base = targetTotal - needed;
+    if (base < -EPS) {
+      adjustInsufficientVolumeForElectrolytes(snapshot, targetTotal);
+      return;
+    }
+    // O botão Calcular pode ser acionado novamente sem alterar os dados.
+    // Nessa situação, conservar a justificativa do ajuste e o valor exato
+    // da taxa, que foi exibido ao usuário arredondado a duas casas.
+    if (previousAdjustment && Math.abs(base) <= EPS &&
+        Math.abs(previousAdjustment.requiredTotal - needed) <= EPS &&
+        Math.abs(previousAdjustment.newRate - targetRate) <= EPS) {
+      snapshot.prescricao.volumetotal = 0;
+      syncDerivedFromPrescription(snapshot);
+      recomputeMixFromCd(snapshot);
+      snapshot.clinical.volume = snapshot.derivados.volume2;
+      ensureMeta(snapshot).insufficientVolumeAdjustment = previousAdjustment;
+      return;
+    }
+    ensureMeta(snapshot).insufficientVolumeAdjustment = null;
+    snapshot.prescricao.volumetotal = roundOperationalBaseVolume(base);
     syncDerivedFromPrescription(snapshot);
     recomputeMixFromCd(snapshot);
     preserveGlucoseDeliveryTarget(snapshot, targetTig);
@@ -1822,7 +1876,7 @@ header p { margin-top:12px; }
     if (cd < cs1 - EPS || cd > cs2 + EPS) {
       throw new Error(window.HidraAndroidI18n.format("message_concentracao_desejada_deve_estar",[]));
     }
-    snapshot.prescricao.volumetotal = Math.max(0, Math.round(snapshot.prescricao.volumetotal));
+    snapshot.prescricao.volumetotal = roundOperationalBaseVolume(snapshot.prescricao.volumetotal);
     syncDerivedFromPrescription(snapshot);
     var total = snapshot.mistura.volume3;
     var v1 = Math.max(0, Math.min(total, Math.round(total * (cs2 - cd) / (cs2 - cs1))));
@@ -1891,7 +1945,7 @@ header p { margin-top:12px; }
     if (preserveRate) {
       compensateElectrolyteChange(snapshot, preserveRate, targetTig);
     } else {
-      snapshot.prescricao.volumetotal = Math.max(0, Math.round(snapshot.prescricao.volumetotal));
+      snapshot.prescricao.volumetotal = roundOperationalBaseVolume(snapshot.prescricao.volumetotal);
       syncDerivedFromPrescription(snapshot);
       snapshot.clinical.volume = snapshot.derivados.volume2;
       recomputeMixFromCd(snapshot);
@@ -1907,7 +1961,11 @@ header p { margin-top:12px; }
       snapshot.prescricao.calciototal;
 
     if (novoSoro < -EPS) {
-      throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_menor_que_",[]));
+      var requestedTotal = snapshot.derivados.volt;
+      snapshot.prescricao.volumetotal = 0;
+      computeInverse(snapshot);
+      adjustInsufficientVolumeForElectrolytes(snapshot, requestedTotal);
+      return;
     }
 
     snapshot.prescricao.volumetotal = novoSoro;
@@ -2073,6 +2131,20 @@ header p { margin-top:12px; }
 
   function getElectrolyteOsmolarityAlertMessages(snapshot) {
     var messages = [];
+    var adjustment = snapshot._meta && snapshot._meta.insufficientVolumeAdjustment;
+    if (adjustment) {
+      var decimals = isPrecisionMode(snapshot) ? 2 : 1;
+      messages.push(
+        "Volume insuficiente: os eletrólitos somam " +
+        adjustment.requiredTotal.toFixed(decimals).replace(".", ",") +
+        " mL por etapa, acima dos " +
+        adjustment.requestedTotal.toFixed(decimals).replace(".", ",") +
+        " mL informados. A Taxa Hídrica Total foi ajustada automaticamente para " +
+        adjustment.newRate.toFixed(2).replace(".", ",") +
+        " mL/kg/dia (somente volume dos eletrólitos; volume glicosado = 0 mL). " +
+        "Verifique a concentração, a osmolaridade e a adequação clínica da solução."
+      );
+    }
     var volumeFinalMl = safeNonNegative(snapshot.derivados.volt);
 
     if (volumeFinalMl <= EPS) return messages;
@@ -2505,6 +2577,8 @@ header p { margin-top:12px; }
   }
 
   function computeByIntent(snapshot, intent, originName, previous) {
+    // O aviso se refere ao cálculo que acabou de provocar o ajuste.
+    ensureMeta(snapshot).insufficientVolumeAdjustment = null;
     switch (intent) {
       case INTENT.DIRECT:
         computeDirect(snapshot, previous && ["sodio", "potassio", "calcio", "concso"].indexOf(originName) >= 0 ? previous.mistura.tig : undefined);
@@ -2722,10 +2796,9 @@ header p { margin-top:12px; }
       }
       if (!Object.prototype.hasOwnProperty.call(pendingDisabledFields, name)) pendingDisabledFields[name] = el.disabled;
       el.disabled = true;
-      if (el.tagName !== "SELECT") el.value = "";
+      // Manter os valores anteriormente calculados visíveis durante a edição.
+      // Eles permanecem desabilitados e com aria-busy até o recálculo confirmado.
     });
-    var misturaOsmolaridade = document.getElementById("osmolaridadeMistura");
-    if (misturaOsmolaridade) misturaOsmolaridade.value = "";
     ["secaoPrescricao", "secaoMistura"].forEach(function (id) {
       document.getElementById(id).setAttribute("aria-busy", "true");
     });
@@ -3098,7 +3171,7 @@ header p { margin-top:12px; }
     tests.push(function testDirectCalculation() {
       var snapshot = createKnownGoodState();
       assertAlmostEqual(snapshot.prescricao.sodiototal, 3, "NaCl por etapa");
-      assertAlmostEqual(snapshot.prescricao.potassiototal, 2.91044776119403, "KCl por etapa");
+      assertAlmostEqual(snapshot.prescricao.potassiototal, 2.9, "KCl por etapa após quantização de montagem");
       assertAlmostEqual(snapshot.prescricao.calciototal, 4.5, "Cálcio por etapa");
       assertAlmostEqual(
         snapshot.derivados.volt,
@@ -3143,18 +3216,18 @@ header p { margin-top:12px; }
         computeDirect(invalid);
       }, "Peso > 20 kg");
       snapshot.clinical.peso = 3;
-      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_glicosado_por_etapa_",[]));
-      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib",[]));
+      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".").slice(1).join("").length !== 0) throw new Error(window.HidraAndroidI18n.format("message_volume_base_glicosado_por_etapa_",[]));
+      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".").slice(1).join("").length !== 0) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib",[]));
       if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_ser_",[]));
-      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_1_casa_decimal",[]));
-      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_1_casa_deci",[]));
-      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_1_casa_decima",[]));
+      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".").slice(1).join("").length !== 1) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_1_casa_decimal",[]));
+      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".").slice(1).join("").length !== 1) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_1_casa_deci",[]));
+      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".").slice(1).join("").length !== 1) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_1_casa_decima",[]));
       if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_deve_ser_a",[]));
       if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_ml_hora_deve_ser_calculado_a_par",[]));
-      if (formatField("volt", snapshot.derivados.volt, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_deve_mante",[]));
-      if (formatField("mlhora", snapshot.derivados.mlhora, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_ml_h_deve_exibir_1_casa_decimal",[]));
-      if (formatField("osmolaridade", snapshot.derivados.osmolaridade, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_osmolaridade_deve_exibir_1_casa_",[]));
-      if (formatField("tig", snapshot.mistura.tig, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_tig_deve_exibir_1_casa_decimal",[]));
+      if (formatField("volt", snapshot.derivados.volt, snapshot).split(".").slice(1).join("").length !== 2) throw new Error(window.HidraAndroidI18n.format("message_volume_total_da_etapa_deve_mante",[]));
+      if (formatField("mlhora", snapshot.derivados.mlhora, snapshot).split(".").slice(1).join("").length !== 1) throw new Error(window.HidraAndroidI18n.format("message_ml_h_deve_exibir_1_casa_decimal",[]));
+      if (formatField("osmolaridade", snapshot.derivados.osmolaridade, snapshot).split(".").slice(1).join("").length !== 1) throw new Error(window.HidraAndroidI18n.format("message_osmolaridade_deve_exibir_1_casa_",[]));
+      if (formatField("tig", snapshot.mistura.tig, snapshot).split(".").slice(1).join("").length !== 2) throw new Error(window.HidraAndroidI18n.format("message_tig_deve_exibir_1_casa_decimal",[]));
       if (formatAlertNumber(40, 0) !== "40,0") throw new Error(window.HidraAndroidI18n.format("message_alertas_devem_exibir_1_casa_deci",[]));
     });
 
@@ -3168,17 +3241,23 @@ header p { margin-top:12px; }
       computeDirect(snapshot);
 
       if (!isPrecisionMode(snapshot)) throw new Error(window.HidraAndroidI18n.format("message_modo_precisao_deveria_estar_ativ",[]));
-      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_deve_exibir_1_casa_d",[]));
-      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".")[1].length !== 1) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib_2",[]));
+      if (formatField("volumetotal", snapshot.prescricao.volumetotal, snapshot).split(".").slice(1).join("").length !== 0) throw new Error(window.HidraAndroidI18n.format("message_volume_base_deve_exibir_1_casa_d",[]));
+      if (formatField("volume3", snapshot.mistura.volume3, snapshot).split(".").slice(1).join("").length !== 0) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_exib_2",[]));
       if (Math.abs(snapshot.mistura.volume3 - snapshot.prescricao.volumetotal) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_base_da_mistura_deve_ser__2",[]));
-      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_2_casas_decima",[]));
-      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_2_casas_dec",[]));
-      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".")[1].length !== 2) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_2_casas_decim",[]));
+      if (formatField("sodiototal", snapshot.prescricao.sodiototal, snapshot).split(".").slice(1).join("").length !== 2) throw new Error(window.HidraAndroidI18n.format("message_sodio_deve_exibir_2_casas_decima",[]));
+      if (formatField("potassiototal", snapshot.prescricao.potassiototal, snapshot).split(".").slice(1).join("").length !== 2) throw new Error(window.HidraAndroidI18n.format("message_potassio_deve_exibir_2_casas_dec",[]));
+      if (formatField("calciototal", snapshot.prescricao.calciototal, snapshot).split(".").slice(1).join("").length !== 2) throw new Error(window.HidraAndroidI18n.format("message_calcio_deve_exibir_2_casas_decim",[]));
       if (Math.abs(snapshot.derivados.volt - (snapshot.prescricao.volumetotal + snapshot.prescricao.sodiototal + snapshot.prescricao.potassiototal + snapshot.prescricao.calciototal)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_volume_total_deve_somar_os_valor",[]));
       if (Math.abs(snapshot.derivados.mlhora - (snapshot.derivados.volt / snapshot.derivados.tempohoras)) > 1e-6) throw new Error(window.HidraAndroidI18n.format("message_ml_h_deve_derivar_do_volume_tota",[]));
       if (!getElectrolyteOsmolarityAlertMessages(snapshot).some(function (message) { return message.indexOf("Modo precisão ativado") === 0; })) {
         throw new Error(window.HidraAndroidI18n.format("message_alerta_informativo_do_modo_preci",[]));
       }
+      snapshot.clinical.peso = 0.95;
+      snapshot.clinical.calcio = 150;
+      computeDirect(snapshot);
+      assertAlmostEqual(snapshot.prescricao.calciototal, 1.43,
+        "Cálcio deve ser montado com 2 casas no modo precisão");
+      validateInvariants(snapshot);
     });
 
     tests.push(function testInverseCalculation() {
@@ -3190,7 +3269,7 @@ header p { margin-top:12px; }
         "Volume/kg/dia inverso conserva a precisão integral do valor calculado"
       );
       assertAlmostEqual(snapshot.clinical.sodio, 3.4, "Sódio preservado no inverso");
-      assertAlmostEqual(snapshot.clinical.potassio, 1.3, "Potássio preservado no inverso");
+      assertAlmostEqual(snapshot.clinical.potassio, snapshot.prescricao.potassiototal * 1.34 * snapshot.clinical.etapas / snapshot.clinical.peso, "Potássio inverso usa o volume de montagem quantizado");
       assertAlmostEqual(snapshot.clinical.calcio, 150, "Cálcio preservado no inverso");
     });
 
@@ -3213,9 +3292,12 @@ header p { margin-top:12px; }
       computeDirect(snapshot);
       computeInverse(snapshot);
       computeDirect(snapshot);
-      if (formatField("volume", snapshot.clinical.volume, snapshot) !== "70.00") {
-        throw new Error(window.HidraAndroidI18n.format("message_volume_clinico_nao_deve_derivar_",[]));
-      }
+      assertAlmostEqual(snapshot.clinical.volume, snapshot.derivados.volume2,
+        "Taxa hídrica corresponde ao volume total da montagem");
+      var taxaEfetiva = snapshot.clinical.volume;
+      computeDirect(snapshot);
+      assertAlmostEqual(snapshot.clinical.volume, taxaEfetiva,
+        "Taxa hídrica efetiva permanece estável após novo cálculo");
     });
 
     tests.push(function testPesoNeonatalProgressivo() {
@@ -3336,17 +3418,33 @@ header p { margin-top:12px; }
     tests.push(function testVolumeInsuficienteAjustaTaxaHidrica() {
       var snapshot = createKnownGoodState();
       snapshot.clinical.volume = 3;
+      var required = electrolyteTotal(snapshot);
       computeDirect(snapshot);
-      validateInvariants(snapshot);
-      assertAlmostEqual(snapshot.prescricao.volumetotal, 0, "Volume SG/SF deve zerar quando eletrólitos ocupam toda a etapa");
-      assertAlmostEqual(
-        snapshot.derivados.volume2,
-        (snapshot.derivados.volt * snapshot.clinical.etapas) / snapshot.clinical.peso,
-        "Taxa hídrica deve acompanhar o volume total exibido"
-      );
-      if (snapshot.clinical.volume <= 3) {
-        throw new Error(window.HidraAndroidI18n.format("message_taxa_hidrica_nao_foi_aumentada_a",[]));
+      assertAlmostEqual(snapshot.prescricao.volumetotal, 0, "Sem base glicosada em volume insuficiente");
+      assertAlmostEqual(snapshot.derivados.volt, electrolyteTotal(snapshot), "Volume efetivo igual à soma dos eletrólitos");
+      assertAlmostEqual(snapshot.clinical.volume, snapshot.derivados.volt * snapshot.clinical.etapas / snapshot.clinical.peso,
+        "Taxa hídrica aumentada até o mínimo necessário");
+      if (!snapshot._meta || !snapshot._meta.insufficientVolumeAdjustment) {
+        throw new Error("O ajuste de volume insuficiente deve ser identificado para o aviso.");
       }
+    });
+
+    tests.push(function testTaxaHidricaZeroComEletrolitos() {
+      var snapshot = createKnownGoodState();
+      snapshot.clinical.volume = 0;
+      computeDirect(snapshot);
+      assertAlmostEqual(snapshot.prescricao.volumetotal, 0, "Base zero preservada");
+      assertAlmostEqual(snapshot.derivados.volt, electrolyteTotal(snapshot), "Eletrólitos presentes com taxa solicitada zero");
+      if (snapshot.clinical.volume <= 0) throw new Error("Taxa hídrica não foi ajustada.");
+    });
+
+    tests.push(function testLimiteClinicoVolumeInsuficiente() {
+      var snapshot = createKnownGoodState();
+      // Testa a proteção contra volume físico excessivo diretamente:
+      // os limites de dose da entrada direta impedem atingir este caso.
+      snapshot.prescricao.sodiototal = 601;
+      assertThrows(function () { adjustInsufficientVolumeForElectrolytes(snapshot, 0); },
+        "acima do limite de 200 mL/kg/dia");
     });
 
     tests.push(function testAlertaVolumeInadequadoPotassio() {
@@ -3391,11 +3489,11 @@ header p { margin-top:12px; }
 
     tests.push(function testCalciumVeryHighAlert() {
       var snapshot = createKnownGoodState();
-      snapshot.clinical.volume = 1;
-      snapshot.clinical.sodio = 0;
-      snapshot.clinical.potassio = 0;
-      snapshot.clinical.calcio = 1000;
-      computeDirect(snapshot);
+      snapshot.prescricao.volumetotal = 0;
+      snapshot.prescricao.sodiototal = 0;
+      snapshot.prescricao.potassiototal = 0;
+      snapshot.prescricao.calciototal = 30;
+      recomputeMixFromCd(snapshot);
       var messages = getElectrolyteOsmolarityAlertMessages(snapshot).join(" | ");
       if (messages.indexOf("Gluconato de cálcio muito concentrado") === -1) {
         throw new Error(window.HidraAndroidI18n.format("message_alerta_forte_de_gluconato_de_cal",[]));
@@ -3418,7 +3516,7 @@ header p { margin-top:12px; }
       assertAlmostEqual(snapshot.mistura.tig, 0, "TIG deve zerar");
     });
 
-    tests.push(function testAutoAjusteVolumeMisturaOperacional() {
+    tests.push(function testVolumeGlicosadoPositivoAbaixoDoMinimoInteiro() {
       var snapshot = createKnownGoodState();
       snapshot.clinical.sodio = 0;
       snapshot.clinical.potassio = 0;
@@ -3427,21 +3525,11 @@ header p { margin-top:12px; }
       snapshot.mistura.cd = 10;
       snapshot.mistura.cs1 = 5;
       snapshot.mistura.cs2 = 25;
-      computeDirect(snapshot);
-      validateInvariants(snapshot);
-      assertAlmostEqual(snapshot.mistura.volume3, 0.4, "Volume base glicosado deve subir para tornar o 2º soro ≥ 0,1 mL");
-      assertAlmostEqual(snapshot.mistura.vs1, 0.3, "Volume do 1º soro após ajuste operacional");
-      assertAlmostEqual(snapshot.mistura.vs2, 0.1, "Volume do 2º soro após ajuste operacional");
-      if (!snapshot._meta || !snapshot._meta.mixVolumeAutoAdjustment) {
-        throw new Error(window.HidraAndroidI18n.format("message_ajuste_automatico_da_mistura_dev",[]));
-      }
-      var messages = getMixAutoAdjustmentAlertMessages(snapshot).join(" | ");
-      if (messages.indexOf("Volume base glicosado aumentado automaticamente") === -1) {
-        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_aumento_automatico_da_",[]));
-      }
-      if (getGlucoseTigAlertMessages(snapshot).join(" | ").indexOf("Volume base glicosado aumentado automaticamente") !== -1) {
-        throw new Error(window.HidraAndroidI18n.format("message_alerta_de_ajuste_automatico_nao_",[]));
-      }
+      // Uma solicitação positiva de 0,15 mL não deve virar prescrição de 0 mL.
+      assertThrows(function () { computeDirect(snapshot); }, "montagem em mL inteiros resultaria em 0 mL");
+      var inverse = createKnownGoodState();
+      inverse.prescricao.volumetotal = 0.3;
+      assertThrows(function () { computeInverse(inverse); }, "montagem em mL inteiros resultaria em 0 mL");
     });
 
     tests.push(function testLowOsmolarityAlert() {
